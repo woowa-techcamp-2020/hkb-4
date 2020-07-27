@@ -16,6 +16,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => res.send("hello world"));
-app.post("/", (req, res) => res.send(`received data is "${req.body.data}"`));
+app.post("/", (req, res) =>
+  res.send(`I've got this message: "${req.body.data}"`)
+);
 
 app.listen(PORT, () => console.log(`✅ server is running on port: ${PORT}`));
