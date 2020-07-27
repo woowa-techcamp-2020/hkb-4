@@ -1,0 +1,29 @@
+{
+  "name": "hkb-4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:server": "ts-node server/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woowa-techcamp-2020/hkb-4.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woowa-techcamp-2020/hkb-4/issues"
+  },
+  "homepage": "https://github.com/woowa-techcamp-2020/hkb-4#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.7",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  }
+}
