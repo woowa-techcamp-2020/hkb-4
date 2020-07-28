@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
@@ -15,8 +15,8 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => res.send("hello world"));
-app.post("/", (req, res) =>
+app.get("/", (req: Request, res: Response) => res.send("hello world"));
+app.post("/", (req: Request, res: Response) =>
   res.send(`I've got this message: "${req.body.data}"`)
 );
 
