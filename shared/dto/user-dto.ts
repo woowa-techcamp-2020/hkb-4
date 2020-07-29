@@ -9,7 +9,14 @@ interface LOGIN {
 	password: string;
 }
 
+interface RESPONSE_LOGIN {
+	name: string;
+	password: string;
+	id: number;
+	removed: number;
+}
+
 type DELETE = number;
 type GET = number;
 
-export { JOIN, LOGIN, DELETE, GET };
+export { JOIN, LOGIN, DELETE, GET, RESPONSE_LOGIN };
