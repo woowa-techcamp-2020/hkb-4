@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UserModel from '../Model/user';
+import UserModel from '../model/user';
 
 const UserController = {
 	join: async (req: Request, res: Response) => {
@@ -11,8 +11,6 @@ const UserController = {
 		}
 
 		try {
-			//TODO
-			// @ts-ignore
 			const user = await UserModel.findBy(name);
 
 			if (user) {
