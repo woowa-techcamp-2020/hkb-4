@@ -12,7 +12,7 @@ class ItemApi {
 
 	static async update(body: ItemDTO.UPDATE) {
 		try {
-			const result = await fetch(`${url}/update/update`, Options.PATCH(body));
+			const result = await fetch(`${url}/item/update`, Options.PATCH(body));
 			return result;
 		} catch (error) {
 			throw error;
@@ -21,7 +21,7 @@ class ItemApi {
 
 	static async getItemsById(uid: ItemDTO.GET) {
 		try {
-			const result = await fetch(`${url}/:${uid}`, Options.GET());
+			const result = await fetch(`${url}/item/:${uid}`, Options.GET());
 			return result;
 		} catch (error) {
 			throw error;
@@ -30,7 +30,7 @@ class ItemApi {
 
 	static async delete(uid: ItemDTO.DELETE) {
 		try {
-			const result = await fetch(`${url}/delete/:${uid}`, Options.PATCH({}));
+			const result = await fetch(`${url}/item/delete/:${uid}`, Options.PATCH({}));
 			return result;
 		} catch (error) {
 			throw error;
