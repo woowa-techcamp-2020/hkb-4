@@ -9,6 +9,9 @@ module.exports = {
 		path: path.resolve(__dirname, './dist'),
 		filename: 'bundle.js',
 	},
+	resolve: {
+		extensions: ['.ts', '.js', '.json'],
+	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './client/src/index.html',
@@ -57,12 +60,5 @@ module.exports = {
 				},
 			},
 		],
-	},
-	mode: 'development',
-	devtool: 'inline-source-map',
-	devServer: {
-		contentBase: './dist',
-		port: 8080,
-		hot: true,
 	},
 };
