@@ -12,4 +12,4 @@ interface LOGIN {
 type DELETE = number;
 type GET = number;
 
-export { JOIN, LOGIN };
+export { JOIN, LOGIN, DELETE, GET };

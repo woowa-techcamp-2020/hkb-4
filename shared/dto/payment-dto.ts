@@ -3,4 +3,7 @@ interface CREATE {
 	uid_payment: number;
 }
 
-export { CREATE };
+type DELETE = number;
+type GET = number;
+
+export { CREATE, DELETE, GET };
