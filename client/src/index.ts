@@ -1,2 +1,4 @@
 import './style/index.scss';
-console.log('index.ts');
+import App from './views/app';
+
+const app = new App(document.querySelector('#app') as HTMLElement);
