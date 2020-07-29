@@ -5,7 +5,6 @@ class App {
 	constructor(target: HTMLElement) {
 		this.app = target;
 		const header = new Header();
-
 		//
 		this.app.appendChild(header);
 	}
