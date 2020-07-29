@@ -9,4 +9,7 @@ interface LOGIN {
 	password: string;
 }
 
+type DELETE = number;
+type GET = number;
+
 export { JOIN, LOGIN };

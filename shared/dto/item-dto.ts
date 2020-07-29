@@ -15,4 +15,12 @@ interface UPDATE {
 	description: string;
 }
 
-export { CREATE, UPDATE };
+type DELETE = number;
+type GET = number;
+
+enum ItemType {
+	INCOME,
+	SPENDING,
+}
+
+export { CREATE, UPDATE, DELETE, GET, ItemType };
