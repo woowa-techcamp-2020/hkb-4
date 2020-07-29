@@ -1,1 +1,1 @@
-console.log("views");
+console.log('views');

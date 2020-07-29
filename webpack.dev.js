@@ -1,8 +1,8 @@
-const config = require("./webpack.config.js");
+const config = require('./webpack.config.js');
 
 const development = {
-  ...config,
-  mode: "development",
+	...config,
+	mode: 'development',
 };
 
 module.exports = development;

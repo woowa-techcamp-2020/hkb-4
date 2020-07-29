@@ -1,2 +1,2 @@
-import "./style/index.scss";
-console.log("index.ts");
+import './style/index.scss';
+console.log('index.ts');

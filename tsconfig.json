@@ -1,11 +1,11 @@
 {
-  "include": ["server/**/*"],
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "target": "es6",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "strict": true,
-    "sourceMap": true
-  }
+	"include": ["server/**/*"],
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"target": "es6",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"strict": true,
+		"sourceMap": true
+	}
 }
