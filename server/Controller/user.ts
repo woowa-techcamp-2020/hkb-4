@@ -1,5 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { UserModel } from '../model';
+import httpStatus from 'http-status';
+import { JsonResponse } from '../module/util';
+import { nextTick } from 'process';
 
 const UserController = {
 	join: async (req: Request, res: Response) => {
@@ -23,6 +26,14 @@ const UserController = {
 		} catch (err) {
 			res.send({ status: 'failure', message: '서버 에러가 발생했습니다.' });
 		}
+	},
+	postLogin: (req: Request, res: Response, next: NextFunction) => {
+		if (req.isAuthenticated()) {
+			res
+				.status(httpStatus.OK)
+				.json(JsonResponse(httpStatus.OK, 'Successfully logged in', req.user));
+		}
+		// TODO : 로그인 실패 핸들링
 	},
 };
 
