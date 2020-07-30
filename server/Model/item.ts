@@ -8,7 +8,7 @@ const ItemModel = {
 		const nItem = Object.assign(item, { date });
 		try {
 			const result = await db.query(`INSERT INTO item SET ?`, nItem);
-			return result;
+			return item;
 		} catch (err) {
 			throw err;
 		}
