@@ -22,6 +22,7 @@ const UserController = {
 			}
 
 			await UserModel.join(name, password);
+
 			res.send({ status: 'success', message: '가입되었습니다.' });
 		} catch (err) {
 			res.send({ status: 'failure', message: '서버 에러가 발생했습니다.' });
@@ -32,8 +33,11 @@ const UserController = {
 			res
 				.status(httpStatus.OK)
 				.json(JsonResponse(httpStatus.OK, 'Successfully logged in', req.user));
+		} else {
+			res
+				.status(httpStatus.UNAUTHORIZED)
+				.json(JsonResponse(httpStatus.UNAUTHORIZED, 'log in failed', {}));
 		}
-		// TODO : 로그인 실패 핸들링
 	},
 };
 
