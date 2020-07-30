@@ -25,7 +25,18 @@ interface UPDATE {
 	description: string;
 }
 
+interface Item {
+	id: number;
+	uid_item: number;
+	pid_item: string;
+	type: ItemType;
+	category: INCOME | SPENDING;
+	amount: number;
+	date: string;
+	description: string;
+}
+
 type DELETE = number;
 type GET = number;
 
-export { CREATE, UPDATE, DELETE, GET, ItemType, INCOME, SPENDING };
+export { CREATE, UPDATE, DELETE, GET, Item, ItemType, INCOME, SPENDING };
