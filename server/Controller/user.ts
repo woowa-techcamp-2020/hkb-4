@@ -11,7 +11,7 @@ const UserController = {
 		}
 
 		try {
-			const user = await UserModel.findBy(name);
+			const user = await UserModel.findByUsername(name);
 
 			if (user) {
 				res.send({ status: 'failure', message: '해당 유저가 이미 존재합니다.' });
