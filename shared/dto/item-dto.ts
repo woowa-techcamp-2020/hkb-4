@@ -12,6 +12,7 @@ interface CREATE {
 	type: ItemType;
 	category: INCOME | SPENDING;
 	amount: number;
+	date: string;
 	description: string;
 }
 

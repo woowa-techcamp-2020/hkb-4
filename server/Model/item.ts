@@ -3,11 +3,8 @@ import { ItemDTO } from '../../shared/dto';
 
 const ItemModel = {
 	create: async (item: ItemDTO.CREATE) => {
-		var rightNow = new Date();
-		var date = rightNow.toISOString().slice(0, 10).replace(/-/g, '');
-		const nItem = Object.assign(item, { date });
 		try {
-			const result = await db.query(`INSERT INTO item SET ?`, nItem);
+			const result = await db.query(`INSERT INTO item SET ?`, item);
 			return item;
 		} catch (err) {
 			throw err;
