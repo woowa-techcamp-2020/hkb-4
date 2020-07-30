@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UserModel from '../model/user';
+import { UserModel } from '../model';
 
 const UserController = {
 	join: async (req: Request, res: Response) => {
