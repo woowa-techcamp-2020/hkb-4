@@ -4,7 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-import UserController from './Controller/user';
+import { UserController, PaymentController, ItemController } from './controller';
 
 dotenv.config();
 
@@ -22,5 +22,14 @@ app.post('/', (req: Request, res: Response) =>
 );
 
 app.post('/join', UserController.join);
+
+app.get('/payment/:uid', PaymentController.getPaymentsById);
+app.post('/payment/create', PaymentController.create);
+app.patch('/payment/delete/:id', PaymentController.delete);
+
+app.get('/item/:uid/:date', ItemController.getItemsById);
+app.post('/item/create', ItemController.create);
+app.patch('/item/update', ItemController.update);
+app.patch('/item/delete/:id', ItemController.delete);
 
 app.listen(PORT, () => console.log(`✅ server is running on port: ${PORT}`));
