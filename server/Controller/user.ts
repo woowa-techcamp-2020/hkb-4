@@ -45,6 +45,10 @@ const UserController = {
 				.json(JsonResponse(httpStatus.UNAUTHORIZED, 'log in failed', {}));
 		}
 	},
+	logout: (req: Request, res: Response) => {
+		req.logout();
+		res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'logged out', {}));
+	},
 };
 
 export default UserController;

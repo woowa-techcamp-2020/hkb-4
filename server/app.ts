@@ -33,10 +33,17 @@ app.use(passport.session());
 
 passportConfig();
 
-app.get('/', (req: Request, res: Response) => res.send('hello world'));
+app.get('/', (req: Request, res: Response) => {
+	console.log(req.isAuthenticated());
+	if (req.isAuthenticated()) {
+		console.log(req.user);
+	}
+	res.send('hello world');
+});
 
 app.post('/join', UserController.join);
 app.post('/login', passport.authenticate('local'), UserController.postLogin);
+app.get('/logout', UserController.logout);
 
 app.get('/payment/:uid', PaymentController.getPaymentsById);
 app.post('/payment/create', PaymentController.create);
