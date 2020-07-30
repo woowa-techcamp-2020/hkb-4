@@ -3,9 +3,11 @@ import { ItemDTO } from '../../shared/dto';
 
 const ItemModel = {
 	create: async (item: ItemDTO.CREATE) => {
+		var rightNow = new Date();
+		var date = rightNow.toISOString().slice(0, 10).replace(/-/g, '');
+		const nItem = Object.assign(item, { date });
 		try {
-			const result = await db.query(`INSERT INTO topic SET ?`, item);
-			console.log('item create', result);
+			const result = await db.query(`INSERT INTO item SET ?`, nItem);
 			return result;
 		} catch (err) {
 			throw err;
@@ -13,27 +15,27 @@ const ItemModel = {
 	},
 	update: async (item: ItemDTO.UPDATE) => {
 		try {
-			const result = await db.query(`UPDATE card SET ? WHERE id = '${item.id}'`, item);
-			console.log('item create', result);
-			return result;
+			const result = await db.query(
+				`UPDATE item SET ? WHERE id = '${item.id}' and removed = '${0}'`,
+				item,
+			);
+			return item;
 		} catch (err) {
 			throw err;
 		}
 	},
-	delete: async (uid: number) => {
+	delete: async (id: number) => {
 		try {
-			const result = await db.query(`UPDATE item SET removed = '${1}' WHERE uid_item = '${uid}'`);
-			console.log('payment delete', result);
-			return result;
+			const result = await db.query(`UPDATE item SET removed = '${1}' WHERE id = '${id}'`);
+			return { id };
 		} catch (err) {}
 	},
-	getItemsById: async (uid: number) => {
+	getItemsById: async (uid: number, date: string) => {
 		try {
 			let itemData = await db.query(
-				`SELECT id, uid_item, pid_item, type, category, amount, description, date FROM item WHERE uid_item = '${uid}' and removed = '${0}'`,
+				`SELECT id, uid_item, pid_item, type, category, amount, description, date FROM item WHERE uid_item = '${uid}' and removed = '${0}' and date_format(now(), '%Y-%m') = '${date}'`,
 			);
-			console.log('item get', itemData);
-			return itemData;
+			return itemData[0];
 		} catch (err) {
 			throw err;
 		}

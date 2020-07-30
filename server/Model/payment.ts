@@ -8,28 +8,24 @@ const Payment = {
 		try {
 			const result = await db.query(`INSERT INTO payment SET ?`, payment);
 			console.log('payment create', result);
-			return result;
+			return payment;
 		} catch (err) {
 			console.log('err', err);
 			throw err;
 		}
 	},
-	delete: async (uid: number) => {
+	delete: async (id: PaymentDTO.DELETE) => {
 		try {
-			const result = await db.query(
-				`UPDATE payment SET removed = '${1}' WHERE uid_payment = '${uid}'`,
-			);
-			console.log('payment delete', result);
-			return { uid };
+			const result = await db.query(`UPDATE payment SET removed = '${1}' WHERE id = '${id}'`);
+			return { id };
 		} catch (err) {}
 	},
-	getPaymentsById: async (uid: number) => {
+	getPaymentsById: async (uid: PaymentDTO.GET) => {
 		try {
 			let paymentData = await db.query(
 				`SELECT id, uid_payment, name FROM payment WHERE uid_payment = '${uid}' and removed = '${0}'`,
 			);
-			console.log('paymet get', paymentData);
-			return paymentData;
+			return paymentData[0];
 		} catch (err) {
 			throw err;
 		}

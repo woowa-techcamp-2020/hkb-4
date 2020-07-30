@@ -18,9 +18,9 @@ const PaymentController = {
 	},
 	delete: async (req: Request, res: Response, next: NextFunction) => {
 		let response;
-		const uid = parseInt(req.params.uid);
+		const id = parseInt(req.params.id);
 		try {
-			response = await Payment.delete(uid);
+			response = await Payment.delete(id);
 			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'payment deleted well', response));
 		} catch (err) {
 			next(err);
