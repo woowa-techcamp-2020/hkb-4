@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "jest",
 		"dev:server": "nodemon --exec ts-node server/app.ts",
 		"build": "webpack --config webpack.dev.js",
 		"build:watch": "webpack --config webpack.dev.js --watch"
@@ -20,12 +20,14 @@
 	},
 	"homepage": "https://github.com/woowa-techcamp-2020/hkb-4#readme",
 	"dependencies": {
+		"@types/jest": "^26.0.7",
 		"body-parser": "^1.19.0",
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"helmet": "^3.23.3",
 		"http-status": "^1.4.2",
+		"jest": "^26.1.0",
 		"morgan": "^1.10.0",
 		"mysql2": "^2.1.0",
 		"sass": "^1.26.10",
@@ -52,8 +54,24 @@
 		"prettier": "^2.0.5",
 		"sass-loader": "^9.0.2",
 		"style-loader": "^1.2.1",
+		"ts-jest": "^26.1.4",
 		"ts-loader": "^8.0.1",
 		"ts-node": "^8.10.2",
 		"typescript": "^3.9.7"
+	},
+	"jest": {
+		"transform": {
+			"^.+\\.ts$": "ts-jest"
+		},
+		"testRegex": "\\.test\\.ts$",
+		"moduleFileExtensions": [
+			"ts",
+			"js"
+		],
+		"globals": {
+			"ts-jest": {
+				"enableTsDiagnostics": true
+			}
+		}
 	}
 }
