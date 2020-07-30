@@ -4,6 +4,7 @@ import { UserDTO } from '../../shared/dto';
 const UserModel = {
 	findById: async (id: number) => {
 		const data = await db.query(`SELECT * FROM user WHERE id=${id}`);
+		// @ts-ignore
 		return data[0][0];
 	},
 	findByUsername: async (name: string): Promise<UserDTO.RESPONSE_LOGIN> => {
