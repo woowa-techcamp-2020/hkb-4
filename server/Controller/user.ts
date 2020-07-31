@@ -35,7 +35,6 @@ const UserController = {
 		}
 	},
 	postLogin: (req: Request, res: Response, next: NextFunction) => {
-		console.log('qwer', req);
 		if (req.isAuthenticated()) {
 			res
 				.status(httpStatus.OK)
