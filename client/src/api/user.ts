@@ -23,6 +23,16 @@ class UserApi {
 			throw error;
 		}
 	}
+
+	static async getUser() {
+		try {
+			const response = await fetch(`${url}`, { ...Options.GET(), credentials: 'include' });
+			const json = await response.json();
+			return json;
+		} catch (error) {
+			throw error;
+		}
+	}
 }
 
 export default UserApi;

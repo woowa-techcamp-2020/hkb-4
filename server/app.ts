@@ -45,9 +45,9 @@ passportConfig();
 app.get('/', (req: Request, res: Response) => {
 	console.log(req.isAuthenticated());
 	if (req.isAuthenticated()) {
-		console.log(req.user);
+		return res.send({ user: req.user });
 	}
-	res.send('hello world');
+	return res.send({});
 });
 
 app.post('/join', UserController.join);

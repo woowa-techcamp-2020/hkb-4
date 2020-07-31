@@ -24,7 +24,13 @@ async function test() {
 	} catch (err) {
 		console.log(err);
 	}
-	// console.log(a);
+
+	try {
+		const b = await UserApi.getUser();
+		console.log(b);
+	} catch (err) {
+		console.log(err);
+	}
 }
 test();
 
