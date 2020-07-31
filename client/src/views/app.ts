@@ -13,4 +13,19 @@ class App {
 	}
 }
 
+import { UserApi, ItemApi } from '../api';
+async function test() {
+	try {
+		const a = await UserApi.login({
+			name: 'lee',
+			password: '1234',
+		});
+		console.log(a);
+	} catch (err) {
+		console.log(err);
+	}
+	// console.log(a);
+}
+test();
+
 export default App;

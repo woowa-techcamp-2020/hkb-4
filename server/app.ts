@@ -18,7 +18,14 @@ const PORT = process.env.PORT;
 
 app.use(helmet());
 app.use(morgan('dev'));
-app.use(cors());
+app.use(
+	cors({
+		origin: 'http://localhost:8080',
+		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+		allowedHeaders: ['Content-Type'],
+		credentials: true,
+	}),
+);
 app.use(bodyParser.json());
 app.use(cookieParser('asldkjfqoiue0182uewfjoln'));
 

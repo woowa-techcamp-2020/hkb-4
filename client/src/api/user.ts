@@ -13,7 +13,10 @@ class UserApi {
 
 	static async login(body: UserDTO.LOGIN) {
 		try {
-			const response = await fetch(`${url}/login`, Options.POST(body));
+			const response = await fetch(`${url}/login`, {
+				...Options.POST(body),
+				credentials: 'include',
+			});
 			const json = await response.json();
 			return json.result;
 		} catch (error) {
