@@ -20,7 +20,7 @@ const passportConfig = () => {
 	passport.use(
 		new LocalStrategy(
 			{
-				usernameField: 'username',
+				usernameField: 'name',
 				passwordField: 'password',
 				session: true,
 				passReqToCallback: false,
