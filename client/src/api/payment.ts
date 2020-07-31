@@ -3,8 +3,9 @@ import { PaymentDTO } from '../../../shared/dto';
 class PaymentApi {
 	static async create(body: PaymentDTO.CREATE) {
 		try {
-			const result = await fetch(`${url}/payment/create`, Options.POST(body));
-			return result;
+			const response = await fetch(`${url}/payment/create`, Options.POST(body));
+			const json = await response.json();
+			return json.result;
 		} catch (error) {
 			throw error;
 		}
@@ -12,8 +13,9 @@ class PaymentApi {
 
 	static async getItemsById(uid: PaymentDTO.GET) {
 		try {
-			const result = await fetch(`${url}/payment/:${uid}`, Options.GET());
-			return result;
+			const response = await fetch(`${url}/payment/:${uid}`, Options.GET());
+			const json = await response.json();
+			return json.result;
 		} catch (error) {
 			throw error;
 		}
@@ -21,8 +23,9 @@ class PaymentApi {
 
 	static async delete(uid: PaymentDTO.DELETE) {
 		try {
-			const result = await fetch(`${url}/payment/delete/:${uid}`, Options.PATCH({}));
-			return result;
+			const response = await fetch(`${url}/payment/delete/:${uid}`, Options.PATCH({}));
+			const json = await response.json();
+			return json.result;
 		} catch (error) {
 			throw error;
 		}

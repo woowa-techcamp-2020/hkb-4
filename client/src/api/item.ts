@@ -3,8 +3,9 @@ import { ItemDTO } from '../../../shared/dto';
 class ItemApi {
 	static async create(body: ItemDTO.CREATE) {
 		try {
-			const result = await fetch(`${url}/item/create`, Options.POST(body));
-			return result;
+			const response = await fetch(`${url}/item/create`, Options.POST(body));
+			const json = await response.json();
+			return json.result;
 		} catch (error) {
 			throw error;
 		}
@@ -12,17 +13,19 @@ class ItemApi {
 
 	static async update(body: ItemDTO.UPDATE) {
 		try {
-			const result = await fetch(`${url}/item/update`, Options.PATCH(body));
-			return result;
+			const response = await fetch(`${url}/item/update`, Options.PATCH(body));
+			const json = await response.json();
+			return json.result;
 		} catch (error) {
 			throw error;
 		}
 	}
 
-	static async getItemsById(uid: ItemDTO.GET) {
+	static async getItemsById(uid: ItemDTO.GET, date: string) {
 		try {
-			const result = await fetch(`${url}/item/:${uid}`, Options.GET());
-			return result;
+			const response = await fetch(`${url}/item/${uid}/${date}`, Options.GET());
+			const json = await response.json();
+			return json.result;
 		} catch (error) {
 			throw error;
 		}
@@ -30,8 +33,9 @@ class ItemApi {
 
 	static async delete(uid: ItemDTO.DELETE) {
 		try {
-			const result = await fetch(`${url}/item/delete/:${uid}`, Options.PATCH({}));
-			return result;
+			const response = await fetch(`${url}/item/delete/${uid}`, Options.PATCH({}));
+			const json = await response.json();
+			return json.result;
 		} catch (error) {
 			throw error;
 		}

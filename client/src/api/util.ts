@@ -14,7 +14,7 @@ export class Options {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body,
+			body: JSON.stringify(body),
 		};
 	}
 	static PATCH(body: JSON | any) {
@@ -23,7 +23,7 @@ export class Options {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body,
+			body: JSON.stringify(body),
 		};
 	}
 	static PUT(body: JSON | any) {
@@ -32,10 +32,10 @@ export class Options {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body,
+			body: JSON.stringify(body),
 		};
 	}
 }
 
 // @ts-ignore
-export const url = '127.0.0.1:3000';
+export const url = 'http://127.0.0.1:3000';
