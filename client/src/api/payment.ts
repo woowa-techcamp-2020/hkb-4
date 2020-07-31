@@ -13,7 +13,7 @@ class PaymentApi {
 
 	static async getItemsById(uid: PaymentDTO.GET) {
 		try {
-			const response = await fetch(`${url}/payment/:${uid}`, Options.GET());
+			const response = await fetch(`${url}/payment/${uid}`, Options.GET());
 			const json = await response.json();
 			return json.result;
 		} catch (error) {
@@ -23,7 +23,7 @@ class PaymentApi {
 
 	static async delete(uid: PaymentDTO.DELETE) {
 		try {
-			const response = await fetch(`${url}/payment/delete/:${uid}`, Options.PATCH({}));
+			const response = await fetch(`${url}/payment/delete/${uid}`, Options.PATCH({}));
 			const json = await response.json();
 			return json.result;
 		} catch (error) {
