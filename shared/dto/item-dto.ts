@@ -8,7 +8,7 @@ type SPENDING = '식비' | '생활' | '쇼핑/뷰티' | '교통' | '의료/건�
 
 interface CREATE {
 	uid_item: number;
-	pid_item: string;
+	pid_item: number;
 	type: ItemType;
 	category: INCOME | SPENDING;
 	amount: number;
@@ -18,17 +18,18 @@ interface CREATE {
 
 interface UPDATE {
 	id: number;
-	pid_item: string;
+	pid_item: number;
 	type: ItemType;
 	category: INCOME | SPENDING;
 	amount: number;
+	date: string;
 	description: string;
 }
 
 interface Item {
 	id: number;
 	uid_item: number;
-	pid_item: string;
+	pid_item: number;
 	type: ItemType;
 	category: INCOME | SPENDING;
 	amount: number;
