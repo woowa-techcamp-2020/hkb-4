@@ -7,7 +7,7 @@ import { nextTick } from 'process';
 const UserController = {
 	join: async (req: Request, res: Response) => {
 		const {
-			body: { username: name, password, password2 },
+			body: { name, password, password2 },
 		} = req;
 		if (password !== password2) {
 			res
