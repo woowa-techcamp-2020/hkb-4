@@ -6,6 +6,7 @@
 	"scripts": {
 		"test": "jest",
 		"dev:server": "nodemon --exec ts-node server/app.ts",
+		"dev:client": "webpack-dev-server --open --config webpack.dev.js",
 		"build": "webpack --config webpack.dev.js",
 		"build:watch": "webpack --config webpack.dev.js --watch"
 	},
@@ -63,7 +64,8 @@
 		"ts-jest": "^26.1.4",
 		"ts-loader": "^8.0.1",
 		"ts-node": "^8.10.2",
-		"typescript": "^3.9.7"
+		"typescript": "^3.9.7",
+		"webpack-dev-server": "^3.11.0"
 	},
 	"jest": {
 		"transform": {
