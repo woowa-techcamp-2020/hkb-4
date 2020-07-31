@@ -15,8 +15,8 @@ class hkbModel<T> {
 		this.observer = observer;
 	}
 
-	async getAll(id: ItemDTO.GET) {
-		const result = await ItemApi.getItemsById(id);
+	async getAll(id: ItemDTO.GET, date: string) {
+		const result = await ItemApi.getItemsById(id, date);
 		// TODO : result type
 		// @ts-ignore
 		this.rawData = result;
