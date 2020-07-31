@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -17,8 +18,16 @@ const PORT = process.env.PORT;
 
 app.use(helmet());
 app.use(morgan('dev'));
-app.use(cors());
+app.use(
+	cors({
+		origin: 'http://localhost:8080',
+		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+		allowedHeaders: ['Content-Type'],
+		credentials: true,
+	}),
+);
 app.use(bodyParser.json());
+app.use(cookieParser('asldkjfqoiue0182uewfjoln'));
 
 app.use(
 	session({
@@ -36,9 +45,9 @@ passportConfig();
 app.get('/', (req: Request, res: Response) => {
 	console.log(req.isAuthenticated());
 	if (req.isAuthenticated()) {
-		console.log(req.user);
+		return res.send({ user: req.user });
 	}
-	res.send('hello world');
+	return res.send({});
 });
 
 app.post('/join', UserController.join);
