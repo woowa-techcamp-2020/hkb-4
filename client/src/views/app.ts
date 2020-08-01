@@ -34,13 +34,13 @@ async function test() {
 		console.log(err);
 	}
 
-	try {
-		const b = await UserApi.getUser();
-		console.log(b);
-	} catch (err) {
-		console.log(err);
-	}
+	// try {
+	// 	const b = await UserApi.getUser();
+	// 	console.log(b);
+	// } catch (err) {
+	// 	console.log(err);
+	// }
 }
-test();
+// test();
 
 export default App;
