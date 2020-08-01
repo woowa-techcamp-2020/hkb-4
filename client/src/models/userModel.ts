@@ -16,14 +16,18 @@ class UserModel {
 	}
 
 	async checkUser() {
-		const { user } = await UserApi.getUser();
-		console.log(user);
+		const user = await UserApi.getUser();
 		this.setUser(user);
 	}
 
-	async fetchLogin(user) {
-		const result = await UserApi.login(user);
-		this.setUser(result);
+	async fetchLogin(userData) {
+		const user = await UserApi.login(userData);
+		this.setUser(user);
+	}
+
+	async fetchLogout() {
+		const user = await UserApi.logout();
+		this.setUser(user);
 	}
 }
 

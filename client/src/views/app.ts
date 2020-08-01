@@ -23,11 +23,11 @@ class App {
 		this.userController.initUser();
 	}
 
-	render(user: any) {
+	render(user: object) {
 		if (this.app.childElementCount === 2) {
 			this.app.removeChild(this.app.lastChild);
 		}
-		if (user) {
+		if (Object.keys(user).length) {
 			const appContent = document.createElement('div');
 			appContent.setAttribute('id', 'app-content');
 			this.app.appendChild(document.createElement('div'));

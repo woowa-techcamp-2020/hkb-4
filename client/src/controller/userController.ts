@@ -30,6 +30,17 @@ class UserController {
 		});
 		this.model.fetchLogin(userInputData);
 	}
+
+	headerHandler(e) {
+		e.stopPropagation();
+		if (e.target.classList.contains('logout-button')) {
+			this.logoutHandler();
+		}
+	}
+
+	logoutHandler() {
+		this.model.fetchLogout();
+	}
 }
 
 export default new UserController();
