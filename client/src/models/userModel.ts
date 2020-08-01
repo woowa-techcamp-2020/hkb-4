@@ -10,10 +10,21 @@ class UserModel {
 		this.observer = observer;
 	}
 
+	setUser(user) {
+		if (user !== this.user) {
+			this.user = user;
+			this.observer.notify('userChanged', this.user);
+		}
+	}
+
 	async checkUser() {
 		const result = await UserApi.getUser();
-		this.user = result;
-		this.observer.notify('userChanged', this.user);
+		this.setUser(result);
+	}
+
+	async fetchLogin(user) {
+		const result = await UserApi.login(user);
+		this.setUser(result);
 	}
 }
 
