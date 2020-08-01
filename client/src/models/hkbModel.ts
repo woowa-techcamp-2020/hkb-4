@@ -1,13 +1,14 @@
 import { ItemApi } from '../api';
 import { ItemDTO } from '../../../shared/dto';
+import observer from '../models/observer';
 
-class hkbModel<T> {
+class HkbModel {
 	private rawData!: Array<ItemDTO.Item>;
 	private monthlyData!: { income: number; spending: number };
 	private dailyData!: Array<{ data: number; income: number; spending: number }>;
 	private categoryData!: Array<{ category: ItemDTO.SPENDING; amount: number }>;
-	private observer!: T;
-	constructor(observer: T) {
+	private observer!: any;
+	constructor() {
 		this.rawData = [];
 		this.monthlyData = { income: 0, spending: 0 };
 		this.dailyData = [];
@@ -25,4 +26,4 @@ class hkbModel<T> {
 	}
 }
 
-export default hkbModel;
+export default new HkbModel();
