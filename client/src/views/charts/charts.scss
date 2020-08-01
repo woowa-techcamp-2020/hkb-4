@@ -1,0 +1,32 @@
+@import '../../style/variable.scss';
+
+charts-tab {
+	.pie-chart-container {
+		width: 100%;
+		height: 400px;
+		padding: 60px 0;
+		box-sizing: border-box;
+	}
+	svg {
+		width: 280px;
+		height: 280px;
+	}
+	.pie-chart {
+		display: inline-block;
+		position: relative;
+		transform: rotate(-90deg);
+		circle {
+			fill: transparent;
+			transform-origin: center center;
+			stroke-width: 140;
+			transition: all 2s;
+		}
+	}
+	.bar-chart-container {
+		width: 100%;
+		height: 500px;
+		box-shadow: $shadow;
+		background: white;
+		border-radius: 8px;
+	}
+}
