@@ -53,6 +53,7 @@ app.get('/', (req: Request, res: Response) => {
 app.post('/join', UserController.join);
 app.post('/login', passport.authenticate('local'), UserController.postLogin);
 app.get('/logout', UserController.logout);
+app.get('/getUser', UserController.getUser);
 
 app.get('/payment/:uid', PaymentController.getPaymentsById);
 app.post('/payment/create', PaymentController.create);
