@@ -9,6 +9,12 @@ class UserModel {
 		this.user = {};
 		this.observer = observer;
 	}
+
+	async checkUser() {
+		const result = await UserApi.getUser();
+		this.user = result;
+		this.observer.notify('userChanged', this.user);
+	}
 }
 
 export default new UserModel();

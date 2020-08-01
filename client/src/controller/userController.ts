@@ -5,6 +5,10 @@ class UserController {
 	constructor() {
 		this.model = model.UserModel;
 	}
+
+	initUser() {
+		this.model.checkUser();
+	}
 }
 
 export default new UserController();

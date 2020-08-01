@@ -19,6 +19,7 @@ class Observer {
 			context,
 			func,
 		});
+		console.log(`somebody subscribed for '${name}' event`);
 		console.log(this.list);
 	}
 
@@ -31,6 +32,7 @@ class Observer {
 
 	// TODO
 	notify(name: string, data?: any) {
+		console.log(`observer is notifying for '${name}' evnet`);
 		this.list[name].forEach(ele => ele.func(data));
 	}
 }
