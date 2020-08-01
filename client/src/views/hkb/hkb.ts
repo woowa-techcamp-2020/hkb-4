@@ -1,16 +1,15 @@
-import NavigationBar from '../navigation';
+// import NavigationBar from '../navigation';
 
 class Hkb extends HTMLElement {
-	private navigation!: HTMLElement;
-
+	// private navigation!: HTMLElement;
 	constructor() {
 		super();
-		this.navigation = new NavigationBar();
+		// this.navigation = new NavigationBar();
 	}
 
 	connectedCallback() {
 		this.render();
-		this.appendChild(this.navigation);
+		// this.appendChild(this.navigation);
 	}
 
 	render() {}

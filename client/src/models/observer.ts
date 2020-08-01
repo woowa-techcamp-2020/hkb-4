@@ -19,6 +19,7 @@ class Observer {
 			context,
 			func,
 		});
+		console.log(this.list);
 	}
 
 	unsubscribe(name: string, context: any, func: Function) {
@@ -34,4 +35,4 @@ class Observer {
 	}
 }
 
-export default Observer;
+export default new Observer();
