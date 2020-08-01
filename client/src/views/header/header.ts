@@ -1,17 +1,22 @@
+import observer from '../../models/observer';
+
 class Header extends HTMLElement {
+	private observer!: any;
 	constructor() {
 		super();
+		this.observer = observer;
 	}
 
 	connectedCallback() {
-		this.render();
+		this.observer.subscribe('userChanged', this, this.render.bind(this));
 	}
 
-	render() {
+	render(user) {
 		this.innerHTML = `
       <div class="flex-1"></div>
       <div class="header">가계부</div>
-      <span class="flex-1 user-name">@헤더가 흰색 아래 부분에 배경색있음좋겠ㅇ염</span>
+			<span class="flex-1 user-name">${user ? user.name : ''}</span>
+			${user ? '<span>logout</span>' : ''}
     `;
 	}
 }

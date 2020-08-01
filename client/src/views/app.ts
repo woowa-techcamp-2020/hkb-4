@@ -24,11 +24,10 @@ class App {
 	}
 
 	render(user: any) {
-		console.log(this.app.childElementCount);
 		if (this.app.childElementCount === 2) {
 			this.app.removeChild(this.app.lastChild);
 		}
-		if (Object.keys(user).length) {
+		if (user) {
 			const appContent = document.createElement('div');
 			appContent.setAttribute('id', 'app-content');
 			this.app.appendChild(document.createElement('div'));

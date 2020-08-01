@@ -11,15 +11,14 @@ class UserModel {
 	}
 
 	setUser(user) {
-		if (user !== this.user) {
-			this.user = user;
-			this.observer.notify('userChanged', this.user);
-		}
+		this.user = user;
+		this.observer.notify('userChanged', this.user);
 	}
 
 	async checkUser() {
-		const result = await UserApi.getUser();
-		this.setUser(result);
+		const { user } = await UserApi.getUser();
+		console.log(user);
+		this.setUser(user);
 	}
 
 	async fetchLogin(user) {
