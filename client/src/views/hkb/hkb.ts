@@ -1,19 +1,17 @@
-import NavigationBar from '../navigation';
+import Ledger from '../ledger';
 
 class Hkb extends HTMLElement {
-	private navigation!: HTMLElement;
-
 	constructor() {
 		super();
-		this.navigation = new NavigationBar();
 	}
 
 	connectedCallback() {
 		this.render();
-		this.appendChild(this.navigation);
 	}
 
-	render() {}
+	render() {
+		this.appendChild(new Ledger());
+	}
 }
 
 customElements.define('hkb-page', Hkb);
