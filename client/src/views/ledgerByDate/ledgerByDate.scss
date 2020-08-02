@@ -1,0 +1,27 @@
+// TODO: custom elements 태그로 스타일 x
+.date {
+	width: 500px;
+	border-top: 1px solid gray;
+	.date__header {
+		width: 500px;
+		display: flex;
+		.date__date {
+			flex: 3;
+			text-align: left;
+		}
+		.date__income {
+			flex: 1;
+			text-align: right;
+			color: mediumseagreen;
+		}
+		.date__spending {
+			flex: 1;
+			text-align: right;
+			color: dodgerblue;
+		}
+	}
+}
+
+.hide {
+	display: none;
+}

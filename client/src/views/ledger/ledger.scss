@@ -1,3 +1,4 @@
+// TODO: custom elements 에 스타일 x
 hkb-page {
 	width: 100%;
 }
@@ -72,6 +73,9 @@ hkb-ledger {
 				display: flex;
 				justify-content: center;
 			}
+		}
+		&-items {
+			margin: 0 auto;
 		}
 	}
 }
