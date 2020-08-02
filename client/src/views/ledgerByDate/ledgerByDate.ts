@@ -22,6 +22,7 @@ class LedgerByDate extends HTMLElement {
 	}
 
 	render() {
+		if (!(this.dIncome || this.dSpending)) return;
 		this.innerHTML = `
 			<div class="date">
 				<div class="date__header">
@@ -32,13 +33,6 @@ class LedgerByDate extends HTMLElement {
 				</div>
 			</div>
 		`;
-		// TODO: custom element에 클래스로 스타일링 주는 게 안되는 상태
-		if (!(this.dIncome || this.dSpending)) {
-			const dateGroup = this.querySelector('.date');
-			if (dateGroup) {
-				dateGroup.classList.add('hide');
-			}
-		}
 	}
 }
 
