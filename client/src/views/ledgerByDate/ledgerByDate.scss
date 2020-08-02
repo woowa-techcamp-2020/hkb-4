@@ -5,6 +5,8 @@
 	.date__header {
 		width: 500px;
 		display: flex;
+		border-bottom: 1px solid gray;
+		padding: 5px;
 		.date__date {
 			flex: 3;
 			text-align: left;

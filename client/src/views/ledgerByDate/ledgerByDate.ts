@@ -1,3 +1,5 @@
+import LedgerItem from '../ledgerItem';
+
 class LedgerByDate extends HTMLElement {
 	private month!: number;
 	private day!: number;
@@ -33,6 +35,32 @@ class LedgerByDate extends HTMLElement {
 				</div>
 			</div>
 		`;
+
+		const dateGroup = this.querySelector('.date');
+		const mockData = [
+			{
+				id: 1,
+				type: '지출',
+				category: '식비',
+				payment: '현대카드',
+				amount: 20000,
+				description: '맥도날드',
+			},
+			{
+				id: 2,
+				type: '수입',
+				category: '월급',
+				payment: '현대카드',
+				amount: 2500000,
+				description: '월급',
+			},
+		];
+
+		if (dateGroup) {
+			for (let i = 0; i < mockData.length; i++) {
+				dateGroup.appendChild(new LedgerItem(mockData[i]));
+			}
+		}
 	}
 }
 
