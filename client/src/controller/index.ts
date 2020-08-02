@@ -1,3 +1,4 @@
 import UserController from './userController';
+import HkbController from './hkbController';
 
-export default { UserController };
+export default { UserController, HkbController };

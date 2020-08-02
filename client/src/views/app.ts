@@ -30,7 +30,7 @@ class App {
 		if (Object.keys(user).length) {
 			const appContent = document.createElement('div');
 			appContent.setAttribute('id', 'app-content');
-			this.app.appendChild(document.createElement('div'));
+			this.app.appendChild(appContent);
 			appContent.appendChild(new HkbPage());
 		} else {
 			this.app.appendChild(new LoginPage());
