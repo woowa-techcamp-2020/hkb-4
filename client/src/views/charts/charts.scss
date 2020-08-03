@@ -28,5 +28,37 @@ charts-tab {
 		box-shadow: $shadow;
 		background: white;
 		border-radius: 8px;
+		padding: 16px;
+		box-sizing: border-box;
+		.bar-chart-content {
+			width: 100%;
+			padding: 16px;
+			box-sizing: border-box;
+			display: flex;
+			.title {
+				flex: 1 1 0;
+				font-size: 16px;
+				color: #333;
+			}
+			.per {
+				flex: 1 1 0;
+				font-size: 16px;
+				color: #333;
+			}
+			.chart {
+				flex: 8 1 0;
+				.chart-percentage {
+					height: 100%;
+					width: 0%;
+					transition: width 0.2s;
+				}
+			}
+			.spending {
+				flex: 2 1 0;
+				text-align: right;
+				font-size: 16px;
+				color: #333;
+			}
+		}
 	}
 }
