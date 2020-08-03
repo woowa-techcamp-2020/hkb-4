@@ -1,46 +1,41 @@
 import Header from './header';
+import observer from '../models/observer';
+import controller from '../controller';
 import LoginPage from './login';
 import HkbPage from './hkb';
 
 class App {
 	private app!: HTMLElement;
-	private appContent!: HTMLElement;
+	private observer!: any;
+	private userController!: any;
+	// private appContent!: HTMLElement;
 	constructor(target: HTMLElement) {
 		this.app = target;
-		const header = new Header();
-		this.app.appendChild(header);
-		this.appContent = document.createElement('div');
-		this.appContent.setAttribute('id', 'app-content');
-		this.app.appendChild(this.appContent);
+		this.observer = observer;
+		this.userController = controller.UserController;
 
-		//
-		// const loginPage = new LoginPage();
-		// this.app.appendChild(loginPage);
+		this.init();
+	}
 
-		const hkbPage = new HkbPage();
-		this.appContent.appendChild(hkbPage);
+	init() {
+		this.app.appendChild(new Header());
+		this.observer.subscribe('userChanged', this, this.render.bind(this));
+		this.userController.initUser();
+	}
+
+	render(user: object) {
+		if (this.app.childElementCount === 2) {
+			this.app.removeChild(this.app.lastChild);
+		}
+		if (Object.keys(user).length) {
+			const appContent = document.createElement('div');
+			appContent.setAttribute('id', 'app-content');
+			this.app.appendChild(appContent);
+			appContent.appendChild(new HkbPage());
+		} else {
+			this.app.appendChild(new LoginPage());
+		}
 	}
 }
-
-// import { UserApi, ItemApi } from '../api';
-// async function test() {
-// 	try {
-// 		const a = await UserApi.login({
-// 			name: 'lee',
-// 			password: '1234',
-// 		});
-// 		console.log(a);
-// 	} catch (err) {
-// 		console.log(err);
-// 	}
-
-// 	try {
-// 		const b = await UserApi.getUser();
-// 		console.log(b);
-// 	} catch (err) {
-// 		console.log(err);
-// 	}
-// }
-// test();
 
 export default App;

@@ -1,0 +1,50 @@
+hkb-ledger-item {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 8px 10px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.05);
+	background-color: white;
+	margin-bottom: 5px;
+	transition: background-color 0.1s ease-in-out;
+	&:hover {
+		background-color: rgb(248, 248, 248);
+	}
+	.item__category {
+		flex: 1;
+		text-align: left;
+		span {
+			padding: 2px 4px;
+			border-radius: 8px;
+			color: white;
+			&.spending {
+				border: 1px solid dodgerblue;
+				color: dodgerblue;
+			}
+			&.income {
+				border: 1px solid mediumseagreen;
+				color: mediumseagreen;
+			}
+		}
+	}
+	.item__description {
+		flex: 2.5;
+		text-align: left;
+		padding-left: 5px;
+	}
+	.item__payment {
+		flex: 1.2;
+		text-align: center;
+	}
+	.item__amount {
+		flex: 1.2;
+		text-align: right;
+		&.spending {
+			color: dodgerblue;
+		}
+		&.income {
+			color: mediumseagreen;
+		}
+	}
+}
