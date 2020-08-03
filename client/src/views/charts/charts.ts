@@ -55,38 +55,53 @@ class ChartsTab extends HTMLElement {
 			{ rotate: 288, percentage: 10 },
 			{ rotate: 324, percentage: 10 },
 		];
-		let pies = '';
 
 		for (let i = 0; i < 6; i++) {
-			pies += this.pie(
-				`s${i}`,
-				radius,
-				cx,
-				cy,
-				t[i].rotate,
-				t[i].percentage,
-				total,
-				2 * Math.PI * radius,
-				colors[i],
+			pieChartContainer.appendChild(
+				this.test(
+					radius.toString(),
+					cx.toString(),
+					cy.toString(),
+					colors[i],
+					t[i].percentage / total,
+					2 * Math.PI * radius,
+					t[i].rotate,
+				),
 			);
 		}
-		pieChartContainer.innerHTML = pies;
 	}
 
-	pie(
-		className: string,
-		r: number,
-		cx: number,
-		cy: number,
-		rotate: number,
-		percentage: number,
-		total: number,
-		strokeDash2: number,
+	test(
+		r: string,
+		x: string,
+		y: string,
 		color: string,
+		width: number,
+		dash2: number,
+		rotate: number,
 	) {
-		return ` <circle class='${className}' r='${r}' cx='${cx}' cy='${cy}' style='transform: rotate(${rotate}deg); stroke: ${color}; stroke-dasharray: ${
-			(percentage / total) * strokeDash2
-		} ${strokeDash2};'></circle>`;
+		var svgns = 'http://www.w3.org/2000/svg';
+		var circle = document.createElementNS(svgns, 'circle');
+		circle.setAttributeNS(null, 'cx', x);
+		circle.setAttributeNS(null, 'cy', y);
+		circle.setAttributeNS(null, 'r', r);
+		circle.setAttributeNS(
+			null,
+			'style',
+			`stroke: ${color}; stroke-dasharray: ${
+				width * dash2
+			} ${dash2}; transform: rotate(${rotate}deg);`,
+		);
+		circle.animate(
+			[
+				{ transform: 'rotate(0deg)', strokeDasharray: `${1} ${dash2}` },
+				{ transform: `rotate(${rotate}deg)`, strokeDasharray: `${width * dash2} ${dash2}` },
+			],
+			{
+				duration: 800,
+			},
+		);
+		return circle;
 	}
 
 	renderBarChart() {

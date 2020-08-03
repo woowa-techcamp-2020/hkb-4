@@ -19,7 +19,6 @@ charts-tab {
 			fill: transparent;
 			transform-origin: center center;
 			stroke-width: 140;
-			transition: all 2s;
 		}
 	}
 	.bar-chart-container {
@@ -48,7 +47,7 @@ charts-tab {
 				flex: 8 1 0;
 				.percentage-wrapper {
 					height: 100%;
-					animation: barPercentage 0.4s linear;
+					animation: barPercentage 0.8s linear;
 				}
 				.chart-percentage {
 					height: 100%;
