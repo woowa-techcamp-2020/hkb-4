@@ -1,11 +1,10 @@
 hkb-ledger-by-date {
 	display: block;
 	width: 100%;
-	border-top: 1px solid gray;
+	margin-bottom: 10px;
 	.date__header {
 		width: 100%;
 		display: flex;
-		border-bottom: 1px solid gray;
 		padding: 5px;
 		.date__date {
 			flex: 3;

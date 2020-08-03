@@ -2,21 +2,29 @@ hkb-ledger-item {
 	width: 100%;
 	display: flex;
 	align-items: center;
-	padding: 5px;
-	border-bottom: 1px solid rgb(200, 200, 200);
+	padding: 8px 10px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.05);
+	background-color: white;
+	margin-bottom: 5px;
+	transition: background-color 0.1s ease-in-out;
+	&:hover {
+		background-color: rgb(248, 248, 248);
+	}
 	.item__category {
 		flex: 1;
 		text-align: left;
 		span {
-			background-color: black;
 			padding: 2px 4px;
 			border-radius: 8px;
 			color: white;
 			&.spending {
-				background-color: dodgerblue;
+				border: 1px solid dodgerblue;
+				color: dodgerblue;
 			}
 			&.income {
-				background-color: mediumseagreen;
+				border: 1px solid mediumseagreen;
+				color: mediumseagreen;
 			}
 		}
 	}
