@@ -24,7 +24,6 @@ charts-tab {
 	}
 	.bar-chart-container {
 		width: 100%;
-		height: 500px;
 		box-shadow: $shadow;
 		background: white;
 		border-radius: 8px;
@@ -47,10 +46,12 @@ charts-tab {
 			}
 			.chart {
 				flex: 8 1 0;
+				.percentage-wrapper {
+					height: 100%;
+					animation: barPercentage 0.4s linear;
+				}
 				.chart-percentage {
 					height: 100%;
-					width: 0%;
-					transition: width 0.2s;
 				}
 			}
 			.spending {
@@ -60,5 +61,14 @@ charts-tab {
 				color: #333;
 			}
 		}
+	}
+}
+
+@keyframes barPercentage {
+	from {
+		width: 0%;
+	}
+	to {
+		width: 100%;
 	}
 }

@@ -1,4 +1,6 @@
-const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1'];
+import { numberToString } from '../../util/common';
+
+const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1', '#9F71C1'];
 const spending = [
 	{
 		name: '식비',
@@ -109,26 +111,23 @@ class ChartsTab extends HTMLElement {
 	}
 
 	initBar(value: { name: string; spend: number }, total: number, color: string): string {
-		// 	return `<div class="bar-chart-content" id="bar-${value.name}">
-		//   <div class="title">${value.name}</div>
-		//   <div class="per">${Math.floor(value.spend / total)}%</div>
-		//   <div class="chart">
-		//     <div class="chart-percentage" style="width: ${Math.floor(
-		// 			value.spend / total,
-		// 		)}%; background: ${color}"></div>
-		//   </div>
-		//   <div class="spending">${value.spend}원</div>
-		// </div>`;
+		const max = 100000;
 		return `<div class="bar-chart-content" id="bar-${value.name}">
-    <div class="title">${value.name}</div>
-    <div class="per">${Math.floor((value.spend * 100) / total)}%</div>
-    <div class="chart">
-      <div class="chart-percentage" background: ${color}"></div>
-    </div>
-    <div class="spending">${value.spend}원</div>
-  </div>`;
+		  <div class="title">${value.name}</div>
+		  <div class="per">${Math.floor((value.spend * 100) / total)}%</div>
+      <div class="chart">
+        <div class="percentage-wrapper">
+          <div class="chart-percentage" style="width: ${
+						(100 * value.spend) / max
+					}%;background: ${color}"></div>
+        </div>
+		  </div>
+		  <div class="spending">${numberToString(value.spend)}원</div>
+		</div>`;
 	}
-
+	/**
+	 *
+	 */
 	render() {
 		this.innerHTML = `
     <center class="pie-chart-container">
