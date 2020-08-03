@@ -16,6 +16,7 @@ class App {
 
 		this.init();
 	}
+
 	init() {
 		this.app.appendChild(new Header());
 		this.observer.subscribe('userChanged', this, this.render.bind(this));

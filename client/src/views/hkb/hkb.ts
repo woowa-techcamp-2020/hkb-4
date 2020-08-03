@@ -3,7 +3,8 @@ import controller from '../../controller';
 import NavigationBar from '../navigation';
 import Ledger from '../ledger';
 import Calendar from '../calendar';
-
+import ChartsTab from '../charts';
+    
 class Hkb extends HTMLElement {
 	private observer!: any;
 	private hkbController!: any;
@@ -33,6 +34,8 @@ class Hkb extends HTMLElement {
 				this.appendChild(new Ledger());
 			case 'calender':
 				this.appendChild(new Calendar());
+      case 'charts':
+        this.appendChild(new ChartsTab());
 		}
 	}
 }
