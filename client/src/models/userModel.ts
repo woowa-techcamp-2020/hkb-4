@@ -3,14 +3,14 @@ import { UserDTO } from '../../../shared/dto';
 import observer from '../models/observer';
 
 class UserModel {
-	private user!: object;
+	private user!: UserDTO.RESPONSE_LOGIN | {};
 	private observer!: any;
 	constructor() {
 		this.user = {};
 		this.observer = observer;
 	}
 
-	setUser(user) {
+	setUser(user: UserDTO.RESPONSE_LOGIN) {
 		this.user = user;
 		this.observer.notify('userChanged', this.user);
 	}
