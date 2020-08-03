@@ -80,8 +80,8 @@ class ChartsTab extends HTMLElement {
 		dash2: number,
 		rotate: number,
 	) {
-		var svgns = 'http://www.w3.org/2000/svg';
-		var circle = document.createElementNS(svgns, 'circle');
+		const svgns = 'http://www.w3.org/2000/svg';
+		const circle = document.createElementNS(svgns, 'circle');
 		circle.setAttributeNS(null, 'cx', x);
 		circle.setAttributeNS(null, 'cy', y);
 		circle.setAttributeNS(null, 'r', r);
