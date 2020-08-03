@@ -1,22 +1,21 @@
-// import NavigationBar from '../navigation';
+import Ledger from '../ledger';
 import Calendar from '../calendar';
 
 class Hkb extends HTMLElement {
-	private navigation!: HTMLElement;
 	private calendar!: HTMLElement;
 	constructor() {
 		super();
-		// this.navigation = new NavigationBar();
 		this.calendar = new Calendar();
 	}
 
 	connectedCallback() {
 		this.render();
-		// this.appendChild(this.navigation);
 		this.appendChild(this.calendar);
 	}
 
-	render() {}
+	render() {
+		this.appendChild(new Ledger());
+	}
 }
 
 customElements.define('hkb-page', Hkb);

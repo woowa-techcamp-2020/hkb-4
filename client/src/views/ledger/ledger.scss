@@ -1,0 +1,78 @@
+hkb-ledger {
+	display: block;
+	width: 100%;
+	.container {
+		width: 100%;
+		margin: 10px auto;
+		&-input {
+			padding: 10px;
+		}
+		.row {
+			display: flex;
+			align-items: center;
+			margin-bottom: 8px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+			.group {
+				display: flex;
+				align-items: center;
+				flex: 1;
+				> span {
+					padding: 0 5px;
+				}
+			}
+		}
+		.button {
+			border: 1px solid dodgerblue;
+			background-color: white;
+			padding: 2px 5px;
+			border-radius: 8px;
+			color: dodgerblue;
+			text-align: center;
+			&:hover {
+				filter: brightness(0.9);
+				cursor: pointer;
+			}
+			&:not(:last-of-type) {
+				margin-right: 5px;
+			}
+			&--active {
+				background-color: dodgerblue;
+				color: white;
+			}
+			&--large {
+				flex: 1;
+			}
+		}
+		input {
+			&:hover {
+				cursor: pointer;
+			}
+			&[type='text'],
+			&[type='date'] {
+				outline: none;
+				background-color: transparent;
+				border: none;
+				border-bottom: 1px solid black;
+				width: 75%;
+			}
+		}
+		select {
+			width: 50%;
+			min-width: auto;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		&-monthly {
+			.group {
+				display: flex;
+				justify-content: center;
+			}
+		}
+		&-items {
+			margin: 0 auto;
+		}
+	}
+}
