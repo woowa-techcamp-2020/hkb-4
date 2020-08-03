@@ -24,19 +24,20 @@ class LedgerByDate extends HTMLElement {
 	}
 
 	render() {
-		if (!(this.dIncome || this.dSpending)) return;
+		this.classList.add('date');
+		if (!(this.dIncome || this.dSpending)) {
+			this.classList.add('hide');
+			return;
+		}
 		this.innerHTML = `
-			<div class="date">
-				<div class="date__header">
-					<span class="date__date">${this.month}월 ${this.day}일</span>
-					<span class="date__income">
-					+${this.dIncome}원</span>
-					<span class="date__spending">-${this.dSpending}원</span>
-				</div>
+			<div class="date__header">
+				<span class="date__date">${this.month}월 ${this.day}일</span>
+				<span class="date__income">
+				+${this.dIncome}원</span>
+				<span class="date__spending">-${this.dSpending}원</span>
 			</div>
 		`;
 
-		const dateGroup = this.querySelector('.date');
 		const mockData = [
 			{
 				id: 1,
@@ -56,11 +57,7 @@ class LedgerByDate extends HTMLElement {
 			},
 		];
 
-		if (dateGroup) {
-			for (let i = 0; i < mockData.length; i++) {
-				dateGroup.appendChild(new LedgerItem(mockData[i]));
-			}
-		}
+		mockData.forEach(item => this.appendChild(new LedgerItem(item)));
 	}
 }
 

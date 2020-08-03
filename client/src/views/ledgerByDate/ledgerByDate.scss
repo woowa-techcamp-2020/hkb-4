@@ -1,9 +1,9 @@
-// TODO: custom elements 태그로 스타일 x
-.date {
-	width: 500px;
+hkb-ledger-by-date {
+	display: block;
+	width: 100%;
 	border-top: 1px solid gray;
 	.date__header {
-		width: 500px;
+		width: 100%;
 		display: flex;
 		border-bottom: 1px solid gray;
 		padding: 5px;
@@ -22,4 +22,8 @@
 			color: dodgerblue;
 		}
 	}
+}
+
+.hide {
+	display: none;
 }

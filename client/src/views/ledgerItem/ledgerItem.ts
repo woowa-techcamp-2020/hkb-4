@@ -18,20 +18,18 @@ class LedgerItem extends HTMLElement {
 
 	render() {
 		this.innerHTML = `
-      <div class="date__item">
-				<div class="item__category">
-					<span class="${this.type === '지출' ? 'spending' : 'income'}">
-						${this.category}</span>
-				</div>
-        <div class="item__description">${this.description}</div>
-        <div class="item__payment">${this.payment}</div>
-				<div class="item__amount ${this.type === '지출' ? 'spending' : 'income'}">
-					${this.type === '지출' ? '-' : '+'} ${this.amount}원
-				</div>
-      </div>
+			<div class="item__category">
+				<span class="${this.type === '지출' ? 'spending' : 'income'}">
+					${this.category}</span>
+			</div>
+			<div class="item__description">${this.description}</div>
+			<div class="item__payment">${this.payment}</div>
+			<div class="item__amount ${this.type === '지출' ? 'spending' : 'income'}">
+				${this.type === '지출' ? '-' : '+'} ${this.amount}원
+			</div>
     `;
 	}
 }
 
-customElements.define('hbk-ledger-item', LedgerItem);
-export default customElements.get('hbk-ledger-item');
+customElements.define('hkb-ledger-item', LedgerItem);
+export default customElements.get('hkb-ledger-item');

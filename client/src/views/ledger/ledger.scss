@@ -1,9 +1,6 @@
-// TODO: custom elements 에 스타일 x
-hkb-page {
-	width: 100%;
-}
 hkb-ledger {
-	width: 500px;
+	display: block;
+	width: 100%;
 	.container {
 		width: 100%;
 		margin: 10px auto;
