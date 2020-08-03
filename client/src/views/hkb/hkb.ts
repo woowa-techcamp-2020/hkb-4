@@ -1,20 +1,33 @@
+import observer from '../../models/observer';
+import controller from '../../controller';
+import NavigationBar from '../navigation';
 import Ledger from '../ledger';
 import Calendar from '../calendar';
 
 class Hkb extends HTMLElement {
-	private calendar!: HTMLElement;
+	private observer!: any;
+	private hkbController!: any;
 	constructor() {
 		super();
-		this.calendar = new Calendar();
+		this.observer = observer;
+		this.hkbController = controller.HkbController;
 	}
 
 	connectedCallback() {
-		this.render();
-		this.appendChild(this.calendar);
+		this.appendChild(new NavigationBar());
+		this.observer.subscribe('dateChanged', this, this.render.bind(this));
+		this.hkbController.initDate();
 	}
 
-	render() {
-		this.appendChild(new Ledger());
+	reset() {
+		const last = this.lastElementChild;
+		if (last && last.tagName !== 'NAVIGATION-BAR') {
+			this.removeChild(last);
+		}
+	}
+
+	render(data: any) {
+		console.log('rendering page');
 	}
 }
 

@@ -49,6 +49,15 @@ const UserController = {
 		req.logout();
 		res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'logged out', {}));
 	},
+	getUser: (req: Request, res: Response) => {
+		if (req.isAuthenticated()) {
+			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'Logged in user exist', req.user));
+		} else {
+			res
+				.status(httpStatus.OK)
+				.json(JsonResponse(httpStatus.OK, "Logged in user doesn't exist", {}));
+		}
+	},
 };
 
 export default UserController;
