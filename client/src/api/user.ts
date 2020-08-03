@@ -24,11 +24,24 @@ class UserApi {
 		}
 	}
 
+	static async logout() {
+		try {
+			const response = await fetch(`${url}/logout`, {
+				...Options.GET(),
+				credentials: 'include',
+			});
+			const json = await response.json();
+			return json.result;
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	static async getUser() {
 		try {
-			const response = await fetch(`${url}`, { ...Options.GET(), credentials: 'include' });
+			const response = await fetch(`${url}/getUser`, { ...Options.GET(), credentials: 'include' });
 			const json = await response.json();
-			return json;
+			return json.result;
 		} catch (error) {
 			throw error;
 		}

@@ -1,25 +1,20 @@
 import Header from './header';
+import observer from '../models/observer';
+import controller from '../controller';
 import LoginPage from './login';
 import HkbPage from './hkb';
 
 class App {
 	private app!: HTMLElement;
-	private appContent!: HTMLElement;
+	private observer!: any;
+	private userController!: any;
+	// private appContent!: HTMLElement;
 	constructor(target: HTMLElement) {
 		this.app = target;
-		const header = new Header();
-		this.app.appendChild(header);
-		this.appContent = document.createElement('div');
-		this.appContent.setAttribute('id', 'app-content');
-		this.app.appendChild(this.appContent);
+		this.observer = observer;
+		this.userController = controller.UserController;
 
-		//
-		// const loginPage = new LoginPage();
-		// this.app.appendChild(loginPage);
-
-		const hkbPage = new HkbPage();
-		this.appContent.appendChild(hkbPage);
+		this.init();
 	}
-}
 
 export default App;
