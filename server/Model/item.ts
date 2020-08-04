@@ -27,10 +27,10 @@ const ItemModel = {
 			return { id };
 		} catch (err) {}
 	},
-	getItemsById: async (uid: number, date: string) => {
+	getItemsByDate: async (uid: number, date: string) => {
 		try {
 			let itemData = await db.query(
-				`SELECT id, uid_item, pid_item, type, category, amount, description, date FROM item WHERE uid_item = '${uid}' and removed = '${0}' and date_format(now(), '%Y-%m') = '${date}'`,
+				`SELECT id, uid_item, pid_item, type, category, amount, description, date FROM item WHERE uid_item = '${uid}' and removed = '${0}' and date_format(date, '%Y-%m') = '${date}'`,
 			);
 			return itemData[0];
 		} catch (err) {

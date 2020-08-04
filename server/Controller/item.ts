@@ -36,13 +36,25 @@ const ItemController = {
 			next(err);
 		}
 	},
-	getItemsById: async (req: Request, res: Response, next: NextFunction) => {
+	getItemsByDate: async (req: Request, res: Response, next: NextFunction) => {
 		let response;
-		const uid = parseInt(req.params.uid);
+		//@ts-ignore
+		const uid = req.user.id;
 		const date = req.params.date;
 		try {
-			response = await Item.getItemsById(uid, date);
-			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'items get well', response));
+			response = await Item.getItemsByDate(uid, date);
+
+			const responseDict = {};
+			response.forEach(item => {
+				const day = new Date(item.date).getDate();
+				if (!responseDict[day]) {
+					responseDict[day] = [];
+				}
+				responseDict[day].push(item);
+			});
+			console.log(responseDict);
+
+			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'items get well', responseDict));
 		} catch (err) {
 			next(err);
 		}

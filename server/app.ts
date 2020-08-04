@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -27,7 +26,6 @@ app.use(
 	}),
 );
 app.use(bodyParser.json());
-app.use(cookieParser('asldkjfqoiue0182uewfjoln'));
 
 app.use(
 	session({
@@ -59,7 +57,7 @@ app.get('/payment/:uid', PaymentController.getPaymentsById);
 app.post('/payment/create', PaymentController.create);
 app.patch('/payment/delete/:id', PaymentController.delete);
 
-app.get('/item/:uid/:date', ItemController.getItemsById);
+app.get('/item/:date', ItemController.getItemsByDate);
 app.post('/item/create', ItemController.create);
 app.patch('/item/update', ItemController.update);
 app.patch('/item/delete/:id', ItemController.delete);

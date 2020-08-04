@@ -9,6 +9,10 @@ class HkbController {
 	initDate() {
 		this.model.getCurrDate();
 	}
+
+	getRawData() {
+		this.model.fetchRawData();
+	}
 }
 
 export default new HkbController();
