@@ -7,7 +7,7 @@ class HkbModel {
 	private month: number | null;
 	private rawData!: Array<ItemDTO.Item>;
 	private monthlyData!: { income: number; spending: number };
-	private dailyData!: Array<{ day: number; income: number; spending: number }>;
+	private dailyData!: object;
 	private categoryData!: Array<{ category: ItemDTO.SPENDING; amount: number }>;
 	private observer!: any;
 	constructor() {
@@ -15,7 +15,7 @@ class HkbModel {
 		this.month = null;
 		this.rawData = [];
 		this.monthlyData = { income: 0, spending: 0 };
-		this.dailyData = [];
+		this.dailyData = {};
 		this.categoryData = [];
 		this.observer = observer;
 	}
@@ -34,6 +34,7 @@ class HkbModel {
 	}
 
 	calcDailyData() {
+		const dailyDict = {};
 		for (const [day, items] of Object.entries(this.rawData)) {
 			let dIncome = 0,
 				dSpending = 0;
@@ -45,17 +46,20 @@ class HkbModel {
 					dSpending += item.amount;
 				}
 			});
-			this.dailyData.push({ day: parseInt(day), income: dIncome, spending: dSpending });
+			dailyDict[day] = { income: dIncome, spending: dSpending };
 		}
+		this.dailyData = dailyDict;
 	}
 
 	calcMonthlyData() {
 		let mIncome = 0,
 			mSpending = 0;
-		this.dailyData.forEach(day => {
-			mIncome += day.income;
-			mSpending += day.spending;
-		});
+		for (const [day, statics] of Object.entries(this.dailyData)) {
+			//@ts-ignore
+			mIncome += statics.income;
+			//@ts-ignore
+			mSpending += statics.spending;
+		}
 		this.monthlyData = { income: mIncome, spending: mSpending };
 	}
 
