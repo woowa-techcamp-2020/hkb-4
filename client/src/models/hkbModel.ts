@@ -7,7 +7,7 @@ class HkbModel {
 	private month: number | null;
 	private rawData!: Array<ItemDTO.Item>;
 	private monthlyData!: { income: number; spending: number };
-	private dailyData!: Array<{ data: number; income: number; spending: number }>;
+	private dailyData!: Array<{ day: number; income: number; spending: number }>;
 	private categoryData!: Array<{ category: ItemDTO.SPENDING; amount: number }>;
 	private observer!: any;
 	constructor() {
@@ -29,6 +29,23 @@ class HkbModel {
 		this.rawData = result;
 		// 계산하는 메서드 호출
 		// observer.notify 주기
+		this.calcDailyData();
+	}
+
+	calcDailyData() {
+		for (const [day, items] of Object.entries(this.rawData)) {
+			let dIncome = 0,
+				dSpending = 0;
+			//@ts-ignore
+			items.forEach(item => {
+				if (item.type === 1) {
+					dIncome += item.amount;
+				} else {
+					dSpending += item.amount;
+				}
+			});
+			this.dailyData.push({ day: parseInt(day), income: dIncome, spending: dSpending });
+		}
 	}
 
 	getCurrDate() {
