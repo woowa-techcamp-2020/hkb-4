@@ -20,8 +20,10 @@ class HkbModel {
 		this.observer = observer;
 	}
 
-	async getAll(id: ItemDTO.GET, date: string) {
-		const result = await ItemApi.getItemsById(id, date);
+	async fetchRawData(date: string) {
+		const result = await ItemApi.getItemsByDate(
+			`${this.year}-${this.month < 10 ? `0${this.month}` : this.month}`,
+		);
 		// TODO : result type
 		// @ts-ignore
 		this.rawData = result;
