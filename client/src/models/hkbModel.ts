@@ -30,6 +30,7 @@ class HkbModel {
 		// 계산하는 메서드 호출
 		// observer.notify 주기
 		this.calcDailyData();
+		this.calcMonthlyData();
 	}
 
 	calcDailyData() {
@@ -46,6 +47,16 @@ class HkbModel {
 			});
 			this.dailyData.push({ day: parseInt(day), income: dIncome, spending: dSpending });
 		}
+	}
+
+	calcMonthlyData() {
+		let mIncome = 0,
+			mSpending = 0;
+		this.dailyData.forEach(day => {
+			mIncome += day.income;
+			mSpending += day.spending;
+		});
+		this.monthlyData = { income: mIncome, spending: mSpending };
 	}
 
 	getCurrDate() {
