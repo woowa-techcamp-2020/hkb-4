@@ -1,17 +1,23 @@
 import LedgerByDate from '../ledgerByDate';
+import controller from '../../controller';
 
 class Ledger extends HTMLElement {
+	private hkbController!: any;
 	constructor() {
 		super();
+		this.hkbController = controller.HkbController;
 	}
 
 	connectedCallback() {
 		this.render();
+		this.addEventListener('click', this.hkbController.ledgerHandler.bind(this.hkbController));
 	}
 
 	render() {
 		this.innerHTML = `
     <div class="container container-input">
+      <div class="init-button">내용 지우기</div>
+      <div class="delete-button hide">삭제</div>
       <div class="row">
         <div class="group">
           <span>분류</span>

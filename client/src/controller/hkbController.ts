@@ -10,8 +10,44 @@ class HkbController {
 		this.model.getCurrDate();
 	}
 
-	getRawData() {
-		this.model.fetchRawData();
+	ledgerHandler(e) {
+		e.stopPropagation();
+		const item = e.target.closest('hkb-ledger-item');
+		const submitButton = e.target.closest('.submit-button');
+		const initButton = e.target.closest('.init-button');
+		const deleteButton = e.target.closest('.delete-button');
+		const filtrationContainer = e.target.closest('.container-monthly');
+		if (item) {
+			this.handleItemEdit(item);
+		} else if (submitButton) {
+			this.handleItemSubmit(submitButton);
+		} else if (initButton) {
+			this.handleInputInit(initButton);
+		} else if (deleteButton) {
+			this.handleItemDelete(deleteButton);
+		} else if (filtrationContainer) {
+			this.handleFiltration(filtrationContainer);
+		}
+	}
+
+	handleItemEdit(item) {
+		console.log('handleItemEdit');
+	}
+
+	handleItemSubmit(button) {
+		console.log('handleItemSubmit');
+	}
+
+	handleInputInit(button) {
+		console.log('handleInputInit');
+	}
+
+	handleItemDelete(button) {
+		console.log('handleItemDelete');
+	}
+
+	handleFiltration(filtrationContainer) {
+		console.log('handleFiltration');
 	}
 }
 
