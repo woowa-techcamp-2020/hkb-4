@@ -13,12 +13,15 @@ class HkbController {
 	ledgerHandler(e) {
 		e.stopPropagation();
 		const item = e.target.closest('hkb-ledger-item');
+		const radioButton = e.target.closest('input[type="radio"]');
 		const submitButton = e.target.closest('.submit-button');
 		const initButton = e.target.closest('.init-button');
 		const deleteButton = e.target.closest('.delete-button');
 		const filtrationContainer = e.target.closest('.container-monthly');
 		if (item) {
 			this.handleItemEdit(item);
+		} else if (radioButton) {
+			this.handleTypeSelection(radioButton);
 		} else if (submitButton) {
 			this.handleItemSubmit(submitButton);
 		} else if (initButton) {
@@ -32,6 +35,18 @@ class HkbController {
 
 	handleItemEdit(item) {
 		console.log('handleItemEdit');
+	}
+
+	handleTypeSelection(button) {
+		const labels = button.closest('.group').querySelectorAll('label');
+		labels.forEach(label => {
+			const radio = label.querySelector('input');
+			if (radio.checked) {
+				label.classList.add('button--active');
+			} else {
+				label.classList.remove('button--active');
+			}
+		});
 	}
 
 	handleItemSubmit(button) {

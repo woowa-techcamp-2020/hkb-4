@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { UserModel } from '../model';
 import httpStatus from 'http-status';
 import { JsonResponse } from '../module/util';
-import { nextTick } from 'process';
 
 const UserController = {
 	join: async (req: Request, res: Response) => {

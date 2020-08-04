@@ -21,8 +21,12 @@ class Ledger extends HTMLElement {
       <div class="row">
         <div class="group">
           <span>분류</span>
-          <div class="button spending-button">수입</div>
-          <div class="button button--active income-button">지출</div>
+          <label for="type-income" class="button income-button">수입
+            <input id="type-income" type="radio" name="type" value="1"/>
+          </label>
+          <label for="type-spending" class="button spending-button button--active">지출
+            <input id="type-spending" type="radio" name="type" value="2">
+          </label>
         </div>
       </div>
       <div class="row">
@@ -52,7 +56,7 @@ class Ledger extends HTMLElement {
         </div>
         <div class="group">
           <span>내용</span>
-          <input type="text" />
+          <input type="text" "/>
         </div>
       </div>
       <div class="row">
