@@ -98,7 +98,7 @@ class ChartsTab extends HTMLElement {
 				{ transform: `rotate(${rotate}deg)`, strokeDasharray: `${width * dash2} ${dash2}` },
 			],
 			{
-				duration: 800,
+				duration: 400,
 			},
 		);
 		return circle;
@@ -140,11 +140,20 @@ class ChartsTab extends HTMLElement {
 		  <div class="spending">${numberToString(value.spend)}원</div>
 		</div>`;
 	}
-	/**
-	 *
-	 */
+
 	render() {
 		this.innerHTML = `
+		<div class="charts-sub-header">
+			<div class="radio-group">
+				<input type="radio" id="category" name="drone" value="category" checked>
+				<label for="category">카테고리별 지출</label>
+				<input type="radio" id="daily" name="drone" value="daily">
+				<label for="daily">일별 지출</label>
+			</div>
+			<div class="current-spending">
+				이번달 지출 금액: <span>444,900원</span>
+			</div>
+		</div>
     <center class="pie-chart-container">
       <svg class="pie-chart"></svg>
     </center>
