@@ -43,7 +43,18 @@ const ItemController = {
 		const date = req.params.date;
 		try {
 			response = await Item.getItemsByDate(uid, date);
-			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'items get well', response));
+
+			const responseDict = {};
+			response.forEach(item => {
+				const day = new Date(item.date).getDate();
+				if (!responseDict[day]) {
+					responseDict[day] = [];
+				}
+				responseDict[day].push(item);
+			});
+			console.log(responseDict);
+
+			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'items get well', responseDict));
 		} catch (err) {
 			next(err);
 		}
