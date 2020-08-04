@@ -5,18 +5,18 @@ import observer from '../models/observer';
 class HkbModel {
 	private year: number | null;
 	private month: number | null;
-	private rawData!: Array<ItemDTO.Item>;
+	private rawData!: object;
 	private monthlyData!: { income: number; spending: number };
 	private dailyData!: object;
-	private categoryData!: Array<{ category: ItemDTO.SPENDING; amount: number }>;
+	private categoryData!: object;
 	private observer!: any;
 	constructor() {
 		this.year = null;
 		this.month = null;
-		this.rawData = [];
+		this.rawData = {};
 		this.monthlyData = { income: 0, spending: 0 };
 		this.dailyData = {};
-		this.categoryData = [];
+		this.categoryData = {};
 		this.observer = observer;
 	}
 
@@ -27,10 +27,10 @@ class HkbModel {
 		// TODO : result type
 		// @ts-ignore
 		this.rawData = result;
-		// 계산하는 메서드 호출
 		// observer.notify 주기
 		this.calcDailyData();
 		this.calcMonthlyData();
+		this.calcCategoryData();
 	}
 
 	calcDailyData() {
@@ -61,6 +61,21 @@ class HkbModel {
 			mSpending += statics.spending;
 		}
 		this.monthlyData = { income: mIncome, spending: mSpending };
+	}
+
+	calcCategoryData() {
+		const categoryDict = {};
+		for (const [day, items] of Object.entries(this.rawData)) {
+			items
+				.filter(item => item.type === 2)
+				.forEach(item => {
+					if (!categoryDict[item.category]) {
+						categoryDict[item.category] = 0;
+					}
+					categoryDict[item.category] += item.amount;
+				});
+		}
+		this.categoryData = categoryDict;
 	}
 
 	getCurrDate() {
