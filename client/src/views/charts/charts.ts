@@ -58,7 +58,7 @@ class ChartsTab extends HTMLElement {
 
 		for (let i = 0; i < 6; i++) {
 			pieChartContainer.appendChild(
-				this.test(
+				this.pie(
 					radius.toString(),
 					cx.toString(),
 					cy.toString(),
@@ -68,10 +68,21 @@ class ChartsTab extends HTMLElement {
 					t[i].rotate,
 				),
 			);
+			pieChartContainer.appendChild(this.text(t[i].rotate, radius, spending[i].name));
 		}
 	}
 
-	test(
+	text(rotate: number, radius: number, txt: string) {
+		const svgns = 'http://www.w3.org/2000/svg';
+		const text = document.createElementNS(svgns, 'text');
+		text.setAttributeNS(null, 'x', (140 + Math.cos(rotate) * radius).toString());
+		text.setAttributeNS(null, 'y', (140 + Math.sin(rotate) * radius).toString());
+		text.setAttribute('fill', '#000');
+		text.textContent = txt;
+		return text;
+	}
+
+	pie(
 		r: string,
 		x: string,
 		y: string,
