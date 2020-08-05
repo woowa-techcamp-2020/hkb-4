@@ -1,5 +1,8 @@
+import controller from '../../controller';
+
 class NavigationBar extends HTMLElement {
 	private date!: Date;
+	private controller = controller.HkbController;
 	constructor() {
 		super();
 	}
@@ -22,12 +25,7 @@ class NavigationBar extends HTMLElement {
 		const nextMonth = this.querySelector('.right-btn') as HTMLElement;
 		const dateElement = this.querySelector('span') as HTMLElement;
 
-		navtab.addEventListener('click', (event: MouseEvent) => {
-			const tab = (event.target as HTMLElement).closest('li');
-			if (!tab) return;
-			const selected = this.querySelector('.selected-tab') as HTMLElement;
-			selected.style.left = `${tab.offsetLeft}px`;
-		});
+		navtab.addEventListener('click', (event: MouseEvent) => this.controller.changeTab());
 		prevMonth.addEventListener('click', (event: MouseEvent) => {
 			this.date = new Date(this.date.getFullYear(), this.date.getMonth() - 1, 1);
 			dateElement.textContent = this.dateToString(this.date);
@@ -50,9 +48,9 @@ class NavigationBar extends HTMLElement {
       <i class="material-icons right-btn">chevron_right</i>
     </div>
     <ul class="nav-tab">
-      <li class="tab">내역</li>
-      <li class="tab">달력</li>
-      <li class="tab">통계</li>
+      <li class="tab" name='ledger'>내역</li>
+      <li class="tab" name='calendar'>달력</li>
+      <li class="tab" name='charts'>통계</li>
       <li class="selected-tab" id="selected"></li>
     </ul>
     `;
