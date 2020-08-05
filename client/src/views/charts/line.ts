@@ -137,6 +137,18 @@ class LineChart extends HTMLElement {
 		this.innerHTML = `
       <div class="line-chart-container">
 				<svg class="line-chart" viewbox="-60 -20 680 430">
+					<defs>
+						<marker
+							id="dot"
+							viewBox="0 0 10 10"
+							refX="5"
+							refY="5"
+							markerWidth="5"
+							markerHeight="5"
+						>
+							<circle cx="5" cy="5" r="3" />
+						</marker>
+					</defs>
 					<path
 						class="axis axis--x"
 						d="
@@ -150,7 +162,10 @@ class LineChart extends HTMLElement {
 					</g>
 					<g class="labels y-labels">
 					</g>
-					<path class="line" d=""/>
+					<path class="line" d=""
+						marker-start="url(#dot)"
+						marker-mid="url(#dot)"
+						marker-end="url(#dot)"/>
 					<path class="x-axis" d=""/>
 				</svg>
       </div>

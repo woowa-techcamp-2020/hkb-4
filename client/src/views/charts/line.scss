@@ -5,7 +5,6 @@
 	border-radius: 8px;
 	padding: 16px 0;
 	svg.line-chart {
-		border: 1px solid red;
 		width: 600px;
 		height: 380px;
 		display: block;
@@ -27,23 +26,32 @@
 			fill: transparent;
 			stroke: #d0d1d4;
 			stroke-width: 2px;
-			animation: draw 5s linear forwards 1s;
+			animation: draw 4s linear forwards 1s;
 			stroke-dasharray: 4000;
 			stroke-dashoffset: 4000;
 		}
 	}
 	.x-labels {
 		fill: #86878a;
-		background-color: red;
 	}
 	.y-labels {
 		fill: #86878a;
-		background-color: red;
+	}
+	circle {
+		fill: #ababac;
+		opacity: 0;
+		animation: appear 0.3s linear forwards 4s;
 	}
 }
 
 @keyframes draw {
 	to {
 		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes appear {
+	to {
+		opacity: 1;
 	}
 }
