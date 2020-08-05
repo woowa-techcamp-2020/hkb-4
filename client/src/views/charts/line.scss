@@ -12,7 +12,7 @@
 		margin: 0 auto;
 		.axis,
 		.lines {
-			fill: none;
+			fill: transparent;
 			stroke: #f5f6fa;
 			stroke-width: 5;
 			animation: draw 0.5s linear forwards 3s;
@@ -21,6 +21,15 @@
 		}
 		.lines {
 			stroke-width: 1;
+			stroke: #f5f6fa;
+		}
+		path.line {
+			fill: transparent;
+			stroke: black !important;
+			stroke-width: 1px;
+			animation: draw 0.5s linear forwards 3s;
+			stroke-dasharray: 600;
+			stroke-dashoffset: 600;
 		}
 	}
 }
