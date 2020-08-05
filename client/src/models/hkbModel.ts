@@ -20,7 +20,7 @@ class HkbModel {
 		this.observer = observer;
 	}
 
-	async fetchRawData(date: string) {
+	async fetchRawData() {
 		const result = await ItemApi.getItemsByDate(
 			`${this.year}-${this.month < 10 ? `0${this.month}` : this.month}`,
 		);
@@ -31,6 +31,14 @@ class HkbModel {
 		this.calcDailyData();
 		this.calcMonthlyData();
 		this.calcCategoryData();
+		this.observer.notify('dataFecthed', {
+			year: this.year,
+			month: this.month,
+			rawData: this.rawData,
+			dailyData: this.dailyData,
+			monthlyData: this.monthlyData,
+			categoryData: this.categoryData,
+		});
 	}
 
 	calcDailyData() {
@@ -88,6 +96,7 @@ class HkbModel {
 	setYearMonth(year, month) {
 		this.year = year;
 		this.month = month;
+		this.fetchRawData();
 		this.observer.notify('dateChanged', { year: this.year, month: this.month });
 	}
 }

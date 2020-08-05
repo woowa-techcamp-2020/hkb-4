@@ -9,7 +9,6 @@ class HkbController {
 	initDate() {
 		this.model.getCurrDate();
 	}
-
 	ledgerHandler(e) {
 		e.stopPropagation();
 		const item = e.target.closest('hkb-ledger-item');
@@ -49,17 +48,22 @@ class HkbController {
 	}
 
 	fillInput(item, inputContainer) {
+		const {
+			data: { type, amount, description, date },
+		} = item;
 		inputContainer.querySelector('.init-button').classList.add('hide');
 		inputContainer.querySelector('.delete-button').classList.remove('hide');
-		const checkedRadioButton = inputContainer.querySelector(`input[value="${item.type}"]`);
+		const checkedRadioButton = inputContainer.querySelector(
+			`input[value="${type === 1 ? '수입' : '지출'}"]`,
+		);
 		checkedRadioButton.checked = true;
 		this.toggleTypeButton(checkedRadioButton);
 		// @ts-ignore
-		inputContainer.querySelector('input[name="amount"]').value = item.amount;
+		inputContainer.querySelector('input[name="amount"]').value = amount;
 		//@ts-ignore
-		inputContainer.querySelector('input[name="description"]').value = item.description;
+		inputContainer.querySelector('input[name="description"]').value = description;
 		//@ts-ignore
-		inputContainer.querySelector('input[type="date"]').value = '2020-01-01';
+		inputContainer.querySelector('input[type="date"]').value = date;
 		this.changeSelectOption('category', item);
 		this.changeSelectOption('payment', item);
 	}
