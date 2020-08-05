@@ -29,6 +29,12 @@ class App {
 		this.appContent.setAttribute('id', 'app-content');
 		this.app.appendChild(this.appContent);
 		this.userController.initUser();
+
+		//
+		window.addEventListener('popstate', res => {
+			console.log(res.state);
+			this.observer.notify('routeChanged', res.state);
+		});
 	}
 
 	getUser(user: UserDTO.RESPONSE_LOGIN) {

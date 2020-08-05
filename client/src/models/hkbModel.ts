@@ -2,14 +2,19 @@ import { ItemApi } from '../api';
 import { ItemDTO } from '../../../shared/dto';
 import observer from '../models/observer';
 
+type tabType = 'ledger' | 'calendar' | 'charts';
+const url = location.pathname;
+
 class HkbModel {
 	private year: number | null;
 	private month: number | null;
-	private rawData!: object;
+	private tab: tabType | null;
+	private rawData!: Array<ItemDTO.Item>;
 	private monthlyData!: { income: number; spending: number };
 	private dailyData!: object;
 	private categoryData!: object;
 	private observer!: any;
+
 	constructor() {
 		this.year = null;
 		this.month = null;
@@ -18,6 +23,22 @@ class HkbModel {
 		this.dailyData = {};
 		this.categoryData = {};
 		this.observer = observer;
+
+		this.observer.subscribe('routeChanged', this, this.checkRouteChanged.bind(this));
+	}
+
+	checkRouteChanged(state) {
+		// TODO
+		// 제일 처음으로 돌아가면 오류나 왜냐면 설정안해줬거든~
+		const tab = state.tab === null ? 'ledger' : state.tab;
+		if (tab !== this.tab) {
+			this.tab = tab;
+			this.observer.notify('tabChanged', this.tab);
+		} else {
+			this.year = state.year;
+			this.month = state.month;
+			this.observer.notify('dateChanged', { year: this.year, month: this.month });
+		}
 	}
 
 	async fetchRawData() {
@@ -87,18 +108,51 @@ class HkbModel {
 		this.categoryData = categoryDict;
 	}
 
-	getCurrDate() {
+	initData() {
 		const currDate = new Date();
-		const year = currDate.getFullYear();
-		const month = currDate.getMonth() + 1;
-		this.setYearMonth(year, month);
+
+		// TODO
+		// 두번 불리는데 이러면...
+		this.tab = 'ledger';
+		this.setYearMonth(currDate);
 	}
 
 	setYearMonth(year, month) {
 		this.year = year;
 		this.month = month;
 		this.fetchRawData();
-		this.observer.notify('dateChanged', { year: this.year, month: this.month });
+  }
+// 	setYearMonth(date: Date) {
+// 		this.year = date.getFullYear();
+// 		this.month = date.getMonth();
+// 		history.pushState(
+// 			{
+// 				tab: this.tab,
+// 				year: this.year,
+// 				month: this.month,
+// 			},
+// 			'hkb',
+// 			`/${this.year}${this.month + 1}/${this.tab}`,
+// 		);
+// 		this.observer.notify('dateChanged', { year: this.year, month: this.month });
+// 	}
+	getDate() {
+		return new Date(this.year, this.month, 1);
+	}
+
+	setTabName(tab: tabType) {
+		if (this.tab === tab) return;
+		this.tab = tab;
+		history.pushState(
+			{
+				tab: this.tab,
+				year: this.year,
+				month: this.month,
+			},
+			'hkb',
+			`/${this.year}${this.month + 1}/${this.tab}`,
+		);
+		this.observer.notify('tabChanged', this.tab);
 	}
 }
 

@@ -3,9 +3,12 @@ import controller from '../../controller';
 import observer from '../../models/observer';
 
 class Ledger extends HTMLElement {
+  public name = 'ledger';
 	private hkbController!: any;
 	private observer!: any;
 	private data: any | null;
+	public name = 'ledger';
+
 	constructor() {
 		super();
 		this.hkbController = controller.HkbController;
