@@ -1,28 +1,31 @@
 class CalendarTab extends HTMLElement {
 	public name = 'calendar';
-	private date!: Date;
+	// private date!: Date;
 
 	constructor() {
 		super();
-		this.initDate();
 	}
 
 	connectedCallback() {
 		this.render();
-		this.calcDays();
+		this.initDate();
 	}
 
 	initDate() {
 		// TODO date 가져와야하는데 연결을 안했네
-
-		this.date = new Date();
+		const date = new Date();
+		this.renderCalendar(date.getFullYear(), date.getMonth());
 	}
 
-	calcDays() {
-		const currentMonth = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
+	update(year, month) {
+		this.renderCalendar(year, month + 1);
+	}
+
+	renderCalendar(year, month) {
+		const currentMonth = new Date(year, month + 1, 0);
 		const currentLast = currentMonth.getDate();
-		const currentFirstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
-		const prevLast = new Date(this.date.getFullYear(), this.date.getMonth(), 0).getDate();
+		const currentFirstDay = new Date(year, month, 1).getDay();
+		const prevLast = new Date(year, month, 0).getDate();
 		const nextDays = currentMonth.getDay();
 
 		let days = '';

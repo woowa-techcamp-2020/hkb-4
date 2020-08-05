@@ -14,6 +14,7 @@ class HkbModel {
 	private dailyData!: Array<{ data: number; income: number; spending: number }>;
 	private categoryData!: Array<{ category: ItemDTO.SPENDING; amount: number }>;
 	private observer!: any;
+
 	constructor() {
 		this.year = null;
 		this.month = null;
@@ -49,17 +50,31 @@ class HkbModel {
 		// observer.notify 주기
 	}
 
-	getCurrDate() {
+	initData() {
 		const currDate = new Date();
-		const year = currDate.getFullYear();
-		const month = currDate.getMonth() + 1;
-		this.setYearMonth(year, month);
+
+		// TODO
+		// 두번 불리는데 이러면...
+		this.tab = 'ledger';
+		this.setYearMonth(currDate);
 	}
 
-	setYearMonth(year, month) {
-		this.year = year;
-		this.month = month;
+	setYearMonth(date: Date) {
+		this.year = date.getFullYear();
+		this.month = date.getMonth();
+		history.pushState(
+			{
+				tab: this.tab,
+				year: this.year,
+				month: this.month,
+			},
+			'hkb',
+			`/${this.year}${this.month + 1}/${this.tab}`,
+		);
 		this.observer.notify('dateChanged', { year: this.year, month: this.month });
+	}
+	getDate() {
+		return new Date(this.year, this.month, 1);
 	}
 
 	setTabName(tab: tabType) {
@@ -72,7 +87,7 @@ class HkbModel {
 				month: this.month,
 			},
 			'hkb',
-			`/${this.year}${this.month}/${this.tab}`,
+			`/${this.year}${this.month + 1}/${this.tab}`,
 		);
 		this.observer.notify('tabChanged', this.tab);
 	}
