@@ -1,4 +1,5 @@
 import { numberToString } from '../../util/common';
+import LineChart from './line';
 
 const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1', '#9F71C1'];
 const spending = [
@@ -35,10 +36,10 @@ const total = 320000;
 
 class ChartsTab extends HTMLElement {
 	connectedCallback() {
+		this.appendChild(new LineChart());
 		this.render();
 		this.renderPieChart();
 		this.initBarChart();
-		// this.renderBarChart();
 	}
 
 	renderPieChart() {
@@ -142,7 +143,7 @@ class ChartsTab extends HTMLElement {
 	}
 
 	render() {
-		this.innerHTML = `
+		this.innerHTML += `
 		<div class="charts-sub-header">
 			<div class="radio-group">
 				<input type="radio" id="category" name="drone" value="category" checked>
