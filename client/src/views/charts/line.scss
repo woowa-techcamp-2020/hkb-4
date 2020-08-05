@@ -3,9 +3,30 @@
 	width: 100%;
 	background-color: white;
 	border-radius: 8px;
+	padding: 16px 0;
+	svg.line-chart {
+		width: 600px;
+		height: 380px;
+		transform: scale(1, -1);
+		display: block;
+		margin: 0 auto;
+		.axis,
+		.lines {
+			fill: none;
+			stroke: #f5f6fa;
+			stroke-width: 5;
+			animation: draw 0.5s linear forwards 3s;
+			stroke-dasharray: 600;
+			stroke-dashoffset: 600;
+		}
+		.lines {
+			stroke-width: 1;
+		}
+	}
 }
 
-svg.line-chart {
-	width: 280px;
-	height: 450px;
+@keyframes draw {
+	to {
+		stroke-dashoffset: 0;
+	}
 }
