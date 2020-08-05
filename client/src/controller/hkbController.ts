@@ -9,6 +9,18 @@ class HkbController {
 	initDate() {
 		this.model.getCurrDate();
 	}
+
+	changeTab() {
+		const tab = (event.target as HTMLElement).closest('li');
+		if (!tab) return;
+		const selected = document.querySelector('.selected-tab') as HTMLElement;
+		selected.style.left = `${tab.offsetLeft}px`;
+		this.model.setTabName(tab.getAttribute('name'));
+	}
+
+	changeMonth() {
+		//
+	}
 }
 
 export default new HkbController();
