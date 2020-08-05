@@ -25,12 +25,17 @@
 		}
 		path.line {
 			fill: transparent;
-			stroke: #d0d1d4 !important;
+			stroke: #d0d1d4;
 			stroke-width: 2px;
 			animation: draw 5s linear forwards 1s;
 			stroke-dasharray: 4000;
 			stroke-dashoffset: 4000;
 		}
+	}
+	.x-labels {
+		fill: #86878a;
+		background-color: red;
+		transform: scale(1, -1);
 	}
 }
 

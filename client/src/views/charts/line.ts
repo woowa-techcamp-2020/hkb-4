@@ -97,6 +97,18 @@ class LineChart extends HTMLElement {
 		return maxSpending;
 	}
 
+	getXlabels() {
+		const totalDays = new Date(this.mockData.year, this.mockData.month, 0).getDate();
+		const axisXstep = 600 / totalDays;
+		let xLabels = '';
+		for (let i = 1; i <= totalDays; i += 5) {
+			xLabels += `<text x="${axisXstep * i * (600 / 650)}" y="25">${
+				this.mockData.month
+			}.${i}</text>`;
+		}
+		return xLabels;
+	}
+
 	renderLineChart() {
 		const lineChartArea = document.querySelector('svg.line-chart');
 		const lines = this.prepareHorizontalLines();
@@ -106,12 +118,14 @@ class LineChart extends HTMLElement {
 		const conversionRatio = this.getConversionRatio(maxSpending);
 		const command = this.getPathCommand(conversionRatio);
 		lineChartArea.querySelector('path.line').setAttribute('d', command);
+		const xLabels = this.getXlabels();
+		lineChartArea.querySelector('g.x-labels').innerHTML = xLabels;
 	}
 
 	render() {
 		this.innerHTML = `
       <div class="line-chart-container">
-				<svg class="line-chart">
+				<svg class="line-chart" viewbox="-30 -50 650 430">
 					<path
 						class="axis axis--x"
 						d="
@@ -121,7 +135,10 @@ class LineChart extends HTMLElement {
 					></path>
 					<g class="lines">
 					</g>
+					<g class="labels x-labels">
+					</g>
 					<path class="line" d=""/>
+					<path class="x-axis" d=""/>
 				</svg>
       </div>
     `;
