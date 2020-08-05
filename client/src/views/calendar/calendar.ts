@@ -18,14 +18,14 @@ class CalendarTab extends HTMLElement {
 	}
 
 	update(year, month) {
-		this.renderCalendar(year, month + 1);
+		this.renderCalendar(year, month);
 	}
 
 	renderCalendar(year, month) {
-		const currentMonth = new Date(year, month + 1, 0);
+		const currentMonth = new Date(year, month, 0);
 		const currentLast = currentMonth.getDate();
-		const currentFirstDay = new Date(year, month, 1).getDay();
-		const prevLast = new Date(year, month, 0).getDate();
+		const currentFirstDay = new Date(year, month - 1, 1).getDay();
+		const prevLast = new Date(year, month - 1, 0).getDate();
 		const nextDays = currentMonth.getDay();
 
 		let days = '';

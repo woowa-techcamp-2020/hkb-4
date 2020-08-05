@@ -9,14 +9,7 @@ class NavigationBar extends HTMLElement {
 
 	connectedCallback() {
 		this.render();
-		this.initDate();
 		this.initEvent();
-	}
-
-	initDate() {
-		this.date = new Date();
-		const dateElement = this.querySelector('span') as HTMLElement;
-		dateElement.textContent = this.dateToString(this.date);
 	}
 
 	initEvent() {
@@ -30,7 +23,7 @@ class NavigationBar extends HTMLElement {
 	}
 
 	dateToString(date: Date) {
-		return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+		return `${date.getFullYear()}.${date.getMonth().toString().padStart(2, '0')}`;
 	}
 
 	render() {

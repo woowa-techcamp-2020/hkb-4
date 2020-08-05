@@ -18,11 +18,13 @@ class HkbController {
 
 	changePrevMonth() {
 		const date = this.model.getDate();
-		this.model.setYearMonth(new Date(date.getFullYear(), date.getMonth() - 1, 1));
+		const newDate = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+		this.model.setYearMonth(newDate.getFullYear(), newDate.getMonth());
 	}
 	changeNextMonth() {
 		const date = this.model.getDate();
-		this.model.setYearMonth(new Date(date.getFullYear(), date.getMonth() + 1, 1));
+		const newDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+		this.model.setYearMonth(newDate.getFullYear(), newDate.getMonth());
 	}
 	ledgerHandler(e) {
 		e.stopPropagation();

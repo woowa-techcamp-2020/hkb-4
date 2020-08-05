@@ -1,37 +1,37 @@
 @import '../../style/variable.scss';
 
 charts-tab {
-	position: absolute;
+	// position: absolute;
 	width: 100%;
 	&.display-none {
 		.pie-chart-container {
 			display: none;
-    }
-  }
+		}
+	}
 	.charts-sub-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 24px 0;
-    .radio-group {
-      input {
-        font-size: 16px;
-        cursor: pointer;
-      }
-      label {
-        padding-left: 4px;
-        margin-right: 20px;
-        cursor: pointer;
-      }
-    }
-    .current-spending {
-      span {
-        margin-left: 8px;
-        font-weight: 600;
-        color: #1891FF;
-      }
-    }
-  }
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		padding: 24px 0;
+		.radio-group {
+			input {
+				font-size: 16px;
+				cursor: pointer;
+			}
+			label {
+				padding-left: 4px;
+				margin-right: 20px;
+				cursor: pointer;
+			}
+		}
+		.current-spending {
+			span {
+				margin-left: 8px;
+				font-weight: 600;
+				color: #1891ff;
+			}
+		}
+	}
 	.pie-chart-container {
 		width: 100%;
 		padding: 8px 0;

@@ -9,7 +9,7 @@ class HkbModel {
 	private year: number | null;
 	private month: number | null;
 	private tab: tabType | null;
-	private rawData!: Array<ItemDTO.Item>;
+	private rawData!: any;
 	private monthlyData!: { income: number; spending: number };
 	private dailyData!: object;
 	private categoryData!: object;
@@ -18,6 +18,8 @@ class HkbModel {
 	constructor() {
 		this.year = null;
 		this.month = null;
+		// TODO
+		// @ts-ignore
 		this.rawData = {};
 		this.monthlyData = { income: 0, spending: 0 };
 		this.dailyData = {};
@@ -37,7 +39,8 @@ class HkbModel {
 		} else {
 			this.year = state.year;
 			this.month = state.month;
-			this.observer.notify('dateChanged', { year: this.year, month: this.month });
+			this.fetchRawData();
+			// this.observer.notify('dateChanged', { year: this.year, month: this.month });
 		}
 	}
 
@@ -62,21 +65,34 @@ class HkbModel {
 		});
 	}
 
+	updateHistory() {
+		history.pushState(
+			{
+				tab: this.tab,
+				year: this.year,
+				month: this.month,
+			},
+			'hkb',
+			`/${this.year}${this.month}/${this.tab}`,
+		);
+	}
+
 	calcDailyData() {
 		const dailyDict = {};
 		const lastDay = 31;
 		for (let i = 0; i <= lastDay; i++) {
 			let dIncome = 0,
 				dSpending = 0;
-
-			this.rawData[i].forEach(item => {
-				if (item.type === 1) {
-					dIncome += item.amount;
-				} else {
-					dSpending += item.amount;
-				}
-			});
-			dailyDict[i] = { income: dIncome, spending: dSpending };
+			if (this.rawData[i]) {
+				this.rawData[i].forEach(item => {
+					if (item.type === 1) {
+						dIncome += item.amount;
+					} else {
+						dSpending += item.amount;
+					}
+				});
+				dailyDict[i] = { income: dIncome, spending: dSpending };
+			}
 			this.dailyData = dailyDict;
 		}
 	}
@@ -97,6 +113,8 @@ class HkbModel {
 		const categoryDict = {};
 		for (const [day, items] of Object.entries(this.rawData)) {
 			items
+				// TODO
+				// @ts-ignore
 				.filter(item => item.type === 2)
 				.forEach(item => {
 					if (!categoryDict[item.category]) {
@@ -110,49 +128,27 @@ class HkbModel {
 
 	initData() {
 		const currDate = new Date();
-
 		// TODO
-		// 두번 불리는데 이러면...
 		this.tab = 'ledger';
-		this.setYearMonth(currDate);
+		this.setYearMonth(currDate.getFullYear(), currDate.getMonth());
 	}
 
-	setYearMonth(year, month) {
+	async setYearMonth(year, month) {
 		this.year = year;
-		this.month = month;
-		this.fetchRawData();
-  }
-// 	setYearMonth(date: Date) {
-// 		this.year = date.getFullYear();
-// 		this.month = date.getMonth();
-// 		history.pushState(
-// 			{
-// 				tab: this.tab,
-// 				year: this.year,
-// 				month: this.month,
-// 			},
-// 			'hkb',
-// 			`/${this.year}${this.month + 1}/${this.tab}`,
-// 		);
-// 		this.observer.notify('dateChanged', { year: this.year, month: this.month });
-// 	}
+		this.month = month + 1;
+		await this.fetchRawData();
+		this.updateHistory();
+	}
+
 	getDate() {
-		return new Date(this.year, this.month, 1);
+		return new Date(this.year, this.month - 1, 1);
 	}
 
 	setTabName(tab: tabType) {
 		if (this.tab === tab) return;
 		this.tab = tab;
-		history.pushState(
-			{
-				tab: this.tab,
-				year: this.year,
-				month: this.month,
-			},
-			'hkb',
-			`/${this.year}${this.month + 1}/${this.tab}`,
-		);
 		this.observer.notify('tabChanged', this.tab);
+		this.updateHistory();
 	}
 }
 
