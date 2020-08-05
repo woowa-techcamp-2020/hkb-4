@@ -42,8 +42,9 @@ class LineChart extends HTMLElement {
 			28: { income: 0, spending: 7800 },
 			29: { income: 0, spending: 5000 },
 			30: { income: 0, spending: 12000 },
+			31: { income: 0, spending: 10000 },
 		},
-		monthlyData: { income: 1380000, spending: 517100 },
+		monthlyData: { income: 1380000, spending: 527100 },
 	};
 
 	getConversionRatio(num) {
@@ -65,8 +66,8 @@ class LineChart extends HTMLElement {
 		//	TODO: scss => svg 높이 변수 불러와서 사용
 		const step = 380 / 5;
 		let lines = '';
-		for (let i = 1; i <= 10; i++) {
-			lines += `<line x1="0" x2="600" y1="${step * i}" y2="${step * i}"></line>`;
+		for (let i = 1; i <= 5; i++) {
+			lines += `<line x1="0" x2="600" y1="${step * (i - 1)}" y2="${step * (i - 1)}"></line>`;
 		}
 		return lines;
 	}
@@ -74,12 +75,12 @@ class LineChart extends HTMLElement {
 	getPathCommand(conversionRatio) {
 		//	TODO: scss => svg 너비 변수 불러와서 사용
 		const totalDays = new Date(this.mockData.year, this.mockData.month, 0).getDate();
-		const axisXstep = 600 / totalDays;
+		const axisXstep = 600 / (totalDays + 1);
 
 		let command = '';
 		for (const [day, items] of Object.entries(this.mockData.dailyData)) {
 			const x = parseInt(day) * axisXstep;
-			const y = items.spending * conversionRatio;
+			const y = 380 - items.spending * conversionRatio;
 			if (day === '1') {
 				command += `M ${x} ${y} `;
 			} else {
@@ -99,14 +100,22 @@ class LineChart extends HTMLElement {
 
 	getXlabels() {
 		const totalDays = new Date(this.mockData.year, this.mockData.month, 0).getDate();
-		const axisXstep = 600 / totalDays;
+		const axisXstep = 600 / (totalDays + 1);
 		let xLabels = '';
 		for (let i = 1; i <= totalDays; i += 5) {
-			xLabels += `<text x="${axisXstep * i * (600 / 650)}" y="25">${
-				this.mockData.month
-			}.${i}</text>`;
+			xLabels += `<text x="${axisXstep * i}" y="400">${this.mockData.month}.${i}</text>`;
 		}
 		return xLabels;
+	}
+
+	getYlabels(max) {
+		const axisStep = 380 / 5;
+		const amountStep = max / 5;
+		let yLabels = '';
+		for (let i = 1; i <= 5; i++) {
+			yLabels += `<text x="-50" y="${390 - axisStep * i}">${amountStep * i}</text>;`;
+		}
+		return yLabels;
 	}
 
 	renderLineChart() {
@@ -120,22 +129,26 @@ class LineChart extends HTMLElement {
 		lineChartArea.querySelector('path.line').setAttribute('d', command);
 		const xLabels = this.getXlabels();
 		lineChartArea.querySelector('g.x-labels').innerHTML = xLabels;
+		const yLabels = this.getYlabels(maxSpending);
+		lineChartArea.querySelector('g.y-labels').innerHTML = yLabels;
 	}
 
 	render() {
 		this.innerHTML = `
       <div class="line-chart-container">
-				<svg class="line-chart" viewbox="-30 -50 650 430">
+				<svg class="line-chart" viewbox="-60 -20 680 430">
 					<path
 						class="axis axis--x"
 						d="
-							M 0 0
-							L 600 0
+							M 0 380
+							L 600 380
 						"
 					></path>
 					<g class="lines">
 					</g>
 					<g class="labels x-labels">
+					</g>
+					<g class="labels y-labels">
 					</g>
 					<path class="line" d=""/>
 					<path class="x-axis" d=""/>

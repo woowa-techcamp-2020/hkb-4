@@ -5,9 +5,9 @@
 	border-radius: 8px;
 	padding: 16px 0;
 	svg.line-chart {
+		border: 1px solid red;
 		width: 600px;
 		height: 380px;
-		transform: scale(1, -1);
 		display: block;
 		margin: 0 auto;
 		.axis,
@@ -35,7 +35,10 @@
 	.x-labels {
 		fill: #86878a;
 		background-color: red;
-		transform: scale(1, -1);
+	}
+	.y-labels {
+		fill: #86878a;
+		background-color: red;
 	}
 }
 
