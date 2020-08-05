@@ -23,17 +23,10 @@ class NavigationBar extends HTMLElement {
 		const navtab = this.querySelector('.nav-tab') as HTMLElement;
 		const prevMonth = this.querySelector('.left-btn') as HTMLElement;
 		const nextMonth = this.querySelector('.right-btn') as HTMLElement;
-		const dateElement = this.querySelector('span') as HTMLElement;
 
 		navtab.addEventListener('click', (event: MouseEvent) => this.controller.changeTab());
-		prevMonth.addEventListener('click', (event: MouseEvent) => {
-			this.date = new Date(this.date.getFullYear(), this.date.getMonth() - 1, 1);
-			dateElement.textContent = this.dateToString(this.date);
-		});
-		nextMonth.addEventListener('click', (event: MouseEvent) => {
-			this.date = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 1);
-			dateElement.textContent = this.dateToString(this.date);
-		});
+		prevMonth.addEventListener('click', (event: MouseEvent) => this.controller.changePrevMonth());
+		nextMonth.addEventListener('click', (event: MouseEvent) => this.controller.changeNextMonth());
 	}
 
 	dateToString(date: Date) {
@@ -44,7 +37,7 @@ class NavigationBar extends HTMLElement {
 		this.innerHTML = `
     <div class="nav-month">
       <i class="material-icons left-btn">chevron_left</i>
-      <span></span>
+      <span id="nav-date"></span>
       <i class="material-icons right-btn">chevron_right</i>
     </div>
     <ul class="nav-tab">
