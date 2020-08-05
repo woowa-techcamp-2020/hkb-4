@@ -63,7 +63,7 @@ class LineChart extends HTMLElement {
 
 	prepareHorizontalLines() {
 		//	TODO: scss => svg 높이 변수 불러와서 사용
-		const step = 380 / 10;
+		const step = 380 / 5;
 		let lines = '';
 		for (let i = 1; i <= 10; i++) {
 			lines += `<line x1="0" x2="600" y1="${step * i}" y2="${step * i}"></line>`;
