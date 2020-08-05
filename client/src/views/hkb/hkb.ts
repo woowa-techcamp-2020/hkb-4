@@ -21,8 +21,8 @@ class Hkb extends HTMLElement {
 
 	connectedCallback() {
 		this.observer.subscribe('tabChanged', this, this.changeTab.bind(this));
-		this.observer.subscribe('dateChanged', this, this.render.bind(this));
-		this.hkbController.initDate();
+		this.observer.subscribe('dateChanged', this, this.changeDate.bind(this));
+		this.hkbController.init();
 
 		this.appendChild(this.navigationBar);
 
@@ -46,6 +46,16 @@ class Hkb extends HTMLElement {
 		if (last && last.tagName !== 'NAVIGATION-BAR') {
 			this.removeChild(last);
 		}
+	}
+
+	changeDate(option: { year: string; month: string }) {
+		const dateElement = document.querySelector('#nav-date') as HTMLElement;
+		if (!dateElement) return;
+		dateElement.textContent = `${option.year}.${(option.month + 1).toString().padStart(2, '0')}`;
+
+		// this.ledgerTab.update();
+		this.calendarTab.update(option.year, option.month);
+		// this.chartsTab.update();
 	}
 
 	changeTab(tabName: string) {
@@ -75,7 +85,6 @@ class Hkb extends HTMLElement {
 			element.classList.add('display-none');
 		}
 	}
-	changeDate() {}
 
 	render(data: any) {
 		this.reset();
