@@ -17,8 +17,8 @@ class CalendarTab extends HTMLElement {
 		this.renderCalendar(date.getFullYear(), date.getMonth());
 	}
 
-	update(year, month) {
-		this.renderCalendar(year, month);
+	update(data) {
+		this.renderCalendar(data.year, data.month);
 	}
 
 	renderCalendar(year, month) {
