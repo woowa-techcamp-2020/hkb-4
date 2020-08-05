@@ -21,7 +21,7 @@ class Hkb extends HTMLElement {
 
 	connectedCallback() {
 		this.observer.subscribe('tabChanged', this, this.changeTab.bind(this));
-		this.observer.subscribe('dateChanged', this, this.changeDate.bind(this));
+		this.observer.subscribe('dataFecthed', this, this.changeDate.bind(this));
 		this.hkbController.init();
 
 		this.appendChild(this.navigationBar);
@@ -51,7 +51,7 @@ class Hkb extends HTMLElement {
 	changeDate(option: { year: string; month: string }) {
 		const dateElement = document.querySelector('#nav-date') as HTMLElement;
 		if (!dateElement) return;
-		dateElement.textContent = `${option.year}.${(option.month + 1).toString().padStart(2, '0')}`;
+		dateElement.textContent = `${option.year}.${option.month.toString().padStart(2, '0')}`;
 
 		// this.ledgerTab.update();
 		this.calendarTab.update(option.year, option.month);
