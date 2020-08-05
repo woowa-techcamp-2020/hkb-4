@@ -41,7 +41,7 @@ class HkbModel {
 		}
 	}
 
-	async fetchRawData(date: string) {
+	async fetchRawData() {
 		const result = await ItemApi.getItemsByDate(
 			`${this.year}-${this.month < 10 ? `0${this.month}` : this.month}`,
 		);
@@ -52,24 +52,33 @@ class HkbModel {
 		this.calcDailyData();
 		this.calcMonthlyData();
 		this.calcCategoryData();
+		this.observer.notify('dataFecthed', {
+			year: this.year,
+			month: this.month,
+			rawData: this.rawData,
+			dailyData: this.dailyData,
+			monthlyData: this.monthlyData,
+			categoryData: this.categoryData,
+		});
 	}
 
 	calcDailyData() {
 		const dailyDict = {};
-		for (const [day, items] of Object.entries(this.rawData)) {
+		const lastDay = 31;
+		for (let i = 0; i <= lastDay; i++) {
 			let dIncome = 0,
 				dSpending = 0;
-			//@ts-ignore
-			items.forEach(item => {
+
+			this.rawData[i].forEach(item => {
 				if (item.type === 1) {
 					dIncome += item.amount;
 				} else {
 					dSpending += item.amount;
 				}
 			});
-			dailyDict[day] = { income: dIncome, spending: dSpending };
+			dailyDict[i] = { income: dIncome, spending: dSpending };
+			this.dailyData = dailyDict;
 		}
-		this.dailyData = dailyDict;
 	}
 
 	calcMonthlyData() {
@@ -108,20 +117,25 @@ class HkbModel {
 		this.setYearMonth(currDate);
 	}
 
-	setYearMonth(date: Date) {
-		this.year = date.getFullYear();
-		this.month = date.getMonth();
-		history.pushState(
-			{
-				tab: this.tab,
-				year: this.year,
-				month: this.month,
-			},
-			'hkb',
-			`/${this.year}${this.month + 1}/${this.tab}`,
-		);
-		this.observer.notify('dateChanged', { year: this.year, month: this.month });
-	}
+	setYearMonth(year, month) {
+		this.year = year;
+		this.month = month;
+		this.fetchRawData();
+  }
+// 	setYearMonth(date: Date) {
+// 		this.year = date.getFullYear();
+// 		this.month = date.getMonth();
+// 		history.pushState(
+// 			{
+// 				tab: this.tab,
+// 				year: this.year,
+// 				month: this.month,
+// 			},
+// 			'hkb',
+// 			`/${this.year}${this.month + 1}/${this.tab}`,
+// 		);
+// 		this.observer.notify('dateChanged', { year: this.year, month: this.month });
+// 	}
 	getDate() {
 		return new Date(this.year, this.month, 1);
 	}

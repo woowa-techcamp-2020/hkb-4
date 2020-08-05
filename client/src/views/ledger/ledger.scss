@@ -7,6 +7,20 @@ hkb-ledger {
 		margin: 10px auto;
 		&-input {
 			padding: 10px;
+			position: relative;
+			.init-button,
+			.delete-button {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				font-size: 14px;
+				color: dodgerblue;
+				cursor: pointer;
+				&:hover {
+					filter: brightness(0.9);
+					font-weight: 600;
+				}
+			}
 		}
 		.row {
 			display: flex;
@@ -57,6 +71,9 @@ hkb-ledger {
 				border: none;
 				border-bottom: 1px solid black;
 				width: 75%;
+			}
+			&[type='radio'] {
+				display: none;
 			}
 		}
 		select {
