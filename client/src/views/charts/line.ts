@@ -89,11 +89,21 @@ class LineChart extends HTMLElement {
 		return command;
 	}
 
+	getMaxSpending() {
+		let maxSpending = 0;
+		Object.values(this.mockData.dailyData).forEach(data => {
+			if (data.spending > maxSpending) maxSpending = data.spending;
+		});
+		return maxSpending;
+	}
+
 	renderLineChart() {
 		const lineChartArea = document.querySelector('svg.line-chart');
 		const lines = this.prepareHorizontalLines();
 		lineChartArea.querySelector('g.lines').innerHTML = lines;
-		const conversionRatio = this.getConversionRatio(this.mockData.monthlyData.spending);
+		const maxSpending = this.getMaxSpending();
+		console.log(maxSpending);
+		const conversionRatio = this.getConversionRatio(maxSpending);
 		const command = this.getPathCommand(conversionRatio);
 		lineChartArea.querySelector('path.line').setAttribute('d', command);
 	}
