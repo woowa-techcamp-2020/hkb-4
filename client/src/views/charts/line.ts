@@ -90,6 +90,15 @@ class LineChart extends HTMLElement {
 		return command;
 	}
 
+	getAvgCommand(conversionRatio) {
+		const totalDays = new Date(this.mockData.year, this.mockData.month, 0).getDate();
+		const axisXstep = 600 / (totalDays + 1);
+		const avgConverted = (this.mockData.monthlyData.spending / totalDays) * conversionRatio;
+		console.log(avgConverted);
+		const command = `M 0 ${380 - avgConverted} L 600 ${380 - avgConverted}`;
+		return command;
+	}
+
 	getMaxSpending() {
 		let maxSpending = 0;
 		Object.values(this.mockData.dailyData).forEach(data => {
@@ -123,10 +132,11 @@ class LineChart extends HTMLElement {
 		const lines = this.prepareHorizontalLines();
 		lineChartArea.querySelector('g.lines').innerHTML = lines;
 		const maxSpending = this.getMaxSpending();
-		console.log(maxSpending);
 		const conversionRatio = this.getConversionRatio(maxSpending);
 		const command = this.getPathCommand(conversionRatio);
 		lineChartArea.querySelector('path.line').setAttribute('d', command);
+		const avgCommand = this.getAvgCommand(conversionRatio);
+		lineChartArea.querySelector('path.average').setAttribute('d', avgCommand);
 		const xLabels = this.getXlabels();
 		lineChartArea.querySelector('g.x-labels').innerHTML = xLabels;
 		const yLabels = this.getYlabels(maxSpending);
@@ -162,6 +172,13 @@ class LineChart extends HTMLElement {
 					</g>
 					<g class="labels y-labels">
 					</g>
+					<path
+						class="average"
+						d=""
+						fill="none"
+						stroke="gray"
+						stroke-width="0.5"
+					/>
 					<path class="line" d=""
 						marker-start="url(#dot)"
 						marker-mid="url(#dot)"

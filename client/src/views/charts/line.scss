@@ -30,6 +30,15 @@
 			stroke-dasharray: 4000;
 			stroke-dashoffset: 4000;
 		}
+		.average {
+			fill: transparent;
+			stroke: rgb(243, 186, 186);
+			stroke-width: 0.5px;
+			opacity: 0;
+			animation: draw 4s linear forwards 1s;
+			stroke-dasharray: 4;
+			animation: appear 0.3s linear forwards 4s;
+		}
 	}
 	.x-labels {
 		fill: #86878a;
