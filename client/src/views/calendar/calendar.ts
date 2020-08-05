@@ -50,7 +50,9 @@ class CalendarTab extends HTMLElement {
 	renderDays(date: number, type: string, daily): string {
 		return `<div class="date ${type}">
 			<li class="date-text">${date}</li>
-			<li class="income money">${daily && daily.income !== 0 ? numberToString(daily.income) : ''}</li>
+			<li class="income money">${
+				daily && daily.income !== 0 ? '+' + numberToString(daily.income) : ''
+			}</li>
 			<li class="spending money">${
 				daily && daily.spending !== 0 ? numberToString(-daily.spending) : ''
 			}</li>
