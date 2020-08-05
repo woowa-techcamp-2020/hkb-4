@@ -1,6 +1,14 @@
 @import '../../style/variable.scss';
 
 charts-tab {
+	position: absolute;
+	width: 100%;
+	&.display-none {
+		// background: red;
+		.pie-chart-container {
+			display: none;
+		}
+	}
 	.pie-chart-container {
 		width: 100%;
 		height: 400px;
