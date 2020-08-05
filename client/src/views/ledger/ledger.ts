@@ -1,6 +1,7 @@
 import LedgerByDate from '../ledgerByDate';
 
 class Ledger extends HTMLElement {
+	public name = 'ledger';
 	constructor() {
 		super();
 	}

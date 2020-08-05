@@ -1,4 +1,5 @@
 class CalendarTab extends HTMLElement {
+	public name = 'calendar';
 	private date!: Date;
 
 	constructor() {

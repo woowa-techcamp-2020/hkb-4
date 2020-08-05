@@ -34,6 +34,7 @@ const spending = [
 const total = 320000;
 
 class ChartsTab extends HTMLElement {
+	public name = 'charts';
 	connectedCallback() {
 		this.render();
 		this.renderPieChart();
@@ -108,7 +109,6 @@ class ChartsTab extends HTMLElement {
 		const barChartContainer = this.querySelector('.bar-chart-container') as HTMLElement;
 		spending.forEach(value => {
 			const element = barChartContainer.querySelector(`#bar-${value.name}`) as HTMLElement;
-			console.log(element);
 			if (element) {
 				element.style.width = Math.floor((value.spend * 100) / total) + '%';
 			}
