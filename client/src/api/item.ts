@@ -21,9 +21,12 @@ class ItemApi {
 		}
 	}
 
-	static async getItemsById(uid: ItemDTO.GET, date: string) {
+	static async getItemsByDate(date: string) {
 		try {
-			const response = await fetch(`${url}/item/${uid}/${date}`, Options.GET());
+			const response = await fetch(`${url}/item/${date}`, {
+				...Options.GET(),
+				credentials: 'include',
+			});
 			const json = await response.json();
 			return json.result;
 		} catch (error) {

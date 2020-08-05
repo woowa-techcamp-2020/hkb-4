@@ -24,6 +24,10 @@ class HkbController {
 		const date = this.model.getDate();
 		this.model.setYearMonth(new Date(date.getFullYear(), date.getMonth() + 1, 1));
 	}
+
+	getRawData() {
+		this.model.fetchRawData();
+	}
 }
 
 export default new HkbController();
