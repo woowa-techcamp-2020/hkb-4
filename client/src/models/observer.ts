@@ -33,6 +33,7 @@ class Observer {
 	// TODO
 	notify(name: string, data?: any) {
 		console.log(`observer is notifying for '${name}' evnet`);
+		if (!this.list[name]) return;
 		this.list[name].forEach(ele => ele.func(data));
 	}
 }

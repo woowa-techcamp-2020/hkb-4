@@ -11,6 +11,7 @@ const spending = {
 	미분류: 10000,
 };
 class ChartsTab extends HTMLElement {
+	public name = 'charts';
 	private cx = 180;
 	private cy = 180;
 	private radius = 70;
@@ -20,7 +21,6 @@ class ChartsTab extends HTMLElement {
 		income: 1,
 		spending: 350000,
 	};
-
 	connectedCallback() {
 		this.render();
 		this.renderPieChart();
