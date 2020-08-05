@@ -43,20 +43,21 @@ class HkbModel {
 
 	calcDailyData() {
 		const dailyDict = {};
-		for (const [day, items] of Object.entries(this.rawData)) {
+		const lastDay = 31;
+		for (let i = 0; i <= lastDay; i++) {
 			let dIncome = 0,
 				dSpending = 0;
-			//@ts-ignore
-			items.forEach(item => {
+
+			this.rawData[i].forEach(item => {
 				if (item.type === 1) {
 					dIncome += item.amount;
 				} else {
 					dSpending += item.amount;
 				}
 			});
-			dailyDict[day] = { income: dIncome, spending: dSpending };
+			dailyDict[i] = { income: dIncome, spending: dSpending };
+			this.dailyData = dailyDict;
 		}
-		this.dailyData = dailyDict;
 	}
 
 	calcMonthlyData() {
