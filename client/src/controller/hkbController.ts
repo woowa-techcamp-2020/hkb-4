@@ -6,20 +6,23 @@ class HkbController {
 		this.model = model.HkbModel;
 	}
 
-	initDate() {
-		this.model.getCurrDate();
+	init() {
+		this.model.initData();
 	}
 
 	changeTab() {
 		const tab = (event.target as HTMLElement).closest('li');
 		if (!tab) return;
-		const selected = document.querySelector('.selected-tab') as HTMLElement;
-		selected.style.left = `${tab.offsetLeft}px`;
 		this.model.setTabName(tab.getAttribute('name'));
 	}
 
-	changeMonth() {
-		//
+	changePrevMonth() {
+		const date = this.model.getDate();
+		this.model.setYearMonth(new Date(date.getFullYear(), date.getMonth() - 1, 1));
+	}
+	changeNextMonth() {
+		const date = this.model.getDate();
+		this.model.setYearMonth(new Date(date.getFullYear(), date.getMonth() + 1, 1));
 	}
 }
 
