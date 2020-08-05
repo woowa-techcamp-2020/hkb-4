@@ -1,85 +1,94 @@
 import { numberToString } from '../../util/common';
 
 const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1', '#9F71C1'];
-const spending = [
-	{
-		name: '식비',
-		spend: 100000,
-	},
-	{
-		name: '생활',
-		spend: 90000,
-	},
-	{
-		name: '쇼핑/뷰티',
-		spend: 80000,
-	},
-	{
-		name: '교통',
-		spend: 40000,
-	},
-	{
-		name: '의료/건강',
-		spend: 20000,
-	},
-	{
-		name: '문화/여가',
-		spend: 10000,
-	},
-	{
-		name: '미분류',
-		spend: 10000,
-	},
-];
-const total = 320000;
-
+const spending = {
+	식비: 100000,
+	생활: 90000,
+	'쇼핑/뷰티': 80000,
+	교통: 40000,
+	'의료/건강': 20000,
+	'문화/여가': 10000,
+	미분류: 10000,
+};
 class ChartsTab extends HTMLElement {
+	private cx = 180;
+	private cy = 180;
+	private radius = 70;
+	private svgns = 'http://www.w3.org/2000/svg';
+	private spending = spending;
+	private monthlyData = {
+		income: 1,
+		spending: 350000,
+	};
+
 	connectedCallback() {
 		this.render();
 		this.renderPieChart();
-		this.initBarChart();
-		// this.renderBarChart();
+		this.renderBarChart();
 	}
 
 	renderPieChart() {
-		const cx = 140;
-		const cy = 140;
 		const pieChartContainer = this.querySelector('.pie-chart') as SVGViewElement;
-		const radius = 70;
-		const total = 100;
-		const t = [
-			{ rotate: 0, percentage: 30 },
-			{ rotate: 108, percentage: 20 },
-			{ rotate: 180, percentage: 15 },
-			{ rotate: 234, percentage: 15 },
-			{ rotate: 288, percentage: 10 },
-			{ rotate: 324, percentage: 10 },
-		];
+		const keys = Object.keys(this.spending).sort(
+			(a, b) => this.spending[b] * 1 - this.spending[a] * 1,
+		);
 
-		for (let i = 0; i < 6; i++) {
+		let rotate = 0;
+		const labels = [];
+		for (let i = 0; i < 5; i++) {
 			pieChartContainer.appendChild(
 				this.pie(
-					radius.toString(),
-					cx.toString(),
-					cy.toString(),
+					this.radius.toString(),
+					this.cx.toString(),
+					this.cy.toString(),
 					colors[i],
-					t[i].percentage / total,
-					2 * Math.PI * radius,
-					t[i].rotate,
+					this.spending[keys[i]] / this.monthlyData.spending,
+					2 * Math.PI * this.radius,
+					rotate,
 				),
 			);
-			pieChartContainer.appendChild(this.text(t[i].rotate, radius, spending[i].name));
+			labels.push(
+				this.renderPieLabel(
+					rotate,
+					(this.spending[keys[i]] * 100) / this.monthlyData.spending,
+					this.radius,
+					keys[i],
+				),
+			);
+			rotate += (this.spending[keys[i]] / this.monthlyData.spending) * 360;
 		}
+		pieChartContainer.appendChild(
+			this.pie(
+				this.radius.toString(),
+				this.cx.toString(),
+				this.cy.toString(),
+				colors[5],
+				(360 - rotate) / 360,
+				2 * Math.PI * this.radius,
+				rotate,
+			),
+		);
+		labels.push(this.renderPieLabel(rotate, ((360 - rotate) * 100) / 360, this.radius, '기타'));
+
+		labels.forEach(label => pieChartContainer.appendChild(label));
 	}
 
-	text(rotate: number, radius: number, txt: string) {
-		const svgns = 'http://www.w3.org/2000/svg';
-		const text = document.createElementNS(svgns, 'text');
-		text.setAttributeNS(null, 'x', (140 + Math.cos(rotate) * radius).toString());
-		text.setAttributeNS(null, 'y', (140 + Math.sin(rotate) * radius).toString());
-		text.setAttribute('fill', '#000');
-		text.textContent = txt;
-		return text;
+	renderPieLabel(degree: number, percentage: number, radius: number, label: string) {
+		const textContainer = document.createElementNS(this.svgns, 'text') as SVGTextElement;
+		const x = Math.cos((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2.2;
+		const y = Math.sin((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2.2;
+		textContainer.setAttribute('x', `${this.cx - x}`);
+		textContainer.setAttribute('y', `${-this.cy - y + 6}`);
+		textContainer.setAttribute('text-anchor', 'middle');
+		textContainer.style.transform = 'rotate(90deg)';
+		const txtSpan = document.createElementNS(this.svgns, 'tspan');
+		txtSpan.textContent = label;
+		const perSpan = document.createElementNS(this.svgns, 'tspan');
+		perSpan.classList.add('per-span');
+		perSpan.textContent = `${Math.round(percentage)}%`;
+		textContainer.appendChild(txtSpan);
+		textContainer.appendChild(perSpan);
+		return textContainer;
 	}
 
 	pie(
@@ -91,8 +100,7 @@ class ChartsTab extends HTMLElement {
 		dash2: number,
 		rotate: number,
 	) {
-		const svgns = 'http://www.w3.org/2000/svg';
-		const circle = document.createElementNS(svgns, 'circle');
+		const circle = document.createElementNS(this.svgns, 'circle');
 		circle.setAttributeNS(null, 'cx', x);
 		circle.setAttributeNS(null, 'cy', y);
 		circle.setAttributeNS(null, 'r', r);
@@ -117,38 +125,31 @@ class ChartsTab extends HTMLElement {
 
 	renderBarChart() {
 		const barChartContainer = this.querySelector('.bar-chart-container') as HTMLElement;
-		spending.forEach(value => {
-			const element = barChartContainer.querySelector(`#bar-${value.name}`) as HTMLElement;
-			console.log(element);
-			if (element) {
-				element.style.width = Math.floor((value.spend * 100) / total) + '%';
-			}
-		});
-	}
-
-	initBarChart() {
-		const barChartContainer = this.querySelector('.bar-chart-container') as HTMLElement;
+		const keys = Object.keys(this.spending).sort(
+			(a, b) => this.spending[b] * 1 - this.spending[a] * 1,
+		);
+		const max = this.spending[keys[0]];
 		// %순으로 정렬했다고 치고,
-		let bars = spending.reduce(
-			(accum, value, i) => (accum += this.initBar(value, total, colors[i])),
+		let bars = keys.reduce(
+			(accum, key, i) =>
+				(accum += this.bar(key, this.spending[key], this.monthlyData.spending, colors[i], max)),
 			'',
 		);
 		barChartContainer.innerHTML = bars;
 	}
 
-	initBar(value: { name: string; spend: number }, total: number, color: string): string {
-		const max = 100000;
-		return `<div class="bar-chart-content" id="bar-${value.name}">
-		  <div class="title">${value.name}</div>
-		  <div class="per">${Math.floor((value.spend * 100) / total)}%</div>
+	bar(name: string, spend: number, total: number, color: string, max: number): string {
+		return `<div class="bar-chart-content" id="bar-${name}">
+		  <div class="title">${name}</div>
+		  <div class="per">${Math.round((spend * 100) / total)}%</div>
       <div class="chart">
         <div class="percentage-wrapper">
           <div class="chart-percentage" style="width: ${
-						(100 * value.spend) / max
+						(100 * spend) / max
 					}%;background: ${color}"></div>
         </div>
 		  </div>
-		  <div class="spending">${numberToString(value.spend)}원</div>
+		  <div class="spending">${numberToString(spend)}원</div>
 		</div>`;
 	}
 
@@ -162,7 +163,7 @@ class ChartsTab extends HTMLElement {
 				<label for="daily">일별 지출</label>
 			</div>
 			<div class="current-spending">
-				이번달 지출 금액: <span>444,900원</span>
+				이번달 지출 금액: <span>${numberToString(this.monthlyData.spending)}원</span>
 			</div>
 		</div>
     <center class="pie-chart-container">
