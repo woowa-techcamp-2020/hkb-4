@@ -61,6 +61,7 @@ class HkbController {
 		submitButton.classList.add('edit-button');
 		submitButton.dataset.id = item.data.id;
 		deleteButton.dataset.id = item.data.id;
+		this.handleInputInit();
 		this.fillInput(item, inputContainer);
 	}
 
@@ -216,24 +217,28 @@ class HkbController {
 
 	initCategory() {
 		const categorySelect = document.querySelector('select[name="category"]');
+		categorySelect.classList.remove('invalid');
 		const options = categorySelect.querySelectorAll('option');
 		options[0].selected = true;
 	}
 
 	initPayment() {
 		const paymentSelect = document.querySelector('select[name="pid"]');
+		paymentSelect.classList.remove('invalid');
 		const options = paymentSelect.querySelectorAll('option');
 		options[0].selected = true;
 	}
 
 	initAmount() {
 		const amountInput = document.querySelector('input[name="amount"]');
+		amountInput.classList.remove('invalid');
 		// @ts-ignore
 		amountInput.value = '';
 	}
 
 	initDescription() {
 		const descriptionInput = document.querySelector('input[name="description"]');
+		descriptionInput.classList.remove('invalid');
 		// @ts-ignore
 		descriptionInput.value = '';
 	}
