@@ -32,13 +32,6 @@ class Hkb extends HTMLElement {
 		tabContainer.appendChild(this.ledgerTab);
 		tabContainer.appendChild(this.calendarTab);
 		tabContainer.appendChild(this.chartsTab);
-		this.init();
-	}
-
-	init() {
-		// 나중에 없애야할 함수
-		this.calendarTab.classList.add('display-none');
-		this.chartsTab.classList.add('display-none');
 	}
 
 	reset() {
@@ -62,38 +55,14 @@ class Hkb extends HTMLElement {
 		const selected = document.querySelector('.selected-tab') as HTMLElement;
 		selected.style.left = `${tab.offsetLeft}px`;
 
-		if (tabName === this.ledgerTab.name) {
-			this.ledgerTab.classList.remove('display-none');
-			this.checkElementClass(this.calendarTab);
-			this.checkElementClass(this.chartsTab);
-		}
-		if (tabName === this.calendarTab.name) {
-			this.calendarTab.classList.remove('display-none');
-			this.checkElementClass(this.ledgerTab);
-			this.checkElementClass(this.chartsTab);
-		}
-		if (tabName === this.chartsTab.name) {
-			this.chartsTab.classList.remove('display-none');
-			this.checkElementClass(this.ledgerTab);
-			this.checkElementClass(this.calendarTab);
-		}
+		this.ledgerTab.tabChanged(tabName);
+		this.calendarTab.tabChanged(tabName);
+		this.chartsTab.tabChanged(tabName);
 	}
 
 	checkElementClass(element: HTMLElement) {
 		if (!element.classList.contains('display-none')) {
 			element.classList.add('display-none');
-		}
-	}
-
-	render(data: any) {
-		this.reset();
-		switch (data.page) {
-			case 'ledger':
-				this.appendChild(new Ledger());
-			case 'calender':
-				this.appendChild(new Calendar());
-			case 'charts':
-				this.appendChild(new ChartsTab());
 		}
 	}
 }

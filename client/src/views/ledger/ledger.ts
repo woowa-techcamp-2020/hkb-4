@@ -34,11 +34,20 @@ class Ledger extends HTMLElement {
 		this.updatePayments(data.payments);
 		this.monthlyFilter.update(data);
 		this.renderItemList(data);
+		this.hkbController.handleFiltrationLedger();
+	}
+
+	tabChanged(tabName) {
+		if (tabName === this.name) {
+			this.classList.remove('display-none');
+		} else {
+			if (this.classList.contains('display-none')) return;
+			this.classList.add('display-none');
+		}
 	}
 
 	renderItemList(data) {
 		const { year, month, rawData, dailyData, monthlyData } = data;
-		console.log(year, month, rawData, dailyData, monthlyData);
 		const itemContainer = this.querySelector('.container-items');
 		itemContainer.innerHTML = '';
 		if (itemContainer) {

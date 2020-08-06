@@ -38,6 +38,15 @@ class CalendarTab extends HTMLElement {
 		});
 	}
 
+	tabChanged(tabName) {
+		if (tabName === this.name) {
+			this.classList.remove('display-none');
+		} else {
+			if (this.classList.contains('display-none')) return;
+			this.classList.add('display-none');
+		}
+	}
+
 	update(data) {
 		this.renderCalendar(data.year, data.month, data.dailyData);
 		this.monthlyFilter.update(data);
