@@ -30,10 +30,23 @@ class Ledger extends HTMLElement {
 		paymentSelection.innerHTML = options;
 	}
 
+	setDate() {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1;
+		const date = today.getDate();
+		const todayString = `${year}-${month > 10 ? month : `0${month}`}-${
+			date > 10 ? date : `0${date}`
+		}`;
+		console.log(todayString);
+		// @ts-ignore
+		document.querySelector('input[name="date"]').value = todayString;
+	}
 	update(data) {
 		this.updatePayments(data.payments);
 		this.monthlyFilter.update(data);
 		this.renderItemList(data);
+		this.setDate();
 	}
 
 	renderItemList(data) {
@@ -79,7 +92,7 @@ class Ledger extends HTMLElement {
 		    <div class="row">
 		      <div class="group">
 		        <span>날짜</span>
-		        <input type="date" name="date" value="2020-08-04"/>
+		        <input type="date" name="date" value=""/>
 		      </div>
 		      <div class="group">
 		        <span>카테고리</span>
