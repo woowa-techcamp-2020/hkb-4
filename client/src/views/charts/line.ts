@@ -187,8 +187,19 @@ class LineChart extends HTMLElement {
 		chartArea.querySelector('g.y-labels').innerHTML = yLabels;
 	}
 
+	showAvgSpending() {
+		const { totalDays } = this.config;
+		const wrapper = document.querySelector('.line-chart-container');
+		const avgSpendingContainer = wrapper.querySelector('.avg-spending');
+		// @ts-ignore
+		const avgSpending = parseInt(this.mockData.monthlyData.spending / totalDays);
+		// @ts-ignore
+		avgSpendingContainer.innerText = `이번 달 일평균 ${numberToString(avgSpending)}원`;
+	}
+
 	renderLineChart() {
 		this.setConfig();
+		this.showAvgSpending();
 		this.drawXaxis();
 		this.drawYaxis();
 		this.drawHorizontalLines();
@@ -199,7 +210,8 @@ class LineChart extends HTMLElement {
 	render() {
 		const { height } = this.config;
 		this.innerHTML = `
-      <div class="line-chart-container">
+			<div class="line-chart-container">
+				<div class="avg-spending"></div>
 				<svg class="line-chart" viewbox="-80 -20 700 430">
 					<defs>
 						<marker
