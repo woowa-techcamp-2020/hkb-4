@@ -27,16 +27,17 @@ class Ledger extends HTMLElement {
 			options += `<option value="${id}">${name}</option>`;
 		}
 		paymentSelection.innerHTML = options;
-  }
+	}
 
-  update(data) {
-     this.updatePayments(data.payments);
+	update(data) {
+		this.updatePayments(data.payments);
 		this.monthlyFilter.update(data);
 		this.renderItemList(data);
 	}
 
 	renderItemList(data) {
 		const { year, month, rawData, dailyData, monthlyData } = data;
+		console.log(year, month, rawData, dailyData, monthlyData);
 		const itemContainer = this.querySelector('.container-items');
 		itemContainer.innerHTML = '';
 		if (itemContainer) {
@@ -56,6 +57,7 @@ class Ledger extends HTMLElement {
 				}
 			}
 		}
+	}
 
 	render() {
 		this.innerHTML = `
