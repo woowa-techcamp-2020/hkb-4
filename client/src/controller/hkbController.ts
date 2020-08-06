@@ -59,6 +59,7 @@ class HkbController {
 		const submitButton = inputContainer.querySelector('.submit-button');
 		const deleteButton = inputContainer.querySelector('.delete-button');
 		submitButton.classList.add('edit-button');
+		submitButton.innerText = '수정';
 		submitButton.dataset.id = item.data.id;
 		deleteButton.dataset.id = item.data.id;
 		this.handleInputInit();
@@ -190,6 +191,8 @@ class HkbController {
 		deleteButton.classList.add('hide');
 		deleteButton.removeAttribute('data-id');
 		submitButton.classList.remove('edit-button');
+		// @ts-ignore
+		submitButton.innerText = '확인';
 		submitButton.removeAttribute('data-id');
 	}
 
