@@ -1,0 +1,19 @@
+monthly-filter {
+	display: block;
+	.checkbox-group {
+		width: 168px;
+		margin: 2px auto;
+		display: flex;
+		cursor: pointer;
+		input {
+			margin-top: 1px;
+			margin-right: 4px;
+		}
+		label {
+			display: flex;
+			flex: 1;
+			justify-content: space-between;
+			margin-left: 4px;
+		}
+	}
+}
