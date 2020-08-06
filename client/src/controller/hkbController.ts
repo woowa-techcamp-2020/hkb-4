@@ -39,7 +39,7 @@ class HkbController {
 		const deleteButton = e.target.closest('.delete-button');
 		const filtrationContainer = e.target.closest('input[type="checkbox"]');
 		if (item) {
-			this.handleItemEdit(item);
+			this.handleItemClick(item);
 		} else if (radioButton) {
 			this.toggleTypeButton(radioButton);
 		} else if (submitButton) {
@@ -53,7 +53,7 @@ class HkbController {
 		}
 	}
 
-	handleItemEdit(item) {
+	handleItemClick(item) {
 		const inputContainer = item.closest('hkb-ledger').querySelector('.container-input');
 		const submitButton = inputContainer.querySelector('.submit-button');
 		const deleteButton = inputContainer.querySelector('.delete-button');
@@ -63,7 +63,7 @@ class HkbController {
 		this.fillInput(item, inputContainer);
 	}
 
-	changeSelectOption(type, item) {
+	changhOption(type, item) {
 		const optionsContainer = document.querySelector(`select[name="${type}"`);
 		const options = optionsContainer.querySelectorAll('option');
 		options.forEach(option => {
@@ -82,14 +82,13 @@ class HkbController {
 		const checkedRadioButton = inputContainer.querySelector(`input[value="${type}"]`);
 		checkedRadioButton.checked = true;
 		this.toggleTypeButton(checkedRadioButton);
-		// @ts-ignore
-		inputContainer.querySelector('input[name="amount"]').value = amount;
-		//@ts-ignore
-		inputContainer.querySelector('input[name="description"]').value = description;
-		//@ts-ignore
-		inputContainer.querySelector('input[type="date"]').value = date;
-		this.changeSelectOption('category', item);
-		this.changeSelectOption('pid', item);
+		(inputContainer.querySelector('input[name="amount"]') as HTMLInputElement).value = amount;
+		(inputContainer.querySelector(
+			'input[name="description"]',
+		) as HTMLInputElement).value = description;
+		(inputContainer.querySelector('input[type="date"]') as HTMLInputElement).value = date;
+		this.changhOption('category', item);
+		this.changhOption('pid', item);
 	}
 
 	toggleTypeButton(button) {
@@ -105,7 +104,7 @@ class HkbController {
 		});
 	}
 
-	changeCategory(category) {
+	changeCategory(type) {
 		const spendingCategory = [
 			'식비',
 			'생활',
@@ -117,64 +116,68 @@ class HkbController {
 		];
 		const incomeCategory = ['월급', '용돈', '기타수입'];
 		const categorySelect = document.querySelector('select[name="category"]');
-		if (category === '수입') {
+		if (type === ItemDTO.ItemType.INCOME) {
 			categorySelect.innerHTML = incomeCategory.reduce(
 				(prev, next) => prev + `<option value="${next}">${next}</option>`,
-				'',
+				'<option value="" hidden selected disabled>선택하세요</option>',
 			);
 		} else {
 			categorySelect.innerHTML = spendingCategory.reduce(
 				(prev, next) => prev + `<option value="${next}">${next}</option>`,
-				'',
+				'<option value="" hidden selected disabled>선택하세요</option>',
 			);
 		}
-		categorySelect.firstElementChild.setAttribute('selected', '');
 	}
 
 	async handleItemSubmit(button) {
 		const inputContainer = document.querySelector('.container-input');
-		// @ts-ignore
-		const type = parseInt(inputContainer.querySelector('input[name="type"]:checked').value);
-		// @ts-ignore
-		const date = inputContainer.querySelector('input[name="date"]').value;
-		// @ts-ignore
-		const category = inputContainer.querySelector('select[name="category"]>option:checked').value;
-		// @ts-ignore
+		const type = parseInt(
+			(inputContainer.querySelector('input[name="type"]:checked') as HTMLInputElement).value,
+		);
+		const date = (inputContainer.querySelector('input[name="date"]') as HTMLInputElement).value;
+		const category = (inputContainer.querySelector(
+			'select[name="category"]>option:checked',
+		) as HTMLInputElement).value;
 		const pid_item = parseInt(
 			(inputContainer.querySelector('select[name="pid"]>option:checked') as HTMLInputElement).value,
 		);
-		// @ts-ignore
-		const amount = parseInt(inputContainer.querySelector('input[name="amount"]').value);
-		// @ts-ignore
-		const description = inputContainer.querySelector('input[name="description"]').value;
+		const amount = parseInt(
+			(inputContainer.querySelector('input[name="amount"]') as HTMLInputElement).value,
+		);
+		const description = (inputContainer.querySelector(
+			'input[name="description"]',
+		) as HTMLInputElement).value;
 
 		const inputData = { type, date, category, pid_item, amount, description };
 
 		if (button.classList.contains('edit-button')) {
 			const id = parseInt(button.dataset.id);
 			await this.model.fetchItemEdit({ id, ...inputData });
-			button.classList.remove('edit-button');
-			button.removeAttribute('data-id');
+			this.handleButtonInit();
 		} else {
 			await this.model.fetchItemCreate(inputData);
 		}
 	}
 
-	handleInputInit(button) {
-		console.log('handleInputInit');
+	handleButtonInit() {
+		const submitButton = document.querySelector('submit-button');
+		const deleteButton = document.querySelector('delete-button');
+		const initButton = document.querySelector('init-button');
+		initButton.classList.remove('hide');
+		deleteButton.classList.add('hide');
+		deleteButton.removeAttribute('data-id');
+		submitButton.classList.remove('edit-button');
+		submitButton.removeAttribute('data-id');
 	}
+
+	handleInputInit(button) {}
 
 	async handleItemDelete(button) {
 		const inputContainer = document.querySelector('.container-input');
-		//@ts-ignore
-		const date = inputContainer.querySelector('input[name="date"]').value;
+		const date = (inputContainer.querySelector('input[name="date"]') as HTMLInputElement).value;
 		const id = parseInt(button.dataset.id);
 		await this.model.fetchItemDelete({ id, date });
-		button.removeAttribute('data-id');
-		button.classList.add('hide');
-		inputContainer.querySelector('.init-button').classList.remove('hide');
-		inputContainer.querySelector('.submit-button').removeAttribute('data-id');
-		inputContainer.querySelector('.submit-button').classList.remove('edit-button');
+		this.handleButtonInit();
 	}
 
 	handleFiltrationLedger(filtrationContainer) {

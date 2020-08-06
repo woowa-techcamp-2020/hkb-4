@@ -83,8 +83,9 @@ class Ledger extends HTMLElement {
 		      </div>
 		      <div class="group">
 		        <span>카테고리</span>
-		        <select name="category">
-		          <option value="식비" selected>식비</option>
+						<select name="category">
+							<option value="" hidden selected disabled>선택하세요</option>
+		          <option value="식비">식비</option>
 		          <option value="생활">생활</option>
 		          <option value="쇼핑/뷰티">쇼핑/뷰티</option>
 		          <option value="교통">교통</option>
@@ -110,7 +111,7 @@ class Ledger extends HTMLElement {
 		      </div>
 		    </div>
 		    <div class="row">
-		      <div class="button button--large button--active submit-button">
+		      <div class="button button--large button--active submit-button disabled">
 		        확인
 		      </div>
 		    </div>
