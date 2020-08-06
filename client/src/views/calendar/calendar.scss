@@ -1,0 +1,73 @@
+@import '../../style/variable.scss';
+
+calendar-tab {
+	display: inline-block;
+	// position: absolute;
+	width: 100%;
+	padding: 16px 0;
+	.calendar {
+		width: 100%;
+		min-height: 100px;
+		box-shadow: $shadow;
+		background: white;
+		border-radius: 8px;
+		padding: 8px;
+		box-sizing: border-box;
+		margin-top: 16px;
+		.calendar-week {
+			display: flex;
+			list-style: none;
+			li {
+				flex: 1;
+				text-align: center;
+				padding: 12px 0;
+				color: #555;
+				font-weight: 600;
+				&.red {
+					color: #ef5350;
+				}
+				&.blue {
+					color: #42a5f5;
+				}
+			}
+		}
+		.calendar-date-container {
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			.date {
+				width: calc(100% / 7);
+				height: 100px;
+				box-sizing: border-box;
+				padding: 8px 16px;
+				font-size: 18px;
+				font-weight: 500;
+				list-style: none;
+				color: #777;
+				.money {
+					margin: 8px 0;
+					padding: 3px;
+					font-size: 15px;
+					font-weight: 400;
+					text-align: right;
+					border-radius: 8px;
+					&.spending {
+						background: #ffebee;
+						color: $red !important;
+					}
+					&.income {
+						background: #e3f2fd;
+						color: $blue !important;
+					}
+				}
+			}
+			.non-date {
+				pointer-events: none;
+				color: #ccc;
+			}
+		}
+	}
+	.value-none {
+		display: none;
+	}
+}

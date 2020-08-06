@@ -1,0 +1,111 @@
+hkb-ledger {
+	display: block;
+	width: 100%;
+	// position: absolute;
+	.container {
+		width: 100%;
+		margin: 10px auto;
+		&-input {
+			padding: 10px;
+			position: relative;
+			.init-button,
+			.delete-button {
+				position: absolute;
+				top: 10px;
+				right: 10px;
+				font-size: 14px;
+				color: dodgerblue;
+				cursor: pointer;
+				&:hover {
+					filter: brightness(0.9);
+					font-weight: 600;
+				}
+			}
+		}
+		.row {
+			display: flex;
+			align-items: center;
+			margin-bottom: 8px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+			.group {
+				display: flex;
+				align-items: center;
+				flex: 1;
+				> span {
+					padding: 0 5px;
+				}
+			}
+		}
+		.button {
+			border: 1px solid dodgerblue;
+			background-color: white;
+			padding: 2px 5px;
+			border-radius: 8px;
+			color: dodgerblue;
+			text-align: center;
+			&:hover {
+				filter: brightness(0.9);
+				cursor: pointer;
+			}
+			&:not(:last-of-type) {
+				margin-right: 5px;
+			}
+			&--active {
+				background-color: dodgerblue;
+				color: white;
+			}
+			&--large {
+				flex: 1;
+			}
+		}
+		input {
+			&:hover {
+				cursor: pointer;
+			}
+			&[type='text'],
+			&[type='date'] {
+				outline: none;
+				background-color: transparent;
+				border: none;
+				border-bottom: 1px solid black;
+				width: 75%;
+			}
+			&[type='radio'] {
+				display: none;
+			}
+			&[type='number'] {
+				width: 60%;
+				border: none;
+				border-bottom: 1px solid black;
+				background-color: transparent;
+				text-align: right;
+				&::-webkit-inner-spin-button,
+				&::-webkit-outer-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+				&:focus {
+					outline: none;
+				}
+			}
+		}
+		select {
+			width: 50%;
+			min-width: auto;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		&-monthly {
+			.group {
+				display: flex;
+				justify-content: center;
+			}
+		}
+		&-items {
+			margin: 0 auto;
+		}
+	}
+}
