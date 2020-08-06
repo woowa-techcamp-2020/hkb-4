@@ -54,6 +54,7 @@ class HkbModel {
 			dailyData: this.dailyData,
 			monthlyData: this.monthlyData,
 			categoryData: this.categoryData,
+			payments: this.payments,
 		});
 	}
 
@@ -64,7 +65,6 @@ class HkbModel {
 		// TODO : result type
 		// @ts-ignore
 		this.rawData = result;
-		// observer.notify 주기
 		this.calcDailyData();
 		this.calcMonthlyData();
 		this.calcCategoryData();
