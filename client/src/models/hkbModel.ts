@@ -65,10 +65,14 @@ class HkbModel {
 		// TODO : result type
 		// @ts-ignore
 		this.rawData = result;
+		this.calcAllStatictics();
+		this.notifyDataFetched();
+	}
+
+	calcAllStatictics() {
 		this.calcDailyData();
 		this.calcMonthlyData();
 		this.calcCategoryData();
-		this.notifyDataFetched();
 	}
 
 	updateHistory() {
@@ -145,6 +149,22 @@ class HkbModel {
 			id,
 			payment: this.payments[pid_item],
 		};
+		this.afterCreation(addedItemPrepared);
+	}
+
+	afterCreation(item) {
+		const itemMonth = new Date(item.date).getMonth() + 1;
+		const itemDay = new Date(item.date).getDate();
+		console.log(itemDay);
+		if (this.month !== itemMonth) return;
+
+		if (!this.rawData[itemDay]) {
+			this.rawData[itemDay] = [];
+		}
+		this.rawData[itemDay].push(item);
+
+		this.calcAllStatictics();
+		this.notifyDataFetched();
 	}
 
 	initData() {
