@@ -132,6 +132,11 @@ class HkbModel {
 		this.categoryData = categoryDict;
 	}
 
+	async fetchItemCreated(data: ItemDTO.CREATE) {
+		const addedItem = await ItemApi.create(data);
+		console.log(addedItem);
+	}
+
 	initData() {
 		const currDate = new Date();
 		// TODO

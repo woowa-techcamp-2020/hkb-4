@@ -3,7 +3,10 @@ import { ItemDTO } from '../../../shared/dto';
 class ItemApi {
 	static async create(body: ItemDTO.CREATE) {
 		try {
-			const response = await fetch(`${url}/item/create`, Options.POST(body));
+			const response = await fetch(`${url}/item/create`, {
+				...Options.POST(body),
+				credentials: 'include',
+			});
 			const json = await response.json();
 			return json.result;
 		} catch (error) {

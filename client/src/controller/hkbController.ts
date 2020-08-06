@@ -138,7 +138,8 @@ class HkbController {
 		const category = inputContainer.querySelector('select[name="category"]>option:checked').value;
 		// @ts-ignore
 		const pid_item = parseInt(
-			inputContainer.querySelector('select[name="payment"]>option:checked').value,
+			(inputContainer.querySelector('select[name="payment"]>option:checked') as HTMLInputElement)
+				.value,
 		);
 		// @ts-ignore
 		const amount = parseInt(inputContainer.querySelector('input[name="amount"]').value);
@@ -146,6 +147,7 @@ class HkbController {
 		const description = inputContainer.querySelector('input[name="description"]').value;
 
 		const inputData = { type, date, category, pid_item, amount, description };
+		await this.model.fetchItemCreated(inputData);
 	}
 
 	handleInputInit(button) {
