@@ -29,6 +29,7 @@ class HkbController {
 		const newDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
 		this.model.setYearMonth(newDate.getFullYear(), newDate.getMonth());
 	}
+
 	ledgerHandler(e) {
 		e.stopPropagation();
 		const item = e.target.closest('hkb-ledger-item');
@@ -127,8 +128,24 @@ class HkbController {
 		categorySelect.firstElementChild.setAttribute('selected', '');
 	}
 
-	handleItemSubmit(button) {
-		console.log('handleItemSubmit');
+	async handleItemSubmit(button) {
+		const inputContainer = document.querySelector('.container-input');
+		// @ts-ignore
+		const type = parseInt(inputContainer.querySelector('input[name="type"]:checked').value);
+		// @ts-ignore
+		const date = inputContainer.querySelector('input[name="date"]').value;
+		// @ts-ignore
+		const category = inputContainer.querySelector('select[name="category"]>option:checked').value;
+		// @ts-ignore
+		const pid_item = parseInt(
+			inputContainer.querySelector('select[name="payment"]>option:checked').value,
+		);
+		// @ts-ignore
+		const amount = parseInt(inputContainer.querySelector('input[name="amount"]').value);
+		// @ts-ignore
+		const description = inputContainer.querySelector('input[name="description"]').value;
+
+		const inputData = { type, date, category, pid_item, amount, description };
 	}
 
 	handleInputInit(button) {
