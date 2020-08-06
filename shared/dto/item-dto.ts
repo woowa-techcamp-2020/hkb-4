@@ -1,6 +1,6 @@
 enum ItemType {
-	INCOME,
-	SPENDING,
+	INCOME = 1,
+	SPENDING = 2,
 }
 
 type INCOME = '월급' | '용돈' | '기타 수입';
