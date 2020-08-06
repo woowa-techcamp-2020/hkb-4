@@ -1,31 +1,23 @@
 class LedgerItem extends HTMLElement {
-	private type!: string;
-	private category!: string;
-	private payment!: string;
-	private amount!: number;
-	private description!: string;
+	private data!: any;
 	constructor(data: any) {
 		super();
-		this.id = data.id;
-		this.type = data.type;
-		this.category = data.category;
-		this.payment = data.payment;
-		this.amount = data.amount;
-		this.description = data.description;
+		this.data = data;
 
 		this.render();
 	}
 
 	render() {
+		const { type, category, payment, amount, description } = this.data;
 		this.innerHTML = `
 			<div class="item__category">
-				<span class="${this.type === '지출' ? 'spending' : 'income'}">
-					${this.category}</span>
+				<span class="${type === 1 ? 'income' : 'spending'}">
+					${category}</span>
 			</div>
-			<div class="item__description">${this.description}</div>
-			<div class="item__payment">${this.payment}</div>
-			<div class="item__amount ${this.type === '지출' ? 'spending' : 'income'}">
-				${this.type === '지출' ? '-' : '+'} ${this.amount}원
+			<div class="item__description">${description}</div>
+			<div class="item__payment">${payment}</div>
+			<div class="item__amount ${type === 1 ? 'income' : 'spending'}">
+				${type === 1 ? '+' : '-'} ${amount}원
 			</div>
     `;
 	}
