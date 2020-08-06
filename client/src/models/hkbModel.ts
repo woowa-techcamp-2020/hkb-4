@@ -134,7 +134,17 @@ class HkbModel {
 
 	async fetchItemCreated(data: ItemDTO.CREATE) {
 		const addedItem = await ItemApi.create(data);
-		console.log(addedItem);
+		const { id, type, date, description, category, pid_item, amount } = addedItem;
+		const addedItemPrepared = {
+			amount,
+			category,
+			date,
+			description,
+			pid: pid_item,
+			type,
+			id,
+			payment: this.payments[pid_item],
+		};
 	}
 
 	initData() {
