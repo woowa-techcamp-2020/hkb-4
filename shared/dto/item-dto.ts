@@ -7,7 +7,6 @@ type INCOME = '월급' | '용돈' | '기타 수입';
 type SPENDING = '식비' | '생활' | '쇼핑/뷰티' | '교통' | '의료/건강' | '문화/여가' | '미분류';
 
 interface CREATE {
-	uid_item: number;
 	pid_item: number;
 	type: ItemType;
 	category: INCOME | SPENDING;

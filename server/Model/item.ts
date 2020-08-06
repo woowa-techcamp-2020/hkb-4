@@ -5,7 +5,9 @@ const ItemModel = {
 	create: async (item: ItemDTO.CREATE) => {
 		try {
 			const result = await db.query(`INSERT INTO item SET ?`, item);
-			return item;
+			//@ts-ignore
+			const insertedId = result[0]['insertId'];
+			return { ...item, id: insertedId };
 		} catch (err) {
 			throw err;
 		}
@@ -31,7 +33,7 @@ const ItemModel = {
 		try {
 			let itemData = await db.query(`
 				SELECT i.id as id, i.type as type, i.category as category, 
-					i.amount as amount, i.description as description, date_format(i.date, "%Y-%m-%d") as date, p.name as payment
+					i.amount as amount, i.description as description, date_format(i.date, "%Y-%m-%d") as date, p.id as pid, p.name as payment
 				FROM item i
 				JOIN payment p
 					ON i.pid_item = p.id

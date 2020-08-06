@@ -1,6 +1,7 @@
 import LedgerByDate from '../ledgerByDate';
 import controller from '../../controller';
 import MonthlyFilter from '../monthlyFilter';
+import { ItemDTO } from '../../../../shared/dto';
 
 class Ledger extends HTMLElement {
 	public name = 'ledger';
@@ -60,6 +61,7 @@ class Ledger extends HTMLElement {
 	}
 
 	render() {
+		const { INCOME, SPENDING } = ItemDTO.ItemType;
 		this.innerHTML = `
 		  <div class="container container-input">
 		    <div class="init-button">내용 지우기</div>
@@ -68,17 +70,17 @@ class Ledger extends HTMLElement {
 		      <div class="group">
 		        <span>분류</span>
 		        <label for="type-income" class="button income-button">수입
-		          <input id="type-income" type="radio" name="type" value="수입"/>
+		          <input id="type-income" type="radio" name="type" value="${INCOME}"/>
 		        </label>
 		        <label for="type-spending" class="button spending-button button--active">지출
-		          <input id="type-spending" type="radio" name="type" value="지출">
+		          <input id="type-spending" type="radio" name="type" value="${SPENDING}" checked>
 		        </label>
 		      </div>
 		    </div>
 		    <div class="row">
 		      <div class="group">
 		        <span>날짜</span>
-		        <input type="date" value="2020-08-04"/>
+		        <input type="date" name="date" value="2020-08-04"/>
 		      </div>
 		      <div class="group">
 		        <span>카테고리</span>
@@ -100,8 +102,8 @@ class Ledger extends HTMLElement {
 		    </div>
 		    <div class="row">
 		      <div class="group">
-		        <span>금액</span>
-		        <input type="text" name="amount" />
+						<span>금액</span>
+						<input type="number" step="1" min="0" name="amount" />원
 		      </div>
 		      <div class="group">
 		        <span>내용</span>

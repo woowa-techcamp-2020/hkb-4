@@ -6,9 +6,11 @@ import { JsonResponse } from '../module/util';
 const ItemController = {
 	create: async (req: Request, res: Response, next: NextFunction) => {
 		let response;
-		let { body } = req;
+		//@ts-ignore
+		const uid_item = req.user.id;
+		const { body } = req;
 		try {
-			response = await Item.create(body);
+			response = await Item.create({ uid_item, ...body });
 			res
 				.status(httpStatus.CREATED)
 				.json(JsonResponse(httpStatus.CREATED, 'item created well', response));

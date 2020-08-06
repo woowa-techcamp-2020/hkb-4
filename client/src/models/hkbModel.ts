@@ -65,10 +65,14 @@ class HkbModel {
 		// TODO : result type
 		// @ts-ignore
 		this.rawData = result;
+		this.calcAllStatictics();
+		this.notifyDataFetched();
+	}
+
+	calcAllStatictics() {
 		this.calcDailyData();
 		this.calcMonthlyData();
 		this.calcCategoryData();
-		this.notifyDataFetched();
 	}
 
 	updateHistory() {
@@ -130,6 +134,37 @@ class HkbModel {
 				});
 		}
 		this.categoryData = categoryDict;
+	}
+
+	async fetchItemCreated(data: ItemDTO.CREATE) {
+		const addedItem = await ItemApi.create(data);
+		const { id, type, date, description, category, pid_item, amount } = addedItem;
+		const addedItemPrepared = {
+			amount,
+			category,
+			date,
+			description,
+			pid: pid_item,
+			type,
+			id,
+			payment: this.payments[pid_item],
+		};
+		this.afterCreation(addedItemPrepared);
+	}
+
+	afterCreation(item) {
+		const itemMonth = new Date(item.date).getMonth() + 1;
+		const itemDay = new Date(item.date).getDate();
+		console.log(itemDay);
+		if (this.month !== itemMonth) return;
+
+		if (!this.rawData[itemDay]) {
+			this.rawData[itemDay] = [];
+		}
+		this.rawData[itemDay].push(item);
+
+		this.calcAllStatictics();
+		this.notifyDataFetched();
 	}
 
 	initData() {
