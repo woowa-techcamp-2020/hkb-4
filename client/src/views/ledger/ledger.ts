@@ -22,7 +22,7 @@ class Ledger extends HTMLElement {
 	}
 
 	updatePayments(payments) {
-		const paymentSelection = this.querySelector('select[name="payment"]');
+		const paymentSelection = this.querySelector('select[name="pid"]');
 		let options = '<option value="" hidden disabled selected>선택하세요</option>';
 		for (const [id, name] of Object.entries(payments)) {
 			options += `<option value="${id}">${name}</option>`;
@@ -96,7 +96,7 @@ class Ledger extends HTMLElement {
 		      </div>
 		      <div class="group">
 		        <span>결제수단</span>
-		        <select name="payment">
+		        <select name="pid">
 		        </select>
 		      </div>
 		    </div>

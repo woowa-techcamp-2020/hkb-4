@@ -62,7 +62,7 @@ class HkbController {
 		const optionsContainer = document.querySelector(`select[name="${type}"`);
 		const options = optionsContainer.querySelectorAll('option');
 		options.forEach(option => {
-			if (option.value === item[type]) {
+			if (option.value === item.data[type].toString()) {
 				option.setAttribute('selected', '');
 			}
 		});
@@ -74,9 +74,7 @@ class HkbController {
 		} = item;
 		inputContainer.querySelector('.init-button').classList.add('hide');
 		inputContainer.querySelector('.delete-button').classList.remove('hide');
-		const checkedRadioButton = inputContainer.querySelector(
-			`input[value="${type === 1 ? '수입' : '지출'}"]`,
-		);
+		const checkedRadioButton = inputContainer.querySelector(`input[value="${type}"]`);
 		checkedRadioButton.checked = true;
 		this.toggleTypeButton(checkedRadioButton);
 		// @ts-ignore
@@ -86,7 +84,8 @@ class HkbController {
 		//@ts-ignore
 		inputContainer.querySelector('input[type="date"]').value = date;
 		this.changeSelectOption('category', item);
-		this.changeSelectOption('payment', item);
+		debugger;
+		this.changeSelectOption('pid', item);
 	}
 
 	toggleTypeButton(button) {
@@ -138,8 +137,7 @@ class HkbController {
 		const category = inputContainer.querySelector('select[name="category"]>option:checked').value;
 		// @ts-ignore
 		const pid_item = parseInt(
-			(inputContainer.querySelector('select[name="payment"]>option:checked') as HTMLInputElement)
-				.value,
+			(inputContainer.querySelector('select[name="pid"]>option:checked') as HTMLInputElement).value,
 		);
 		// @ts-ignore
 		const amount = parseInt(inputContainer.querySelector('input[name="amount"]').value);
