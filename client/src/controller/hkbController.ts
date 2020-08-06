@@ -45,7 +45,7 @@ class HkbController {
 		} else if (submitButton) {
 			this.handleItemSubmit(submitButton);
 		} else if (initButton) {
-			this.handleInputInit(initButton);
+			this.handleInputInit();
 		} else if (deleteButton) {
 			this.handleItemDelete(deleteButton);
 		} else if (filtrationContainer) {
@@ -170,7 +170,60 @@ class HkbController {
 		submitButton.removeAttribute('data-id');
 	}
 
-	handleInputInit(button) {}
+	initType() {
+		const spendingButton = document.querySelector(
+			`input[name="type"][value="${ItemDTO.ItemType.SPENDING}"]`,
+		);
+		// @ts-ignore
+		spendingButton.checked = true;
+		this.toggleTypeButton(spendingButton);
+	}
+
+	initDate() {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1;
+		const date = today.getDate();
+		const todayToString = `${year}-${month > 10 ? month : `0${month}`}-${
+			date > 10 ? date : `0${date}`
+		}`;
+		const dateInput = document.querySelector('input[name="date"]');
+		// @ts-ignore
+		dateInput.value = todayToString;
+	}
+
+	initCategory() {
+		const categorySelect = document.querySelector('select[name="category"]');
+		const options = categorySelect.querySelectorAll('option');
+		options[0].selected = true;
+	}
+
+	initPayment() {
+		const paymentSelect = document.querySelector('select[name="pid"]');
+		const options = paymentSelect.querySelectorAll('option');
+		options[0].selected = true;
+	}
+
+	initAmount() {
+		const amountInput = document.querySelector('input[name="amount"]');
+		// @ts-ignore
+		amountInput.value = '';
+	}
+
+	initDescription() {
+		const descriptionInput = document.querySelector('input[name="description"]');
+		// @ts-ignore
+		descriptionInput.value = '';
+	}
+
+	handleInputInit() {
+		this.initType();
+		this.initDate();
+		this.initCategory();
+		this.initPayment();
+		this.initAmount();
+		this.initDescription();
+	}
 
 	async handleItemDelete(button) {
 		const inputContainer = document.querySelector('.container-input');
