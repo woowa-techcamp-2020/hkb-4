@@ -27,10 +27,10 @@ class Ledger extends HTMLElement {
 			options += `<option value="${id}">${name}</option>`;
 		}
 		paymentSelection.innerHTML = options;
-  }
+	}
 
-  update(data) {
-     this.updatePayments(data.payments);
+	update(data) {
+		this.updatePayments(data.payments);
 		this.monthlyFilter.update(data);
 		this.renderItemList(data);
 	}
@@ -56,6 +56,7 @@ class Ledger extends HTMLElement {
 				}
 			}
 		}
+	}
 
 	render() {
 		this.innerHTML = `
