@@ -1,4 +1,4 @@
-import { ItemApi } from '../api';
+import { ItemApi, PaymentApi } from '../api';
 import { ItemDTO } from '../../../shared/dto';
 import observer from '../models/observer';
 
@@ -13,6 +13,7 @@ class HkbModel {
 	private monthlyData!: { income: number; spending: number };
 	private dailyData!: object;
 	private categoryData!: object;
+	private payments!: object;
 	private observer!: any;
 
 	constructor() {
@@ -24,6 +25,7 @@ class HkbModel {
 		this.monthlyData = { income: 0, spending: 0 };
 		this.dailyData = {};
 		this.categoryData = {};
+		this.payments = {};
 		this.observer = observer;
 
 		this.observer.subscribe('routeChanged', this, this.checkRouteChanged.bind(this));
@@ -44,6 +46,18 @@ class HkbModel {
 		}
 	}
 
+	notifyDataFetched() {
+		this.observer.notify('dataFetched', {
+			year: this.year,
+			month: this.month,
+			rawData: this.rawData,
+			dailyData: this.dailyData,
+			monthlyData: this.monthlyData,
+			categoryData: this.categoryData,
+			payments: this.payments,
+		});
+	}
+
 	async fetchRawData() {
 		const result = await ItemApi.getItemsByDate(
 			`${this.year}-${this.month < 10 ? `0${this.month}` : this.month}`,
@@ -51,18 +65,10 @@ class HkbModel {
 		// TODO : result type
 		// @ts-ignore
 		this.rawData = result;
-		// observer.notify 주기
 		this.calcDailyData();
 		this.calcMonthlyData();
 		this.calcCategoryData();
-		this.observer.notify('dataFecthed', {
-			year: this.year,
-			month: this.month,
-			rawData: this.rawData,
-			dailyData: this.dailyData,
-			monthlyData: this.monthlyData,
-			categoryData: this.categoryData,
-		});
+		this.notifyDataFetched();
 	}
 
 	updateHistory() {
@@ -80,7 +86,7 @@ class HkbModel {
 	calcDailyData() {
 		const dailyDict = {};
 		const lastDay = 31;
-		for (let i = 0; i <= lastDay; i++) {
+		for (let i = 1; i <= lastDay; i++) {
 			let dIncome = 0,
 				dSpending = 0;
 			if (this.rawData[i]) {
@@ -91,10 +97,10 @@ class HkbModel {
 						dSpending += item.amount;
 					}
 				});
-				dailyDict[i] = { income: dIncome, spending: dSpending };
 			}
-			this.dailyData = dailyDict;
+			dailyDict[i] = { income: dIncome, spending: dSpending };
 		}
+		this.dailyData = dailyDict;
 	}
 
 	calcMonthlyData() {
@@ -131,6 +137,11 @@ class HkbModel {
 		// TODO
 		this.tab = 'ledger';
 		this.setYearMonth(currDate.getFullYear(), currDate.getMonth());
+	}
+
+	async initPayment() {
+		const payments = await PaymentApi.getPayments();
+		this.payments = payments;
 	}
 
 	async setYearMonth(year, month) {

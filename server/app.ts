@@ -53,7 +53,7 @@ app.post('/login', passport.authenticate('local'), UserController.postLogin);
 app.get('/logout', UserController.logout);
 app.get('/getUser', UserController.getUser);
 
-app.get('/payment/:uid', PaymentController.getPaymentsById);
+app.get('/payment', PaymentController.getPaymentsById);
 app.post('/payment/create', PaymentController.create);
 app.patch('/payment/delete/:id', PaymentController.delete);
 

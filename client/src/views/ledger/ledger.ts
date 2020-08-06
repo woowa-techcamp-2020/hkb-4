@@ -20,7 +20,17 @@ class Ledger extends HTMLElement {
 		monthlyContainer.appendChild(this.monthlyFilter);
 	}
 
-	update(data) {
+	updatePayments(payments) {
+		const paymentSelection = this.querySelector('select[name="payment"]');
+		let options = '<option value="" hidden disabled selected>선택하세요</option>';
+		for (const [id, name] of Object.entries(payments)) {
+			options += `<option value="${id}">${name}</option>`;
+		}
+		paymentSelection.innerHTML = options;
+  }
+
+  update(data) {
+     this.updatePayments(data.payments);
 		this.monthlyFilter.update(data);
 		this.renderItemList(data);
 	}
@@ -46,7 +56,6 @@ class Ledger extends HTMLElement {
 				}
 			}
 		}
-	}
 
 	render() {
 		this.innerHTML = `
@@ -84,8 +93,6 @@ class Ledger extends HTMLElement {
 		      <div class="group">
 		        <span>결제수단</span>
 		        <select name="payment">
-		          <option value="하나카드" selected>하나카드</option>
-		          <option value="삼성카드">삼성카드</option>
 		        </select>
 		      </div>
 		    </div>

@@ -11,9 +11,12 @@ class PaymentApi {
 		}
 	}
 
-	static async getItemsById(uid: PaymentDTO.GET) {
+	static async getPayments() {
 		try {
-			const response = await fetch(`${url}/payment/${uid}`, Options.GET());
+			const response = await fetch(`${url}/payment`, {
+				...Options.GET(),
+				credentials: 'include',
+			});
 			const json = await response.json();
 			return json.result;
 		} catch (error) {

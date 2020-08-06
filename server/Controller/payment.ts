@@ -28,10 +28,17 @@ const PaymentController = {
 	},
 	getPaymentsById: async (req: Request, res: Response, next: NextFunction) => {
 		let response;
-		const uid = parseInt(req.params.uid);
+		// @ts-ignore
+		const uid = req.user.id;
 		try {
 			response = await Payment.getPaymentsById(uid);
-			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'payments get well', response));
+			const responseDict = {};
+			response.forEach(payment => {
+				responseDict[payment.id] = payment.name;
+			});
+			res
+				.status(httpStatus.OK)
+				.json(JsonResponse(httpStatus.OK, 'payments get well', responseDict));
 		} catch (err) {
 			next(err);
 		}
