@@ -182,9 +182,9 @@ class HkbController {
 	}
 
 	handleButtonInit() {
-		const submitButton = document.querySelector('submit-button');
-		const deleteButton = document.querySelector('delete-button');
-		const initButton = document.querySelector('init-button');
+		const submitButton = document.querySelector('.submit-button');
+		const deleteButton = document.querySelector('.delete-button');
+		const initButton = document.querySelector('.init-button');
 		initButton.classList.remove('hide');
 		deleteButton.classList.add('hide');
 		deleteButton.removeAttribute('data-id');
