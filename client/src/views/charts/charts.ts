@@ -1,48 +1,48 @@
 import { numberToString } from '../../util/common';
+import LineChart from './line';
 
 const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1', '#9F71C1'];
-const spending = {
-	식비: 100000,
-	생활: 90000,
-	'쇼핑/뷰티': 80000,
-	교통: 40000,
-	'의료/건강': 20000,
-	'문화/여가': 10000,
-	미분류: 10000,
-};
+
 class ChartsTab extends HTMLElement {
 	public name = 'charts';
 	private cx = 180;
 	private cy = 180;
 	private radius = 70;
 	private svgns = 'http://www.w3.org/2000/svg';
-	private spending = spending;
-	private monthlyData = {
-		income: 1,
-		spending: 350000,
-	};
+
 	connectedCallback() {
 		this.render();
-		this.renderPieChart();
-		this.renderBarChart();
+		this.appendChild(new LineChart());
 	}
 
-	renderPieChart() {
+	update(data) {
+		this.renderPieChart(data);
+		this.renderBarChart(data);
+		this.renderTotalSpending(data);
+	}
+
+	renderTotalSpending(data) {
+		const spending = this.querySelector('#currentMonthSpending') as HTMLElement;
+		spending.textContent = `${numberToString(data.monthlyData.spending)}원`;
+	}
+
+	renderPieChart(data) {
+		const category = data.categoryData;
+		const monthly = data.monthlyData;
 		const pieChartContainer = this.querySelector('.pie-chart') as SVGViewElement;
-		const keys = Object.keys(this.spending).sort(
-			(a, b) => this.spending[b] * 1 - this.spending[a] * 1,
-		);
+		pieChartContainer.innerHTML = '';
+		const keys = Object.keys(category).sort((a, b) => category[b] * 1 - category[a] * 1);
 
 		let rotate = 0;
 		const labels = [];
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < (keys.length > 6 ? 5 : keys.length); i++) {
 			pieChartContainer.appendChild(
 				this.pie(
 					this.radius.toString(),
 					this.cx.toString(),
 					this.cy.toString(),
 					colors[i],
-					this.spending[keys[i]] / this.monthlyData.spending,
+					category[keys[i]] / monthly.spending,
 					2 * Math.PI * this.radius,
 					rotate,
 				),
@@ -50,26 +50,27 @@ class ChartsTab extends HTMLElement {
 			labels.push(
 				this.renderPieLabel(
 					rotate,
-					(this.spending[keys[i]] * 100) / this.monthlyData.spending,
+					(category[keys[i]] * 100) / monthly.spending,
 					this.radius,
 					keys[i],
 				),
 			);
-			rotate += (this.spending[keys[i]] / this.monthlyData.spending) * 360;
+			rotate += (category[keys[i]] / monthly.spending) * 360;
 		}
-		pieChartContainer.appendChild(
-			this.pie(
-				this.radius.toString(),
-				this.cx.toString(),
-				this.cy.toString(),
-				colors[5],
-				(360 - rotate) / 360,
-				2 * Math.PI * this.radius,
-				rotate,
-			),
-		);
-		labels.push(this.renderPieLabel(rotate, ((360 - rotate) * 100) / 360, this.radius, '기타'));
-
+		if (keys.length > 6) {
+			pieChartContainer.appendChild(
+				this.pie(
+					this.radius.toString(),
+					this.cx.toString(),
+					this.cy.toString(),
+					colors[5],
+					(360 - rotate) / 360,
+					2 * Math.PI * this.radius,
+					rotate,
+				),
+			);
+			labels.push(this.renderPieLabel(rotate, ((360 - rotate) * 100) / 360, this.radius, '기타'));
+		}
 		labels.forEach(label => pieChartContainer.appendChild(label));
 	}
 
@@ -123,16 +124,14 @@ class ChartsTab extends HTMLElement {
 		return circle;
 	}
 
-	renderBarChart() {
+	renderBarChart(data) {
+		const category = data.categoryData;
+		const monthly = data.monthlyData;
 		const barChartContainer = this.querySelector('.bar-chart-container') as HTMLElement;
-		const keys = Object.keys(this.spending).sort(
-			(a, b) => this.spending[b] * 1 - this.spending[a] * 1,
-		);
-		const max = this.spending[keys[0]];
-		// %순으로 정렬했다고 치고,
+		const keys = Object.keys(category).sort((a, b) => category[b] * 1 - category[a] * 1);
+		const max = category[keys[0]];
 		let bars = keys.reduce(
-			(accum, key, i) =>
-				(accum += this.bar(key, this.spending[key], this.monthlyData.spending, colors[i], max)),
+			(accum, key, i) => (accum += this.bar(key, category[key], monthly.spending, colors[i], max)),
 			'',
 		);
 		barChartContainer.innerHTML = bars;
@@ -163,7 +162,7 @@ class ChartsTab extends HTMLElement {
 				<label for="daily">일별 지출</label>
 			</div>
 			<div class="current-spending">
-				이번달 지출 금액: <span>${numberToString(this.monthlyData.spending)}원</span>
+				이번달 지출 금액: <span id="currentMonthSpending"></span>
 			</div>
 		</div>
     <center class="pie-chart-container">
