@@ -145,7 +145,7 @@ class HkbModel {
 	syncronizeItem(item) {
 		const { id, type, date, description, category, pid_item, amount } = item;
 		const convertedItemObj = {
-			amount,
+			amount: parseInt(amount),
 			category,
 			date,
 			description,
