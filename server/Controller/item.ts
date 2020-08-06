@@ -52,7 +52,6 @@ const ItemController = {
 				}
 				responseDict[day].push(item);
 			});
-			console.log(responseDict);
 
 			res.status(httpStatus.OK).json(JsonResponse(httpStatus.OK, 'items get well', responseDict));
 		} catch (err) {

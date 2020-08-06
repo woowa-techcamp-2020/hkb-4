@@ -46,6 +46,17 @@ class HkbModel {
 		}
 	}
 
+	notifyDataFetched() {
+		this.observer.notify('dataFetched', {
+			year: this.year,
+			month: this.month,
+			rawData: this.rawData,
+			dailyData: this.dailyData,
+			monthlyData: this.monthlyData,
+			categoryData: this.categoryData,
+		});
+	}
+
 	async fetchRawData() {
 		const result = await ItemApi.getItemsByDate(
 			`${this.year}-${this.month < 10 ? `0${this.month}` : this.month}`,
@@ -57,15 +68,7 @@ class HkbModel {
 		this.calcDailyData();
 		this.calcMonthlyData();
 		this.calcCategoryData();
-		this.observer.notify('dataFecthed', {
-			year: this.year,
-			month: this.month,
-			rawData: this.rawData,
-			dailyData: this.dailyData,
-			monthlyData: this.monthlyData,
-			categoryData: this.categoryData,
-			payments: this.payments,
-		});
+		this.notifyDataFetched();
 	}
 
 	updateHistory() {
@@ -83,7 +86,7 @@ class HkbModel {
 	calcDailyData() {
 		const dailyDict = {};
 		const lastDay = 31;
-		for (let i = 0; i <= lastDay; i++) {
+		for (let i = 1; i <= lastDay; i++) {
 			let dIncome = 0,
 				dSpending = 0;
 			if (this.rawData[i]) {
@@ -94,10 +97,10 @@ class HkbModel {
 						dSpending += item.amount;
 					}
 				});
-				dailyDict[i] = { income: dIncome, spending: dSpending };
 			}
-			this.dailyData = dailyDict;
+			dailyDict[i] = { income: dIncome, spending: dSpending };
 		}
+		this.dailyData = dailyDict;
 	}
 
 	calcMonthlyData() {
