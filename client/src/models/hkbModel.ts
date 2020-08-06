@@ -1,4 +1,4 @@
-import { ItemApi } from '../api';
+import { ItemApi, PaymentApi } from '../api';
 import { ItemDTO } from '../../../shared/dto';
 import observer from '../models/observer';
 
@@ -13,6 +13,7 @@ class HkbModel {
 	private monthlyData!: { income: number; spending: number };
 	private dailyData!: object;
 	private categoryData!: object;
+	private payments!: object;
 	private observer!: any;
 
 	constructor() {
@@ -24,6 +25,7 @@ class HkbModel {
 		this.monthlyData = { income: 0, spending: 0 };
 		this.dailyData = {};
 		this.categoryData = {};
+		this.payments = {};
 		this.observer = observer;
 
 		this.observer.subscribe('routeChanged', this, this.checkRouteChanged.bind(this));
@@ -62,6 +64,7 @@ class HkbModel {
 			dailyData: this.dailyData,
 			monthlyData: this.monthlyData,
 			categoryData: this.categoryData,
+			payments: this.payments,
 		});
 	}
 
@@ -131,6 +134,11 @@ class HkbModel {
 		// TODO
 		this.tab = 'ledger';
 		this.setYearMonth(currDate.getFullYear(), currDate.getMonth());
+	}
+
+	async initPayment() {
+		const payments = await PaymentApi.getPayments();
+		this.payments = payments;
 	}
 
 	async setYearMonth(year, month) {

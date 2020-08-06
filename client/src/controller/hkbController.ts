@@ -6,8 +6,9 @@ class HkbController {
 		this.model = model.HkbModel;
 	}
 
-	init() {
-		this.model.initData();
+	async init() {
+		await this.model.initPayment();
+		await this.model.initData();
 	}
 
 	changeTab() {

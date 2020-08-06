@@ -23,6 +23,16 @@ class Ledger extends HTMLElement {
 	getData(data) {
 		this.data = data;
 		this.render();
+		this.updatePayments(data.payments);
+	}
+
+	updatePayments(payments) {
+		const paymentSelection = this.querySelector('select[name="payment"]');
+		let options = '<option value="" hidden disabled selected>선택하세요</option>';
+		for (const [id, name] of Object.entries(payments)) {
+			options += `<option value="${id}">${name}</option>`;
+		}
+		paymentSelection.innerHTML = options;
 	}
 
 	render() {
@@ -62,8 +72,6 @@ class Ledger extends HTMLElement {
 		      <div class="group">
 		        <span>결제수단</span>
 		        <select name="payment">
-		          <option value="하나카드" selected>하나카드</option>
-		          <option value="삼성카드">삼성카드</option>
 		        </select>
 		      </div>
 		    </div>
