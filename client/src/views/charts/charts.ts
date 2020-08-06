@@ -6,19 +6,41 @@ const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1'
 class ChartsTab extends HTMLElement {
 	public name = 'charts';
 	private cx = 180;
-	private cy = 180;
+	private cy = 220;
 	private radius = 70;
 	private svgns = 'http://www.w3.org/2000/svg';
+	private lineChart = new LineChart();
+	private animation = [];
 
 	connectedCallback() {
 		this.render();
-		this.appendChild(new LineChart());
+		this.appendChild(this.lineChart);
+		this.addEventListener('change', () => this.checkSubHeader());
+	}
+
+	checkSubHeader() {
+		const category = this.querySelector('#category') as HTMLInputElement;
+		const categoryContainer = this.querySelector('.category-container') as HTMLElement;
+		const dailyContainer = this.querySelector('hkb-line') as HTMLElement;
+		if (category.checked) {
+			categoryContainer.classList.remove('display-none');
+			dailyContainer.classList.add('display-none');
+			this.animation.forEach(animate => animate.play());
+		} else {
+			categoryContainer.classList.add('display-none');
+			dailyContainer.classList.remove('display-none');
+		}
+	}
+
+	tabChanged(data) {
+		this.animation.forEach(animate => animate.play());
 	}
 
 	update(data) {
 		this.renderPieChart(data);
 		this.renderBarChart(data);
 		this.renderTotalSpending(data);
+		this.checkSubHeader();
 	}
 
 	renderTotalSpending(data) {
@@ -76,10 +98,10 @@ class ChartsTab extends HTMLElement {
 
 	renderPieLabel(degree: number, percentage: number, radius: number, label: string) {
 		const textContainer = document.createElementNS(this.svgns, 'text') as SVGTextElement;
-		const x = Math.cos((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2.2;
-		const y = Math.sin((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2.2;
-		textContainer.setAttribute('x', `${this.cx - x}`);
-		textContainer.setAttribute('y', `${-this.cy - y + 6}`);
+		const x = Math.cos((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2;
+		const y = Math.sin((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2;
+		textContainer.setAttribute('x', `${this.cx - x + 40}`);
+		textContainer.setAttribute('y', `${-this.cy - y + 40}`);
 		textContainer.setAttribute('text-anchor', 'middle');
 		textContainer.style.transform = 'rotate(90deg)';
 		const txtSpan = document.createElementNS(this.svgns, 'tspan');
@@ -112,15 +134,16 @@ class ChartsTab extends HTMLElement {
 				width * dash2
 			} ${dash2}; transform: rotate(${rotate}deg);`,
 		);
-		circle.animate(
+		const animate = circle.animate(
 			[
 				{ transform: 'rotate(0deg)', strokeDasharray: `${1} ${dash2}` },
 				{ transform: `rotate(${rotate}deg)`, strokeDasharray: `${width * dash2} ${dash2}` },
 			],
 			{
-				duration: 400,
+				duration: 300,
 			},
 		);
+		this.animation.push(animate);
 		return circle;
 	}
 
@@ -165,11 +188,13 @@ class ChartsTab extends HTMLElement {
 				이번달 지출 금액: <span id="currentMonthSpending"></span>
 			</div>
 		</div>
-    <center class="pie-chart-container">
-      <svg class="pie-chart"></svg>
-    </center>
-    <div class="bar-chart-container">
-    </div>
+		<div class="category-container">
+			<center class="pie-chart-container">
+				<svg class="pie-chart"></svg>
+			</center>
+			<div class="bar-chart-container">
+			</div>
+		</div>
     `;
 	}
 }
