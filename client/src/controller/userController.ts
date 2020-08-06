@@ -23,6 +23,9 @@ class UserController {
 	}
 
 	alarmLoginFail() {
+		const loginContainer = document.querySelector('.login-container');
+		const prevAlarm = loginContainer.querySelector('.alarm');
+		if (prevAlarm) return;
 		const buttonZone = document.querySelector('.login-container .button-zone');
 		const alarm = document.createElement('div');
 		alarm.classList.add('alarm');
