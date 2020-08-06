@@ -22,13 +22,22 @@ class UserController {
 		}
 	}
 
+	alarmLoginFail() {
+		const buttonZone = document.querySelector('.login-container .button-zone');
+		const alarm = document.createElement('div');
+		alarm.classList.add('alarm');
+		alarm.innerHTML = '로그인에 실패하였습니다.';
+		buttonZone.insertAdjacentElement('beforebegin', alarm);
+	}
+
 	loginHandler({ target }) {
 		const inputs = target.closest('.login-container').querySelectorAll('input');
 		const userInputData = {};
 		inputs.forEach(input => {
 			userInputData[input.getAttribute('name')] = input.value;
 		});
-		this.model.fetchLogin(userInputData);
+		const result = this.model.fetchLogin(userInputData);
+		if (!result.status) this.alarmLoginFail();
 	}
 
 	headerHandler(e) {
