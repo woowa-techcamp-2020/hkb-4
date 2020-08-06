@@ -1,4 +1,6 @@
 import model from '../models';
+import { ItemDTO } from '../../../shared/dto';
+import { template } from '@babel/core';
 
 class HkbController {
 	private model!: any;
@@ -33,7 +35,7 @@ class HkbController {
 		const submitButton = e.target.closest('.submit-button');
 		const initButton = e.target.closest('.init-button');
 		const deleteButton = e.target.closest('.delete-button');
-		const filtrationContainer = e.target.closest('.container-monthly');
+		const filtrationContainer = e.target.closest('input[type="checkbox"]');
 		if (item) {
 			this.handleItemEdit(item);
 		} else if (radioButton) {
@@ -137,7 +139,46 @@ class HkbController {
 	}
 
 	handleFiltration(filtrationContainer) {
-		console.log('handleFiltration');
+		const items = document.querySelectorAll('hkb-ledger-item') as NodeListOf<Element>;
+		const dateItems = document.querySelectorAll('hkb-ledger-by-date') as NodeListOf<Element>;
+		const type = filtrationContainer.getAttribute('content');
+		const checked = filtrationContainer.checked;
+		items.forEach(item => {
+			if (item.getAttribute('type') === type) {
+				checked ? item.classList.remove('display-none') : item.classList.add('display-none');
+			}
+		});
+
+		dateItems.forEach(date => {
+			const income = date.querySelector('.date__income') as HTMLElement;
+			const spending = date.querySelector('.date__spending') as HTMLElement;
+			if (type === 'income') {
+				if (checked) {
+					if (spending.textContent === '-0원') {
+						date.classList.remove('display-none');
+					}
+					income.classList.remove('display-none');
+				} else {
+					if (spending.textContent === '-0원') {
+						date.classList.add('display-none');
+					}
+					income.classList.add('display-none');
+				}
+			}
+			if (type === 'spending') {
+				if (checked) {
+					if (income.textContent === '+0원') {
+						date.classList.remove('display-none');
+					}
+					spending.classList.remove('display-none');
+				} else {
+					if (income.textContent === '+0원') {
+						date.classList.add('display-none');
+					}
+					spending.classList.add('display-none');
+				}
+			}
+		});
 	}
 }
 
