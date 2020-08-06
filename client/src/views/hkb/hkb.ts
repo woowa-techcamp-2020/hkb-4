@@ -53,9 +53,9 @@ class Hkb extends HTMLElement {
 		if (!dateElement) return;
 		dateElement.textContent = `${data.year}.${data.month.toString().padStart(2, '0')}`;
 
-		// this.ledgerTab.update(data);
+		this.ledgerTab.update(data);
 		this.calendarTab.update(data);
-		// this.chartsTab.update(data);
+		this.chartsTab.update(data);
 	}
 
 	changeTab(tabName: string) {

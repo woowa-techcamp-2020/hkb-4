@@ -1,29 +1,23 @@
 import LedgerByDate from '../ledgerByDate';
 import controller from '../../controller';
-import observer from '../../models/observer';
+import MonthlyFilter from '../monthlyFilter';
 
 class Ledger extends HTMLElement {
 	public name = 'ledger';
 	private hkbController!: any;
-	private observer!: any;
-	private data: any | null;
+	private monthlyFilter;
 
 	constructor() {
 		super();
 		this.hkbController = controller.HkbController;
-		this.observer = observer;
-		this.data = null;
+		this.monthlyFilter = new MonthlyFilter();
 	}
 
 	connectedCallback() {
-		this.observer.subscribe('dataFecthed', this, this.getData.bind(this));
-		this.addEventListener('click', this.hkbController.ledgerHandler.bind(this.hkbController));
-	}
-
-	getData(data) {
-		this.data = data;
+		this.addEventListener('click', e => this.hkbController.ledgerHandler(e));
 		this.render();
-		this.updatePayments(data.payments);
+		const monthlyContainer = document.querySelector('.monthly-container') as HTMLElement;
+		monthlyContainer.appendChild(this.monthlyFilter);
 	}
 
 	updatePayments(payments) {
@@ -33,10 +27,37 @@ class Ledger extends HTMLElement {
 			options += `<option value="${id}">${name}</option>`;
 		}
 		paymentSelection.innerHTML = options;
+  }
+
+  update(data) {
+     this.updatePayments(data.payments);
+		this.monthlyFilter.update(data);
+		this.renderItemList(data);
 	}
 
+	renderItemList(data) {
+		const { year, month, rawData, dailyData, monthlyData } = data;
+		const itemContainer = this.querySelector('.container-items');
+		itemContainer.innerHTML = '';
+		if (itemContainer) {
+			const lastDay = new Date(year, month, 0).getDate();
+			for (let i = 1; i <= lastDay; i++) {
+				if (dailyData[i]) {
+					itemContainer.appendChild(
+						new LedgerByDate({
+							year: year,
+							month: month,
+							day: i,
+							dIncome: dailyData[i].income,
+							dSpending: dailyData[i].spending,
+							items: rawData[i],
+						}),
+					);
+				}
+			}
+		}
+
 	render() {
-		const { year, month, rawData, dailyData, monthlyData } = this.data;
 		this.innerHTML = `
 		  <div class="container container-input">
 		    <div class="init-button">내용 지우기</div>
@@ -90,40 +111,11 @@ class Ledger extends HTMLElement {
 		        확인
 		      </div>
 		    </div>
-		  </div>
-		  <div class="container container-monthly">
-		    <div class="row">
-		      <div class="group">
-		        <input type="checkbox" checked /><span>총 수입: ${monthlyData.income}원</span>
-		      </div>
-		    </div>
-		    <div class="row">
-		      <div class="group">
-		        <input type="checkbox" checked /><span>총 지출: ${monthlyData.spending}원</span>
-		      </div>
-		    </div>
-		  </div>
+			</div>
+			<div class="monthly-container">
+			</div>
 		  <div class="container container-items"></div>
 		  `;
-
-		const itemContainer = this.querySelector('.container-items');
-		if (itemContainer) {
-			const lastDay = new Date(year, month, 0).getDate();
-			for (let i = 1; i <= lastDay; i++) {
-				if (dailyData[i]) {
-					itemContainer.appendChild(
-						new LedgerByDate({
-							year: year,
-							month: month,
-							day: i,
-							dIncome: dailyData[i].income,
-							dSpending: dailyData[i].spending,
-							items: rawData[i],
-						}),
-					);
-				}
-			}
-		}
 	}
 }
 

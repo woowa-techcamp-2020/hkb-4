@@ -1,3 +1,5 @@
+import { ItemDTO } from '../../../../shared/dto';
+
 class LedgerItem extends HTMLElement {
 	private data!: any;
 	constructor(data: any) {
@@ -9,6 +11,7 @@ class LedgerItem extends HTMLElement {
 
 	render() {
 		const { type, category, payment, amount, description } = this.data;
+		this.setAttribute('type', type === ItemDTO.ItemType.INCOME ? 'income' : 'spending');
 		this.innerHTML = `
 			<div class="item__category">
 				<span class="${type === 1 ? 'income' : 'spending'}">
