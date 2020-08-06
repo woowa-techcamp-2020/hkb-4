@@ -4,6 +4,7 @@ import { template } from '@babel/core';
 
 class HkbController {
 	private model!: any;
+	private validator!: any;
 	constructor() {
 		this.model = model.HkbModel;
 	}
@@ -153,9 +154,11 @@ class HkbController {
 		if (button.classList.contains('edit-button')) {
 			const id = parseInt(button.dataset.id);
 			await this.model.fetchItemEdit({ id, ...inputData });
+			this.handleInputInit();
 			this.handleButtonInit();
 		} else {
 			await this.model.fetchItemCreate(inputData);
+			this.handleInputInit();
 		}
 	}
 
@@ -231,6 +234,7 @@ class HkbController {
 		const id = parseInt(button.dataset.id);
 		await this.model.fetchItemDelete({ id, date });
 		this.handleButtonInit();
+		this.handleInputInit();
 	}
 
 	handleFiltrationLedger(filtrationContainer) {
