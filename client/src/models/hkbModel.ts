@@ -163,6 +163,11 @@ class HkbModel {
 		this.afterCUD(convertedItemObj, 'add');
 	}
 
+	async fetchItemDelete(data: ItemDTO.DELETE) {
+		const result = await ItemApi.delete(data);
+		this.afterCUD({ id: result.id, date: data.date }, 'delete');
+	}
+
 	afterCUD(item, action) {
 		const itemMonth = new Date(item.date).getMonth() + 1;
 		const itemDay = new Date(item.date).getDate();
@@ -181,6 +186,8 @@ class HkbModel {
 					return prevItem;
 				}
 			});
+		} else if (action === 'delete') {
+			this.rawData[itemDay] = this.rawData[itemDay].filter(prevItem => prevItem.id !== item.id);
 		}
 		this.calcAllStatictics();
 		this.notifyDataFetched();

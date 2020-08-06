@@ -56,8 +56,10 @@ class HkbController {
 	handleItemEdit(item) {
 		const inputContainer = item.closest('hkb-ledger').querySelector('.container-input');
 		const submitButton = inputContainer.querySelector('.submit-button');
+		const deleteButton = inputContainer.querySelector('.delete-button');
 		submitButton.classList.add('edit-button');
 		submitButton.dataset.id = item.data.id;
+		deleteButton.dataset.id = item.data.id;
 		this.fillInput(item, inputContainer);
 	}
 
@@ -162,8 +164,17 @@ class HkbController {
 		console.log('handleInputInit');
 	}
 
-	handleItemDelete(button) {
-		console.log('handleItemDelete');
+	async handleItemDelete(button) {
+		const inputContainer = document.querySelector('.container-input');
+		//@ts-ignore
+		const date = inputContainer.querySelector('input[name="date"]').value;
+		const id = parseInt(button.dataset.id);
+		await this.model.fetchItemDelete({ id, date });
+		button.removeAttribute('data-id');
+		button.classList.add('hide');
+		inputContainer.querySelector('.init-button').classList.remove('hide');
+		inputContainer.querySelector('.submit-button').removeAttribute('data-id');
+		inputContainer.querySelector('.submit-button').classList.remove('edit-button');
 	}
 
 	handleFiltrationLedger(filtrationContainer) {
