@@ -152,6 +152,7 @@ class HkbController {
 			const id = parseInt(button.dataset.id);
 			await this.model.fetchItemEdit({ id, ...inputData });
 			button.classList.remove('edit-button');
+			button.removeAttribute('data-id');
 		} else {
 			await this.model.fetchItemCreate(inputData);
 		}
