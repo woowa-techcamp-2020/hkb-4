@@ -48,7 +48,7 @@ class HkbController {
 		} else if (deleteButton) {
 			this.handleItemDelete(deleteButton);
 		} else if (filtrationContainer) {
-			this.handleFiltration(filtrationContainer);
+			this.handleFiltrationLedger(filtrationContainer);
 		}
 	}
 
@@ -139,45 +139,42 @@ class HkbController {
 		console.log('handleItemDelete');
 	}
 
-	handleFiltration(filtrationContainer) {
+	handleFiltrationLedger(filtrationContainer) {
+		const ledgerContainer = document.querySelector('hkb-ledger') as HTMLElement;
+		const checkedIncome = ledgerContainer.querySelector('.income-input') as HTMLInputElement;
+		const checkedSpending = ledgerContainer.querySelector('.spending-input') as HTMLInputElement;
 		const items = document.querySelectorAll('hkb-ledger-item') as NodeListOf<Element>;
 		const dateItems = document.querySelectorAll('hkb-ledger-by-date') as NodeListOf<Element>;
-		const type = filtrationContainer.getAttribute('content');
-		const checked = filtrationContainer.checked;
 		items.forEach(item => {
-			if (item.getAttribute('type') === type) {
-				checked ? item.classList.remove('display-none') : item.classList.add('display-none');
+			if (item.getAttribute('type') === filtrationContainer.getAttribute('content')) {
+				filtrationContainer.checked
+					? item.classList.remove('display-none')
+					: item.classList.add('display-none');
 			}
 		});
 
 		dateItems.forEach(date => {
 			const income = date.querySelector('.date__income') as HTMLElement;
 			const spending = date.querySelector('.date__spending') as HTMLElement;
-			if (type === 'income') {
-				if (checked) {
-					if (spending.textContent === '-0원') {
-						date.classList.remove('display-none');
-					}
-					income.classList.remove('display-none');
-				} else {
-					if (spending.textContent === '-0원') {
-						date.classList.add('display-none');
-					}
-					income.classList.add('display-none');
-				}
+			if (checkedIncome.checked) {
+				income.classList.remove('display-none');
+			} else {
+				income.classList.add('display-none');
 			}
-			if (type === 'spending') {
-				if (checked) {
-					if (income.textContent === '+0원') {
-						date.classList.remove('display-none');
-					}
-					spending.classList.remove('display-none');
-				} else {
-					if (income.textContent === '+0원') {
-						date.classList.add('display-none');
-					}
-					spending.classList.add('display-none');
-				}
+			if (checkedSpending.checked) {
+				spending.classList.remove('display-none');
+			} else {
+				spending.classList.add('display-none');
+			}
+			if (
+				(spending.classList.contains('display-none') &&
+					income.classList.contains('display-none')) ||
+				(income.classList.contains('display-none') && spending.textContent === '-0원') ||
+				(spending.classList.contains('display-none') && income.textContent === '+0원')
+			) {
+				date.classList.add('display-none');
+			} else {
+				date.classList.remove('display-none');
 			}
 		});
 	}
