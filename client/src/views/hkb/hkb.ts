@@ -50,7 +50,6 @@ class Hkb extends HTMLElement {
 
 	changeData(data) {
 		const dateElement = document.querySelector('#nav-date') as HTMLElement;
-		if (!dateElement) return;
 		dateElement.textContent = `${data.year}.${data.month.toString().padStart(2, '0')}`;
 
 		this.ledgerTab.update(data);

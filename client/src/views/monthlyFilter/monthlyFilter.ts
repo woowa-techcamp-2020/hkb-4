@@ -1,14 +1,12 @@
 import { numberToString } from '../../util/common';
-
 class MonthlyFilter extends HTMLElement {
+	private controller;
 	connectedCallback() {
 		this.render();
-		console.log('111111111');
 	}
 
 	update(data) {
 		const monthly = data.monthlyData;
-		console.log('222222222');
 		const income = this.querySelector('.total-income') as HTMLElement;
 		const spending = this.querySelector('.total-spending') as HTMLElement;
 		income.textContent = `${numberToString(monthly.income)}원`;
@@ -18,15 +16,15 @@ class MonthlyFilter extends HTMLElement {
 	render() {
 		this.innerHTML = `
     <div class="checkbox-group">
-      <input type="checkbox"  content="income" checked id="monthly-income-check"/>
-      <label for="monthly-income-check">
+      <input type="checkbox" class="income-input" content="income" checked />
+      <label>
         총 수입: 
         <span class="total-income"></span>
       </label>
     </div>
     <div class="checkbox-group" type="spending">
-      <input type="checkbox"  content="spending" checked id="monthly-spending-check"/>
-      <label for="monthly-spending-check">
+      <input type="checkbox" class="spending-input" content="spending" checked/>
+      <label>
         총 지출: 
         <span class="total-spending"></span>
       </label>

@@ -1,19 +1,47 @@
 import { numberToString } from '../../util/common';
-
+import MonthlyFilter from '../monthlyFilter';
 class CalendarTab extends HTMLElement {
 	public name = 'calendar';
-	// private date!: Date;
+	private monthlyFilter;
 
 	constructor() {
 		super();
+		this.monthlyFilter = new MonthlyFilter();
 	}
 
 	connectedCallback() {
 		this.render();
+		this.prepend(this.monthlyFilter);
+		this.addEventListener('change', () => this.filtering());
+	}
+
+	filtering() {
+		const dates = this.querySelectorAll('.money') as NodeListOf<Element>;
+		const checkedIncome = this.querySelector('.income-input') as HTMLInputElement;
+		const checkedSpending = this.querySelector('.spending-input') as HTMLInputElement;
+
+		dates.forEach(date => {
+			if (date.classList.contains('income')) {
+				if (checkedIncome.checked) {
+					date.classList.remove('display-none');
+				} else {
+					date.classList.add('display-none');
+				}
+			}
+			if (date.classList.contains('spending')) {
+				if (checkedSpending.checked) {
+					date.classList.remove('display-none');
+				} else {
+					date.classList.add('display-none');
+				}
+			}
+		});
 	}
 
 	update(data) {
 		this.renderCalendar(data.year, data.month, data.dailyData);
+		this.monthlyFilter.update(data);
+		this.filtering();
 	}
 
 	renderCalendar(year, month, daily) {
@@ -31,9 +59,6 @@ class CalendarTab extends HTMLElement {
 			if ((i + currentFirstDay) % 7 === 0) {
 				days += this.renderDays(i + 1, 'red', daily[i + 1]);
 			} else if ((i + currentFirstDay) % 7 === 6) {
-				// if (daily[i + 1]) {
-
-				// }
 				days += this.renderDays(i + 1, 'blue', daily[i + 1]);
 			} else {
 				days += this.renderDays(i + 1, '', daily[i + 1]);
@@ -48,14 +73,14 @@ class CalendarTab extends HTMLElement {
 	}
 
 	renderDays(date: number, type: string, daily): string {
-		return `<div class="date ${type}">
+		return `<div class="date monthly-date ${type}">
 			<li class="date-text">${date}</li>
-			<li class="income money">${
-				daily && daily.income !== 0 ? '+' + numberToString(daily.income) : ''
-			}</li>
-			<li class="spending money">${
-				daily && daily.spending !== 0 ? numberToString(-daily.spending) : ''
-			}</li>
+			<li class="income money ${daily && daily.income !== 0 ? '' : 'value-none'}">${
+			daily && daily.income !== 0 ? '+' + numberToString(daily.income) : ''
+		}</li>
+			<li class="spending money ${daily && daily.spending !== 0 ? '' : 'value-none'}">${
+			daily && daily.spending !== 0 ? numberToString(-daily.spending) : ''
+		}</li>
 			
     </div>`;
 	}

@@ -13,6 +13,7 @@ calendar-tab {
 		border-radius: 8px;
 		padding: 8px;
 		box-sizing: border-box;
+		margin-top: 16px;
 		.calendar-week {
 			display: flex;
 			list-style: none;
@@ -52,11 +53,11 @@ calendar-tab {
 					border-radius: 8px;
 					&.spending {
 						background: #ffebee;
-						color: #ef5350 !important;
+						color: $red !important;
 					}
 					&.income {
 						background: #e3f2fd;
-						color: #1e88e5 !important;
+						color: $blue !important;
 					}
 				}
 			}
@@ -65,5 +66,8 @@ calendar-tab {
 				color: #ccc;
 			}
 		}
+	}
+	.value-none {
+		display: none;
 	}
 }

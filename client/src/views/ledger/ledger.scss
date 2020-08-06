@@ -75,6 +75,21 @@ hkb-ledger {
 			&[type='radio'] {
 				display: none;
 			}
+			&[type='number'] {
+				width: 60%;
+				border: none;
+				border-bottom: 1px solid black;
+				background-color: transparent;
+				text-align: right;
+				&::-webkit-inner-spin-button,
+				&::-webkit-outer-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+				&:focus {
+					outline: none;
+				}
+			}
 		}
 		select {
 			width: 50%;
