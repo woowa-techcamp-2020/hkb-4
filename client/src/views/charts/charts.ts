@@ -1,4 +1,5 @@
 import { numberToString } from '../../util/common';
+import LineChart from './line';
 
 const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1', '#9F71C1'];
 
@@ -11,6 +12,7 @@ class ChartsTab extends HTMLElement {
 
 	connectedCallback() {
 		this.render();
+		this.appendChild(new LineChart());
 	}
 
 	update(data) {
