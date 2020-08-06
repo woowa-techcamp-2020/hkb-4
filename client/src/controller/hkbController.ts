@@ -55,6 +55,9 @@ class HkbController {
 
 	handleItemEdit(item) {
 		const inputContainer = item.closest('hkb-ledger').querySelector('.container-input');
+		const submitButton = inputContainer.querySelector('.submit-button');
+		submitButton.classList.add('edit-button');
+		submitButton.dataset.id = item.data.id;
 		this.fillInput(item, inputContainer);
 	}
 
@@ -84,7 +87,6 @@ class HkbController {
 		//@ts-ignore
 		inputContainer.querySelector('input[type="date"]').value = date;
 		this.changeSelectOption('category', item);
-		debugger;
 		this.changeSelectOption('pid', item);
 	}
 
@@ -145,7 +147,14 @@ class HkbController {
 		const description = inputContainer.querySelector('input[name="description"]').value;
 
 		const inputData = { type, date, category, pid_item, amount, description };
-		await this.model.fetchItemCreated(inputData);
+
+		if (button.classList.contains('edit-button')) {
+			const id = parseInt(button.dataset.id);
+			await this.model.fetchItemEdit({ id, ...inputData });
+			button.classList.remove('edit-button');
+		} else {
+			await this.model.fetchItemCreate(inputData);
+		}
 	}
 
 	handleInputInit(button) {

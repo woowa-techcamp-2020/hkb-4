@@ -136,10 +136,15 @@ class HkbModel {
 		this.categoryData = categoryDict;
 	}
 
-	async fetchItemCreated(data: ItemDTO.CREATE) {
-		const addedItem = await ItemApi.create(data);
-		const { id, type, date, description, category, pid_item, amount } = addedItem;
-		const addedItemPrepared = {
+	async fetchItemEdit(data: ItemDTO.UPDATE) {
+		const updatedItem = await ItemApi.update(data);
+		const convertedItemObj = this.syncronizeItem(updatedItem);
+		this.afterCUD(convertedItemObj, 'edit');
+	}
+
+	syncronizeItem(item) {
+		const { id, type, date, description, category, pid_item, amount } = item;
+		const convertedItemObj = {
 			amount,
 			category,
 			date,
@@ -149,20 +154,34 @@ class HkbModel {
 			id,
 			payment: this.payments[pid_item],
 		};
-		this.afterCreation(addedItemPrepared);
+		return convertedItemObj;
 	}
 
-	afterCreation(item) {
+	async fetchItemCreate(data: ItemDTO.CREATE) {
+		const addedItem = await ItemApi.create(data);
+		const convertedItemObj = this.syncronizeItem(addedItem);
+		this.afterCUD(convertedItemObj, 'add');
+	}
+
+	afterCUD(item, action) {
 		const itemMonth = new Date(item.date).getMonth() + 1;
 		const itemDay = new Date(item.date).getDate();
-		console.log(itemDay);
 		if (this.month !== itemMonth) return;
 
-		if (!this.rawData[itemDay]) {
-			this.rawData[itemDay] = [];
+		if (action === 'add') {
+			if (!this.rawData[itemDay]) {
+				this.rawData[itemDay] = [];
+			}
+			this.rawData[itemDay].push(item);
+		} else if (action === 'edit') {
+			this.rawData[itemDay] = this.rawData[itemDay].map(prevItem => {
+				if (prevItem.id === item.id) {
+					return item;
+				} else {
+					return prevItem;
+				}
+			});
 		}
-		this.rawData[itemDay].push(item);
-
 		this.calcAllStatictics();
 		this.notifyDataFetched();
 	}

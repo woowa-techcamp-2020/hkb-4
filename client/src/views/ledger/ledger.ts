@@ -38,7 +38,6 @@ class Ledger extends HTMLElement {
 
 	renderItemList(data) {
 		const { year, month, rawData, dailyData, monthlyData } = data;
-		console.log(year, month, rawData, dailyData, monthlyData);
 		const itemContainer = this.querySelector('.container-items');
 		itemContainer.innerHTML = '';
 		if (itemContainer) {
