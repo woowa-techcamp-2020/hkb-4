@@ -59,6 +59,7 @@ class CalendarTab extends HTMLElement {
 		const currentFirstDay = new Date(year, month - 1, 1).getDay();
 		const prevLast = new Date(year, month - 1, 0).getDate();
 		const nextDays = currentMonth.getDay();
+		const today = new Date();
 
 		let days = '';
 		for (let i = currentFirstDay; i > 0; i--) {
@@ -76,14 +77,19 @@ class CalendarTab extends HTMLElement {
 		for (let i = 0; i < 6 - nextDays; i++) {
 			days += `<div class="non-date date">${i + 1}</div>`;
 		}
-
 		const dateContainer = this.querySelector('.calendar-date-container') as HTMLElement;
 		dateContainer.innerHTML = days;
+		if (month - 1 === today.getMonth()) {
+			const day = this.querySelector(`.date-${today.getDate()}`);
+			if (day) {
+				day.classList.add('today');
+			}
+		}
 	}
 
 	renderDays(date: number, type: string, daily): string {
 		return `<div class="date monthly-date ${type}">
-			<li class="date-text">${date}</li>
+			<li class="date-text date-${date}">${date}</li>
 			<li class="income money ${daily && daily.income !== 0 ? '' : 'value-none'}">${
 			daily && daily.income !== 0 ? '+' + numberToString(daily.income) : ''
 		}</li>

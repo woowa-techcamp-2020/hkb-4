@@ -44,6 +44,12 @@ calendar-tab {
 				font-weight: 500;
 				list-style: none;
 				color: #777;
+				&.red {
+					color: #ef5350;
+				}
+				&.blue {
+					color: #42a5f5;
+				}
 				.money {
 					margin: 8px 0;
 					padding: 3px;
@@ -59,6 +65,11 @@ calendar-tab {
 						background: #e3f2fd;
 						color: $blue !important;
 					}
+				}
+				.today {
+					// color: #333;
+					font-weight: 800;
+					text-decoration: underline;
 				}
 			}
 			.non-date {
