@@ -44,7 +44,7 @@ class HkbController {
 		} else if (radioButton) {
 			this.toggleTypeButton(radioButton);
 		} else if (submitButton) {
-			this.handleItemSubmit(submitButton);
+			this.handleSubmitClick(submitButton);
 		} else if (initButton) {
 			this.handleInputInit();
 		} else if (deleteButton) {
@@ -130,36 +130,55 @@ class HkbController {
 		}
 	}
 
-	async handleItemSubmit(button) {
+	validateSelect(inputContainer, name) {
+		const select = inputContainer.querySelector(`select[name="${name}"]`);
+		const selectedOption = select.querySelector('option:checked').value;
+		if (selectedOption) {
+			select.classList.remove('invalid');
+		} else {
+			select.classList.add('invalid');
+		}
+		return selectedOption;
+	}
+
+	validateInput(inputContainer, name) {
+		const input = inputContainer.querySelector(`input[name="${name}"]`);
+		const value = input.value;
+		if (value) {
+			input.classList.remove('invalid');
+		} else {
+			input.classList.add('invalid');
+		}
+		return value;
+	}
+
+	async submitContent(button, data) {
+		if (button.classList.contains('edit-button')) {
+			const id = parseInt(button.dataset.id);
+			await this.model.fetchItemEdit({ id, ...data });
+			this.handleInputInit();
+			this.handleButtonInit();
+		} else {
+			await this.model.fetchItemCreate(data);
+			this.handleInputInit();
+		}
+	}
+
+	async handleSubmitClick(button) {
 		const inputContainer = document.querySelector('.container-input');
 		const type = parseInt(
 			(inputContainer.querySelector('input[name="type"]:checked') as HTMLInputElement).value,
 		);
 		const date = (inputContainer.querySelector('input[name="date"]') as HTMLInputElement).value;
-		const category = (inputContainer.querySelector(
-			'select[name="category"]>option:checked',
-		) as HTMLInputElement).value;
-		const pid_item = parseInt(
-			(inputContainer.querySelector('select[name="pid"]>option:checked') as HTMLInputElement).value,
-		);
-		const amount = parseInt(
-			(inputContainer.querySelector('input[name="amount"]') as HTMLInputElement).value,
-		);
-		const description = (inputContainer.querySelector(
-			'input[name="description"]',
-		) as HTMLInputElement).value;
+		const category = this.validateSelect(inputContainer, 'category');
+		const pid_item = this.validateSelect(inputContainer, 'pid');
+		const amount = this.validateInput(inputContainer, 'amount');
+		const description = this.validateInput(inputContainer, 'description');
+
+		if (![category, pid_item, amount, description].every(elem => elem)) return;
 
 		const inputData = { type, date, category, pid_item, amount, description };
-
-		if (button.classList.contains('edit-button')) {
-			const id = parseInt(button.dataset.id);
-			await this.model.fetchItemEdit({ id, ...inputData });
-			this.handleInputInit();
-			this.handleButtonInit();
-		} else {
-			await this.model.fetchItemCreate(inputData);
-			this.handleInputInit();
-		}
+		await this.submitContent(button, inputData);
 	}
 
 	handleButtonInit() {
