@@ -1,6 +1,19 @@
+import { numberToString } from '../../util/common';
+
 class LineChart extends HTMLElement {
+	private config!: any;
 	constructor() {
 		super();
+		this.config = {
+			totalDays: null,
+			maxSpending: null,
+			conversionRatio: null,
+			xStep: null,
+			yStep: null,
+			horizontalLineNumber: 5,
+			width: 600,
+			height: 380,
+		};
 	}
 
 	connectedCallback() {
@@ -47,40 +60,46 @@ class LineChart extends HTMLElement {
 		monthlyData: { income: 1380000, spending: 527100 },
 	};
 
-	getConversionRatio(num) {
-		const numToString = num.toString();
+	getConversionRatio() {
+		const { height, maxSpending } = this.config;
+		const numToString = maxSpending.toString();
 		const digitNum = numToString.length;
 		const firstNum = parseInt(numToString.slice(0, 1));
 		const secondNum = parseInt(numToString.slice(1, 2));
-		let maxNum;
+		let maxYaxis;
 		if (secondNum < 5) {
-			maxNum = firstNum * Math.pow(10, digitNum - 1) + 5 * Math.pow(10, digitNum - 2);
+			maxYaxis = (firstNum + 1) * Math.pow(10, digitNum - 1) - 5 * Math.pow(10, digitNum - 2);
 		} else {
-			maxNum = (firstNum + 1) * Math.pow(10, digitNum - 1);
+			maxYaxis = (firstNum + 1) * Math.pow(10, digitNum - 1);
 		}
-		const ratio = 380 / maxNum;
+		const ratio = height / maxYaxis;
 		return ratio;
 	}
 
 	prepareHorizontalLines() {
-		//	TODO: scss => svg 높이 변수 불러와서 사용
-		const step = 380 / 5;
+		const { width, height, horizontalLineNumber } = this.config;
+		const step = height / horizontalLineNumber;
 		let lines = '';
-		for (let i = 1; i <= 5; i++) {
-			lines += `<line x1="0" x2="600" y1="${step * (i - 1)}" y2="${step * (i - 1)}"></line>`;
+		for (let i = 1; i <= horizontalLineNumber; i++) {
+			lines += `<line x1="0" x2="${width}" y1="${step * (i - 1)}" y2="${step * (i - 1)}"></line>`;
 		}
 		return lines;
 	}
 
-	getPathCommand(conversionRatio) {
-		//	TODO: scss => svg 너비 변수 불러와서 사용
-		const totalDays = new Date(this.mockData.year, this.mockData.month, 0).getDate();
-		const axisXstep = 600 / (totalDays + 1);
+	drawHorizontalLines() {
+		const chartArea = document.querySelector('svg.line-chart');
+		const lines = this.prepareHorizontalLines();
+		chartArea.querySelector('g.lines').innerHTML = lines;
+	}
+
+	getPathCommand() {
+		const { width, height, totalDays, conversionRatio } = this.config;
+		const axisXstep = width / (totalDays + 1);
 
 		let command = '';
 		for (const [day, items] of Object.entries(this.mockData.dailyData)) {
 			const x = parseInt(day) * axisXstep;
-			const y = 380 - items.spending * conversionRatio;
+			const y = height - items.spending * conversionRatio;
 			if (day === '1') {
 				command += `M ${x} ${y} `;
 			} else {
@@ -90,12 +109,10 @@ class LineChart extends HTMLElement {
 		return command;
 	}
 
-	getAvgCommand(conversionRatio) {
-		const totalDays = new Date(this.mockData.year, this.mockData.month, 0).getDate();
-		const axisXstep = 600 / (totalDays + 1);
+	getAvgCommand() {
+		const { width, height, totalDays, conversionRatio } = this.config;
 		const avgConverted = (this.mockData.monthlyData.spending / totalDays) * conversionRatio;
-		console.log(avgConverted);
-		const command = `M 0 ${380 - avgConverted} L 600 ${380 - avgConverted}`;
+		const command = `M 0 ${height - avgConverted} L ${width} ${height - avgConverted}`;
 		return command;
 	}
 
@@ -108,45 +125,82 @@ class LineChart extends HTMLElement {
 	}
 
 	getXlabels() {
-		const totalDays = new Date(this.mockData.year, this.mockData.month, 0).getDate();
-		const axisXstep = 600 / (totalDays + 1);
+		const { totalDays, xStep } = this.config;
 		let xLabels = '';
 		for (let i = 1; i <= totalDays; i += 5) {
-			xLabels += `<text x="${axisXstep * i}" y="400">${this.mockData.month}.${i}</text>`;
+			xLabels += `<text x="${xStep * i}" y="400">${i}</text>`;
 		}
 		return xLabels;
 	}
 
-	getYlabels(max) {
-		const axisStep = 380 / 5;
-		const amountStep = max / 5;
+	getYlabels() {
+		const { height, yStep } = this.config;
+		const axisStep = height / 5;
 		let yLabels = '';
 		for (let i = 1; i <= 5; i++) {
-			yLabels += `<text x="-50" y="${390 - axisStep * i}">${amountStep * i}</text>;`;
+			yLabels += `<text x="-70" y="${390 - axisStep * i}">${numberToString(yStep * i)}원</text>;`;
 		}
 		return yLabels;
 	}
 
-	renderLineChart() {
-		const lineChartArea = document.querySelector('svg.line-chart');
-		const lines = this.prepareHorizontalLines();
-		lineChartArea.querySelector('g.lines').innerHTML = lines;
-		const maxSpending = this.getMaxSpending();
-		const conversionRatio = this.getConversionRatio(maxSpending);
-		const command = this.getPathCommand(conversionRatio);
-		lineChartArea.querySelector('path.line').setAttribute('d', command);
-		const avgCommand = this.getAvgCommand(conversionRatio);
-		lineChartArea.querySelector('path.average').setAttribute('d', avgCommand);
+	getXstep() {
+		const { totalDays } = this.config;
+		const axisXstep = 600 / (totalDays + 1);
+		return axisXstep;
+	}
+
+	getYstep() {
+		const { maxSpending } = this.config;
+		const amountStep = maxSpending / 5;
+		return amountStep;
+	}
+
+	setConfig() {
+		this.config['totalDays'] = new Date(this.mockData.year, this.mockData.month, 0).getDate();
+		this.config['maxSpending'] = this.getMaxSpending();
+		this.config['conversionRatio'] = this.getConversionRatio();
+		this.config['xStep'] = this.getXstep();
+		this.config['yStep'] = this.getYstep();
+	}
+
+	drawLine() {
+		const chartArea = document.querySelector('svg.line-chart');
+		const command = this.getPathCommand();
+		chartArea.querySelector('path.line').setAttribute('d', command);
+	}
+
+	drawAverageLine() {
+		const chartArea = document.querySelector('svg.line-chart');
+		const avgCommand = this.getAvgCommand();
+		chartArea.querySelector('path.average').setAttribute('d', avgCommand);
+	}
+
+	drawXaxis() {
+		const chartArea = document.querySelector('svg.line-chart');
 		const xLabels = this.getXlabels();
-		lineChartArea.querySelector('g.x-labels').innerHTML = xLabels;
-		const yLabels = this.getYlabels(maxSpending);
-		lineChartArea.querySelector('g.y-labels').innerHTML = yLabels;
+		chartArea.querySelector('g.x-labels').innerHTML = xLabels;
+	}
+
+	drawYaxis() {
+		const chartArea = document.querySelector('svg.line-chart');
+		const yLabels = this.getYlabels();
+		chartArea.querySelector('g.y-labels').innerHTML = yLabels;
+	}
+
+	renderLineChart() {
+		this.setConfig();
+		this.drawXaxis();
+		this.drawYaxis();
+		this.drawHorizontalLines();
+		this.drawLine();
+		this.drawAverageLine();
 	}
 
 	render() {
+		const { height } = this.config;
 		this.innerHTML = `
       <div class="line-chart-container">
-				<svg class="line-chart" viewbox="-60 -20 680 430">
+				<svg class="line-chart" viewbox="-80 -20 700 430">
 					<defs>
 						<marker
 							id="dot"
@@ -162,8 +216,8 @@ class LineChart extends HTMLElement {
 					<path
 						class="axis axis--x"
 						d="
-							M 0 380
-							L 600 380
+							M 0 ${height}
+							L 600 ${height}
 						"
 					></path>
 					<g class="lines">
