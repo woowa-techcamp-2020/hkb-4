@@ -224,6 +224,8 @@ class HkbModel {
 
 	async fetchPaymentCreate(data: PaymentDTO.CREATE) {
 		const result = await PaymentApi.create(data);
+		this.payments[result.id] = result.name;
+		this.observer.notify('paymentUpdated', this.payments);
 	}
 }
 

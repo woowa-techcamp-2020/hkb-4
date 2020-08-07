@@ -24,6 +24,7 @@ class Hkb extends HTMLElement {
 	connectedCallback() {
 		this.observer.subscribe('tabChanged', this, this.changeTab.bind(this));
 		this.observer.subscribe('dataFetched', this, this.changeData.bind(this));
+		this.observer.subscribe('paymentUpdated', this, this.changePayment.bind(this));
 		this.hkbController.init();
 
 		this.appendChild(this.navigationBar);
@@ -61,6 +62,10 @@ class Hkb extends HTMLElement {
 		this.ledgerTab.tabChanged(tabName);
 		this.calendarTab.tabChanged(tabName);
 		this.chartsTab.tabChanged(tabName);
+	}
+
+	changePayment(data) {
+		this.ledgerTab.updatePayments(data);
 	}
 
 	checkElementClass(element: HTMLElement) {

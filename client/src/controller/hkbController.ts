@@ -1,6 +1,5 @@
 import model from '../models';
 import { ItemDTO } from '../../../shared/dto';
-import { template } from '@babel/core';
 
 class HkbController {
 	private model!: any;
