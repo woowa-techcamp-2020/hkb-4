@@ -2,6 +2,7 @@
 
 monthly-filter {
 	display: block;
+	margin: 8px 0;
 	.checkbox-group {
 		width: 168px;
 		margin: 2px auto;
@@ -16,6 +17,7 @@ monthly-filter {
 			flex: 1;
 			justify-content: space-between;
 			margin-left: 4px;
+			color: #333;
 		}
 		.total-income {
 			color: $blue;
