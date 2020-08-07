@@ -47,12 +47,15 @@ class HkbController {
 		e.stopPropagation();
 		const closeButton = e.target.closest('.modal__close');
 		const addButton = e.target.closest('.button-add');
+		const isBackDropClicked = e.target.tagName === 'PAYMENT-MODAL';
 		if (closeButton) {
-			this.closeModal(closeButton);
+			this.closeModal();
 		} else if (addButton) {
 			const newPayment = addButton.closest('.modal__add').querySelector('input[name="payment"]')
 				.value;
 			this.addPayment(newPayment);
+		} else if (isBackDropClicked) {
+			this.closeModal();
 		}
 	}
 
@@ -60,8 +63,8 @@ class HkbController {
 		this.model.fetchPaymentCreate({ name: paymentName });
 	}
 
-	closeModal(button) {
-		const modal = button.closest('payment-modal');
+	closeModal() {
+		const modal = document.querySelector('payment-modal');
 		modal.classList.add('hide');
 	}
 
