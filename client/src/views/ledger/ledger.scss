@@ -24,7 +24,8 @@ hkb-ledger {
 				}
 			}
 			.invalid {
-				border-color: #ef5350 !important;
+				border: 1px solid $red !important;
+				box-shadow: none !important;
 			}
 		}
 		.row {

@@ -52,6 +52,7 @@ class ChartsTab extends HTMLElement {
 		this.renderPieChart(data);
 		this.renderBarChart(data);
 		this.renderTotalSpending(data);
+		this.lineChart.update(data);
 		this.checkSubHeader();
 	}
 

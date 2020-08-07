@@ -5,60 +5,24 @@ class LineChart extends HTMLElement {
 	constructor() {
 		super();
 		this.config = {
-			totalDays: null,
+			totalDate: null,
 			maxSpending: null,
 			conversionRatio: null,
 			xStep: null,
 			yStep: null,
 			horizontalLineNumber: 5,
-			width: 600,
+			width: 800,
 			height: 380,
 		};
 	}
 
-	connectedCallback() {
+	update(data) {
+		const svg = this.querySelector('svg') as SVGElement;
+		this.classList.add('display-none');
+		this.classList.remove('display-none');
 		this.render();
-		this.renderLineChart();
+		this.renderLineChart(data);
 	}
-
-	mockData = {
-		year: 2020,
-		month: 8,
-		dailyData: {
-			1: { income: 0, spending: 22000 },
-			2: { income: 0, spending: 17000 },
-			3: { income: 0, spending: 31000 },
-			4: { income: 0, spending: 5000 },
-			5: { income: 0, spending: 9000 },
-			6: { income: 0, spending: 11000 },
-			7: { income: 0, spending: 30000 },
-			8: { income: 0, spending: 29000 },
-			9: { income: 0, spending: 6500 },
-			10: { income: 0, spending: 19000 },
-			11: { income: 0, spending: 17000 },
-			12: { income: 0, spending: 21000 },
-			13: { income: 0, spending: 7800 },
-			14: { income: 0, spending: 6000 },
-			15: { income: 0, spending: 41000 },
-			16: { income: 0, spending: 39000 },
-			17: { income: 0, spending: 28500 },
-			18: { income: 0, spending: 39000 },
-			19: { income: 0, spending: 5000 },
-			20: { income: 0, spending: 5500 },
-			21: { income: 0, spending: 18000 },
-			22: { income: 0, spending: 7000 },
-			23: { income: 0, spending: 22000 },
-			24: { income: 0, spending: 9000 },
-			25: { income: 1380000, spending: 12000 },
-			26: { income: 0, spending: 30000 },
-			27: { income: 0, spending: 5000 },
-			28: { income: 0, spending: 7800 },
-			29: { income: 0, spending: 5000 },
-			30: { income: 0, spending: 12000 },
-			31: { income: 0, spending: 10000 },
-		},
-		monthlyData: { income: 1380000, spending: 527100 },
-	};
 
 	getConversionRatio() {
 		const { height, maxSpending } = this.config;
@@ -92,13 +56,13 @@ class LineChart extends HTMLElement {
 		chartArea.querySelector('g.lines').innerHTML = lines;
 	}
 
-	getPathCommand() {
-		const { width, height, totalDays, conversionRatio } = this.config;
-		const axisXstep = width / (totalDays + 1);
-
+	getPathCommand(data) {
+		const { width, height, totalDate, conversionRatio } = this.config;
+		const axisXstep = width / (totalDate + 1);
 		let command = '';
-		for (const [day, items] of Object.entries(this.mockData.dailyData)) {
+		for (const [day, items] of Object.entries(data.dailyData)) {
 			const x = parseInt(day) * axisXstep;
+			// @ts-ignore
 			const y = height - items.spending * conversionRatio;
 			if (day === '1') {
 				command += `M ${x} ${y} `;
@@ -109,25 +73,25 @@ class LineChart extends HTMLElement {
 		return command;
 	}
 
-	getAvgCommand() {
-		const { width, height, totalDays, conversionRatio } = this.config;
-		const avgConverted = (this.mockData.monthlyData.spending / totalDays) * conversionRatio;
+	getAvgCommand(data) {
+		const { width, height, totalDate, conversionRatio } = this.config;
+		const avgConverted = (data.monthlyData.spending / totalDate) * conversionRatio;
 		const command = `M 0 ${height - avgConverted} L ${width} ${height - avgConverted}`;
 		return command;
 	}
 
-	getMaxSpending() {
+	getMaxSpending(data) {
 		let maxSpending = 0;
-		Object.values(this.mockData.dailyData).forEach(data => {
-			if (data.spending > maxSpending) maxSpending = data.spending;
+		Object.values(data.dailyData).forEach((d: { spending: number; income: number }) => {
+			if (d.spending > maxSpending) maxSpending = d.spending;
 		});
 		return maxSpending;
 	}
 
 	getXlabels() {
-		const { totalDays, xStep } = this.config;
+		const { totalDate, xStep } = this.config;
 		let xLabels = '';
-		for (let i = 1; i <= totalDays; i += 5) {
+		for (let i = 1; i <= totalDate; i += 5) {
 			xLabels += `<text x="${xStep * i}" y="400">${i}</text>`;
 		}
 		return xLabels;
@@ -144,8 +108,8 @@ class LineChart extends HTMLElement {
 	}
 
 	getXstep() {
-		const { totalDays } = this.config;
-		const axisXstep = 600 / (totalDays + 1);
+		const { width, totalDate } = this.config;
+		const axisXstep = width / (totalDate + 1);
 		return axisXstep;
 	}
 
@@ -155,23 +119,23 @@ class LineChart extends HTMLElement {
 		return amountStep;
 	}
 
-	setConfig() {
-		this.config['totalDays'] = new Date(this.mockData.year, this.mockData.month, 0).getDate();
-		this.config['maxSpending'] = this.getMaxSpending();
+	setConfig(data) {
+		this.config['totalDate'] = new Date(data.year, data.month, 0).getDate();
+		this.config['maxSpending'] = this.getMaxSpending(data);
 		this.config['conversionRatio'] = this.getConversionRatio();
 		this.config['xStep'] = this.getXstep();
 		this.config['yStep'] = this.getYstep();
 	}
 
-	drawLine() {
+	drawLine(data) {
 		const chartArea = document.querySelector('svg.line-chart');
-		const command = this.getPathCommand();
+		const command = this.getPathCommand(data);
 		chartArea.querySelector('path.line').setAttribute('d', command);
 	}
 
-	drawAverageLine() {
+	drawAverageLine(data) {
 		const chartArea = document.querySelector('svg.line-chart');
-		const avgCommand = this.getAvgCommand();
+		const avgCommand = this.getAvgCommand(data);
 		chartArea.querySelector('path.average').setAttribute('d', avgCommand);
 	}
 
@@ -187,24 +151,22 @@ class LineChart extends HTMLElement {
 		chartArea.querySelector('g.y-labels').innerHTML = yLabels;
 	}
 
-	showAvgSpending() {
-		const { totalDays } = this.config;
+	showAvgSpending(data) {
+		const { totalDate } = this.config;
 		const wrapper = document.querySelector('.line-chart-container');
 		const avgSpendingContainer = wrapper.querySelector('.avg-spending');
 		// @ts-ignore
-		const avgSpending = parseInt(this.mockData.monthlyData.spending / totalDays);
-		// @ts-ignore
-		avgSpendingContainer.innerText = `이번 달 일평균 ${numberToString(avgSpending)}원`;
+		const avgSpending = parseInt(data.monthlyData.spending / totalDate);
 	}
 
-	renderLineChart() {
-		this.setConfig();
-		this.showAvgSpending();
+	renderLineChart(data) {
+		this.setConfig(data);
+		this.showAvgSpending(data);
 		this.drawXaxis();
 		this.drawYaxis();
 		this.drawHorizontalLines();
-		this.drawLine();
-		this.drawAverageLine();
+		this.drawLine(data);
+		this.drawAverageLine(data);
 	}
 
 	render() {
@@ -212,7 +174,7 @@ class LineChart extends HTMLElement {
 		this.innerHTML = `
 			<div class="line-chart-container">
 				<div class="avg-spending"></div>
-				<svg class="line-chart" viewbox="-80 -20 700 430">
+				<svg class="line-chart" viewbox="10 -20 700 430">
 					<defs>
 						<marker
 							id="dot"
@@ -222,14 +184,14 @@ class LineChart extends HTMLElement {
 							markerWidth="5"
 							markerHeight="5"
 						>
-							<circle cx="5" cy="5" r="3" />
+							<circle cx="5" cy="5" r="4" />
 						</marker>
 					</defs>
 					<path
 						class="axis axis--x"
 						d="
 							M 0 ${height}
-							L 600 ${height}
+							L 800 ${height}
 						"
 					></path>
 					<g class="lines">
