@@ -34,13 +34,13 @@ class UserController {
 		buttonZone.insertAdjacentElement('beforebegin', alarm);
 	}
 
-	loginHandler({ target }) {
+	async loginHandler({ target }) {
 		const inputs = target.closest('.login-container').querySelectorAll('input');
 		const userInputData = {};
 		inputs.forEach(input => {
 			userInputData[input.getAttribute('name')] = input.value;
 		});
-		const result = this.userModel.fetchLogin(userInputData);
+		const result = await this.userModel.fetchLogin(userInputData);
 		if (!result.status) this.alarmLoginFail();
 	}
 
