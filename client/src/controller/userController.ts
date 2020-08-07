@@ -12,14 +12,32 @@ class UserController {
 	}
 
 	loginPageHandler(e) {
+		const idInput = e.target.closest('.input-name');
+		const pwInput = e.target.closest('.input-pw');
+		const signupButton = e.target.closest('.signup-button');
+		const loginButton = e.target.closest('.login-button');
 		e.stopPropagation();
-		if (e.target.classList.contains('signup-button')) {
-			e.preventDefault();
+		if (idInput) {
+			this.idInputHandler(e);
+		} else if (pwInput) {
+			this.pwInputHandler(e);
+		} else if (signupButton) {
 			console.log('signup button click');
+		} else if (loginButton) {
+			this.loginHandler();
 		}
-		if (e.target.classList.contains('login-button')) {
-			e.preventDefault();
-			this.loginHandler(e);
+	}
+
+	idInputHandler(e) {
+		if (e.key === 'Enter') {
+			const pwInput = document.querySelector('input[name="password"]');
+			(pwInput as HTMLInputElement).focus();
+		}
+	}
+
+	pwInputHandler(e) {
+		if (e.key === 'Enter') {
+			this.loginHandler();
 		}
 	}
 
@@ -34,8 +52,8 @@ class UserController {
 		buttonZone.insertAdjacentElement('beforebegin', alarm);
 	}
 
-	async loginHandler({ target }) {
-		const inputs = target.closest('.login-container').querySelectorAll('input');
+	async loginHandler() {
+		const inputs = document.querySelector('.login-container').querySelectorAll('input');
 		const userInputData = {};
 		inputs.forEach(input => {
 			userInputData[input.getAttribute('name')] = input.value;
