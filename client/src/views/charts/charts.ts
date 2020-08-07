@@ -70,6 +70,11 @@ class ChartsTab extends HTMLElement {
 		const monthly = data.monthlyData;
 		const pieChartContainer = this.querySelector('.pie-chart') as SVGViewElement;
 		pieChartContainer.innerHTML = '';
+
+		if (Object.keys(data.rawData).length === 0) {
+			pieChartContainer.innerHTML = `<text x=120 y=${-this.cy}>해당하는 데이터가 없습니다.</text>`;
+			return;
+		}
 		const keys = Object.keys(category).sort((a, b) => category[b] * 1 - category[a] * 1);
 
 		let rotate = 0;
@@ -121,7 +126,6 @@ class ChartsTab extends HTMLElement {
 		textContainer.setAttribute('y', `${-this.cy - y + 40}`);
 		textContainer.setAttribute('fill', `rgba(255, 255, 255, 0.4)`);
 		textContainer.setAttribute('text-anchor', 'middle');
-		textContainer.style.transform = 'rotate(90deg)';
 		const txtSpan = document.createElementNS(this.svgns, 'tspan');
 		txtSpan.textContent = label;
 		const perSpan = document.createElementNS(this.svgns, 'tspan');
