@@ -15,6 +15,15 @@ class PaymentModal extends HTMLElement {
 		this.addEventListener('click', this.controller.modalHandler.bind(this.controller));
 	}
 
+	updatePayments(payments) {
+		const paymentsContainer = this.querySelector('.modal__payments');
+		let paymentsTemplate = '';
+		for (const [id, name] of Object.entries(payments)) {
+			paymentsTemplate += `<div data-id=${id}>${name}</div>`;
+		}
+		paymentsContainer.innerHTML = paymentsTemplate;
+	}
+
 	render() {
 		this.classList.add('hide');
 		this.innerHTML = `

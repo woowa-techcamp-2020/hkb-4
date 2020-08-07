@@ -52,6 +52,7 @@ class Hkb extends HTMLElement {
 		this.ledgerTab.update(data);
 		this.calendarTab.update(data);
 		this.chartsTab.update(data);
+		this.paymentModal.updatePayments(data.payments);
 	}
 
 	changeTab(tabName: string) {
@@ -66,6 +67,7 @@ class Hkb extends HTMLElement {
 
 	changePayment(data) {
 		this.ledgerTab.updatePayments(data);
+		this.paymentModal.updatePayments(data);
 	}
 
 	checkElementClass(element: HTMLElement) {
