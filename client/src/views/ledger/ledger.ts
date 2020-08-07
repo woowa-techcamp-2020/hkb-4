@@ -38,7 +38,6 @@ class Ledger extends HTMLElement {
 		const todayString = `${year}-${month > 10 ? month : `0${month}`}-${
 			date > 10 ? date : `0${date}`
 		}`;
-		console.log(todayString);
 		// @ts-ignore
 		document.querySelector('input[name="date"]').value = todayString;
 	}
@@ -65,7 +64,7 @@ class Ledger extends HTMLElement {
 		itemContainer.innerHTML = '';
 		if (itemContainer) {
 			const lastDay = new Date(year, month, 0).getDate();
-			for (let i = 1; i <= lastDay; i++) {
+			for (let i = lastDay; i >= 1; i--) {
 				if (dailyData[i]) {
 					itemContainer.appendChild(
 						new LedgerByDate({
@@ -86,8 +85,11 @@ class Ledger extends HTMLElement {
 		const { INCOME, SPENDING } = ItemDTO.ItemType;
 		this.innerHTML = `
 		  <div class="container container-input">
-		    <div class="init-button">내용 지우기</div>
-		    <div class="delete-button hide">삭제</div>
+				<div class="init-button">내용 지우기</div>
+				<div class="delete-button-zone hide">
+					<div class="delete-button">삭제</div>
+					<div class="cancel-button">취소</div>
+				</div>
 		    <div class="row">
 		      <div class="group">
 		        <span>분류</span>

@@ -55,10 +55,11 @@ charts-tab {
 		}
 		text {
 			animation: barLabel 0.4s linear;
-			fill: #333;
+			fill: #555;
 			font-weight: 500;
+			transform: rotate(90deg);
 			.per-span {
-				fill: #1891ff;
+				fill: #777;
 				margin-left: 4px;
 			}
 		}
