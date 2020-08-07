@@ -50,7 +50,7 @@ class HkbController {
 		} else if (deleteButton) {
 			this.handleItemDelete(deleteButton);
 		} else if (filtrationContainer) {
-			this.handleFiltrationLedger(filtrationContainer);
+			this.handleFiltrationLedger();
 		}
 	}
 
@@ -264,21 +264,26 @@ class HkbController {
 		this.handleInputInit();
 	}
 
-	handleFiltrationLedger(filtrationContainer) {
+	handleFiltrationLedger() {
 		const ledgerContainer = document.querySelector('hkb-ledger') as HTMLElement;
 		const checkedIncome = ledgerContainer.querySelector('.income-input') as HTMLInputElement;
 		const checkedSpending = ledgerContainer.querySelector('.spending-input') as HTMLInputElement;
 		const items = document.querySelectorAll('hkb-ledger-item') as NodeListOf<Element>;
 		const dateItems = document.querySelectorAll('hkb-ledger-by-date') as NodeListOf<Element>;
 		items.forEach(item => {
-			if (item.getAttribute('type') === filtrationContainer.getAttribute('content')) {
-				filtrationContainer.checked
+			if (item.getAttribute('type') === checkedIncome.getAttribute('content')) {
+				checkedIncome.checked
+					? item.classList.remove('display-none')
+					: item.classList.add('display-none');
+			}
+			if (item.getAttribute('type') === checkedSpending.getAttribute('content')) {
+				checkedSpending.checked
 					? item.classList.remove('display-none')
 					: item.classList.add('display-none');
 			}
 		});
-
 		dateItems.forEach(date => {
+			if (date.classList.contains('hide')) return;
 			const income = date.querySelector('.date__income') as HTMLElement;
 			const spending = date.querySelector('.date__spending') as HTMLElement;
 			if (checkedIncome.checked) {

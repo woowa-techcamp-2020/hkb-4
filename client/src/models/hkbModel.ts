@@ -195,8 +195,7 @@ class HkbModel {
 
 	initData() {
 		const currDate = new Date();
-		// TODO
-		this.tab = 'ledger';
+		this.setTabName('ledger');
 		this.setYearMonth(currDate.getFullYear(), currDate.getMonth());
 	}
 

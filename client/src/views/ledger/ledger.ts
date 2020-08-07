@@ -47,6 +47,16 @@ class Ledger extends HTMLElement {
 		this.monthlyFilter.update(data);
 		this.renderItemList(data);
 		this.setDate();
+		this.hkbController.handleFiltrationLedger();
+	}
+
+	tabChanged(tabName) {
+		if (tabName === this.name) {
+			this.classList.remove('display-none');
+		} else {
+			if (this.classList.contains('display-none')) return;
+			this.classList.add('display-none');
+		}
 	}
 
 	renderItemList(data) {
