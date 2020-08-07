@@ -40,13 +40,7 @@ app.use(passport.session());
 
 passportConfig();
 
-app.get('/', (req: Request, res: Response) => {
-	console.log(req.isAuthenticated());
-	if (req.isAuthenticated()) {
-		return res.send({ user: req.user });
-	}
-	return res.send({});
-});
+app.get('/', (req: Request, res: Response) => {});
 
 app.post('/join', UserController.join);
 app.post('/login', passport.authenticate('local'), UserController.postLogin);

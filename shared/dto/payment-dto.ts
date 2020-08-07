@@ -1,6 +1,5 @@
 interface CREATE {
 	name: string;
-	uid_payment: number;
 }
 
 type DELETE = number;

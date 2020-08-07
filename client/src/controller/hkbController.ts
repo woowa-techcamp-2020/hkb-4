@@ -47,9 +47,18 @@ class HkbController {
 	modalHandler(e) {
 		e.stopPropagation();
 		const closeButton = e.target.closest('.modal__close');
+		const addButton = e.target.closest('.button-add');
 		if (closeButton) {
 			this.closeModal(closeButton);
+		} else if (addButton) {
+			const newPayment = addButton.closest('.modal__add').querySelector('input[name="payment"]')
+				.value;
+			this.addPayment(newPayment);
 		}
+	}
+
+	addPayment(paymentName) {
+		this.model.fetchPaymentCreate({ name: paymentName });
 	}
 
 	closeModal(button) {

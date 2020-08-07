@@ -6,9 +6,11 @@ import { JsonResponse } from '../module/util';
 const PaymentController = {
 	create: async (req: Request, res: Response, next: NextFunction) => {
 		let response;
-		let { body } = req;
+		// @ts-ignore
+		const uid = req.user.id;
+		const { body } = req;
 		try {
-			response = await Payment.create(body);
+			response = await Payment.create({ uid_payment: uid, ...body });
 			res
 				.status(httpStatus.CREATED)
 				.json(JsonResponse(httpStatus.CREATED, 'payment created well', response));

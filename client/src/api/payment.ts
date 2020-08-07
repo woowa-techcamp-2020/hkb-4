@@ -3,7 +3,10 @@ import { PaymentDTO } from '../../../shared/dto';
 class PaymentApi {
 	static async create(body: PaymentDTO.CREATE) {
 		try {
-			const response = await fetch(`${url}/payment/create`, Options.POST(body));
+			const response = await fetch(`${url}/payment/create`, {
+				...Options.POST(body),
+				credentials: 'include',
+			});
 			const json = await response.json();
 			return json.result;
 		} catch (error) {

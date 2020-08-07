@@ -22,8 +22,13 @@ class PaymentModal extends HTMLElement {
         <div class="modal__header">
 					<span class="modal__title">결제수단 관리</span>
 					<span class="modal__close">X</span>
-        </div>
-        <div class="modal__content">
+				</div>
+				<div class="modal__add">
+					<label for="">결제 수단 이름</label>
+					<input type="text" name="payment">
+					<button class="button-add">등록</button>
+				</div>
+        <div class="modal__payments">
         </div>
       </div>
     `;
