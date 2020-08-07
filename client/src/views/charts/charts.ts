@@ -38,8 +38,14 @@ class ChartsTab extends HTMLElement {
 		}
 	}
 
-	tabChanged(data) {
-		this.animation.forEach(animate => animate.play());
+	tabChanged(tabName) {
+		if (tabName === this.name) {
+			this.classList.remove('display-none');
+			this.animation.forEach(animate => animate.play());
+		} else {
+			if (this.classList.contains('display-none')) return;
+			this.classList.add('display-none');
+		}
 	}
 
 	update(data) {

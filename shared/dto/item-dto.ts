@@ -25,6 +25,11 @@ interface UPDATE {
 	description: string;
 }
 
+interface DELETE {
+	id: number;
+	date: string;
+}
+
 interface Item {
 	id: number;
 	uid_item: number;
@@ -36,7 +41,6 @@ interface Item {
 	description: string;
 }
 
-type DELETE = number;
 type GET = number;
 
 export { CREATE, UPDATE, DELETE, GET, Item, ItemType, INCOME, SPENDING };

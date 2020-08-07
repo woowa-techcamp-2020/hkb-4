@@ -7,7 +7,7 @@
 		"test": "jest",
 		"dev:server": "nodemon --exec ts-node server/app.ts",
 		"dev:client": "webpack-dev-server --open --config webpack.dev.js",
-		"build": "webpack --config webpack.dev.js",
+		"build": "webpack --config webpack.prod.js",
 		"build:watch": "webpack --config webpack.dev.js --watch"
 	},
 	"repository": {

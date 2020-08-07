@@ -1,4 +1,5 @@
 import { ItemDTO } from '../../../../shared/dto';
+import { numberToString } from '../../util/common';
 
 class LedgerItem extends HTMLElement {
 	private data!: any;
@@ -20,7 +21,7 @@ class LedgerItem extends HTMLElement {
 			<div class="item__description">${description}</div>
 			<div class="item__payment">${payment}</div>
 			<div class="item__amount ${type === 1 ? 'income' : 'spending'}">
-				${type === 1 ? '+' : '-'} ${amount}원
+				${type === 1 ? '+' : '-'} ${numberToString(amount)}원
 			</div>
     `;
 	}

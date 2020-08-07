@@ -23,6 +23,9 @@ hkb-ledger {
 					font-weight: 600;
 				}
 			}
+			.invalid {
+				border-color: #ef5350 !important;
+			}
 		}
 		.row {
 			display: flex;
