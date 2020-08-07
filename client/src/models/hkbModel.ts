@@ -227,6 +227,13 @@ class HkbModel {
 		this.payments[result.id] = result.name;
 		this.observer.notify('paymentUpdated', this.payments);
 	}
+
+	async fetchPaymentDelete(data: PaymentDTO.DELETE) {
+		const result = await PaymentApi.delete(data);
+		const deletedId = result.id;
+		delete this.payments[deletedId];
+		this.observer.notify('paymentUpdated', this.payments);
+	}
 }
 
 export default new HkbModel();

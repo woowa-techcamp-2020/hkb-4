@@ -27,9 +27,9 @@ class PaymentApi {
 		}
 	}
 
-	static async delete(uid: PaymentDTO.DELETE) {
+	static async delete(id: PaymentDTO.DELETE) {
 		try {
-			const response = await fetch(`${url}/payment/delete/${uid}`, Options.PATCH({}));
+			const response = await fetch(`${url}/payment/delete/${id}`, Options.PATCH({ id }));
 			const json = await response.json();
 			return json.result;
 		} catch (error) {

@@ -47,6 +47,7 @@ class HkbController {
 		e.stopPropagation();
 		const closeButton = e.target.closest('.modal__close');
 		const addButton = e.target.closest('.button-add');
+		const deleteButton = e.target.closest('.payment__delete');
 		const isBackDropClicked = e.target.tagName === 'PAYMENT-MODAL';
 		if (closeButton) {
 			this.closeModal();
@@ -54,13 +55,20 @@ class HkbController {
 			const newPayment = addButton.closest('.modal__add').querySelector('input[name="payment"]')
 				.value;
 			this.addPayment(newPayment);
+		} else if (deleteButton) {
+			const deleteId = deleteButton.closest('.payment').dataset.id;
+			this.deletePayment(deleteId);
 		} else if (isBackDropClicked) {
 			this.closeModal();
 		}
 	}
 
-	addPayment(paymentName) {
-		this.model.fetchPaymentCreate({ name: paymentName });
+	async deletePayment(id) {
+		await this.model.fetchPaymentDelete(id);
+	}
+
+	async addPayment(paymentName) {
+		await this.model.fetchPaymentCreate({ name: paymentName });
 	}
 
 	closeModal() {
