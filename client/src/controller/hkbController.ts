@@ -4,6 +4,7 @@ import { template } from '@babel/core';
 
 class HkbController {
 	private model!: any;
+	private validator!: any;
 	constructor() {
 		this.model = model.HkbModel;
 	}
@@ -39,13 +40,13 @@ class HkbController {
 		const deleteButton = e.target.closest('.delete-button');
 		const filtrationContainer = e.target.closest('input[type="checkbox"]');
 		if (item) {
-			this.handleItemEdit(item);
+			this.handleItemClick(item);
 		} else if (radioButton) {
 			this.toggleTypeButton(radioButton);
 		} else if (submitButton) {
-			this.handleItemSubmit(submitButton);
+			this.handleSubmitClick(submitButton);
 		} else if (initButton) {
-			this.handleInputInit(initButton);
+			this.handleInputInit();
 		} else if (deleteButton) {
 			this.handleItemDelete(deleteButton);
 		} else if (filtrationContainer) {
@@ -53,16 +54,23 @@ class HkbController {
 		}
 	}
 
-	handleItemEdit(item) {
+	handleItemClick(item) {
 		const inputContainer = item.closest('hkb-ledger').querySelector('.container-input');
+		const submitButton = inputContainer.querySelector('.submit-button');
+		const deleteButton = inputContainer.querySelector('.delete-button');
+		submitButton.classList.add('edit-button');
+		submitButton.innerText = '수정';
+		submitButton.dataset.id = item.data.id;
+		deleteButton.dataset.id = item.data.id;
+		this.handleInputInit();
 		this.fillInput(item, inputContainer);
 	}
 
-	changeSelectOption(type, item) {
+	changhOption(type, item) {
 		const optionsContainer = document.querySelector(`select[name="${type}"`);
 		const options = optionsContainer.querySelectorAll('option');
 		options.forEach(option => {
-			if (option.value === item[type]) {
+			if (option.value === item.data[type].toString()) {
 				option.setAttribute('selected', '');
 			}
 		});
@@ -74,19 +82,16 @@ class HkbController {
 		} = item;
 		inputContainer.querySelector('.init-button').classList.add('hide');
 		inputContainer.querySelector('.delete-button').classList.remove('hide');
-		const checkedRadioButton = inputContainer.querySelector(
-			`input[value="${type === 1 ? '수입' : '지출'}"]`,
-		);
+		const checkedRadioButton = inputContainer.querySelector(`input[value="${type}"]`);
 		checkedRadioButton.checked = true;
 		this.toggleTypeButton(checkedRadioButton);
-		// @ts-ignore
-		inputContainer.querySelector('input[name="amount"]').value = amount;
-		//@ts-ignore
-		inputContainer.querySelector('input[name="description"]').value = description;
-		//@ts-ignore
-		inputContainer.querySelector('input[type="date"]').value = date;
-		this.changeSelectOption('category', item);
-		this.changeSelectOption('payment', item);
+		(inputContainer.querySelector('input[name="amount"]') as HTMLInputElement).value = amount;
+		(inputContainer.querySelector(
+			'input[name="description"]',
+		) as HTMLInputElement).value = description;
+		(inputContainer.querySelector('input[type="date"]') as HTMLInputElement).value = date;
+		this.changhOption('category', item);
+		this.changhOption('pid', item);
 	}
 
 	toggleTypeButton(button) {
@@ -102,7 +107,7 @@ class HkbController {
 		});
 	}
 
-	changeCategory(category) {
+	changeCategory(type) {
 		const spendingCategory = [
 			'식비',
 			'생활',
@@ -114,48 +119,149 @@ class HkbController {
 		];
 		const incomeCategory = ['월급', '용돈', '기타수입'];
 		const categorySelect = document.querySelector('select[name="category"]');
-		if (category === '수입') {
+		if (type === ItemDTO.ItemType.INCOME) {
 			categorySelect.innerHTML = incomeCategory.reduce(
 				(prev, next) => prev + `<option value="${next}">${next}</option>`,
-				'',
+				'<option value="" hidden selected disabled>선택하세요</option>',
 			);
 		} else {
 			categorySelect.innerHTML = spendingCategory.reduce(
 				(prev, next) => prev + `<option value="${next}">${next}</option>`,
-				'',
+				'<option value="" hidden selected disabled>선택하세요</option>',
 			);
 		}
-		categorySelect.firstElementChild.setAttribute('selected', '');
 	}
 
-	async handleItemSubmit(button) {
+	validateSelect(inputContainer, name) {
+		const select = inputContainer.querySelector(`select[name="${name}"]`);
+		const selectedOption = select.querySelector('option:checked').value;
+		if (selectedOption) {
+			select.classList.remove('invalid');
+		} else {
+			select.classList.add('invalid');
+		}
+		return selectedOption;
+	}
+
+	validateInput(inputContainer, name) {
+		const input = inputContainer.querySelector(`input[name="${name}"]`);
+		const value = input.value;
+		if (value) {
+			input.classList.remove('invalid');
+		} else {
+			input.classList.add('invalid');
+		}
+		return value;
+	}
+
+	async submitContent(button, data) {
+		if (button.classList.contains('edit-button')) {
+			const id = parseInt(button.dataset.id);
+			await this.model.fetchItemEdit({ id, ...data });
+			this.handleInputInit();
+			this.handleButtonInit();
+		} else {
+			await this.model.fetchItemCreate(data);
+			this.handleInputInit();
+		}
+	}
+
+	async handleSubmitClick(button) {
 		const inputContainer = document.querySelector('.container-input');
-		// @ts-ignore
-		const type = parseInt(inputContainer.querySelector('input[name="type"]:checked').value);
-		// @ts-ignore
-		const date = inputContainer.querySelector('input[name="date"]').value;
-		// @ts-ignore
-		const category = inputContainer.querySelector('select[name="category"]>option:checked').value;
-		// @ts-ignore
-		const pid_item = parseInt(
-			(inputContainer.querySelector('select[name="payment"]>option:checked') as HTMLInputElement)
-				.value,
+		const type = parseInt(
+			(inputContainer.querySelector('input[name="type"]:checked') as HTMLInputElement).value,
 		);
-		// @ts-ignore
-		const amount = parseInt(inputContainer.querySelector('input[name="amount"]').value);
-		// @ts-ignore
-		const description = inputContainer.querySelector('input[name="description"]').value;
+		const date = (inputContainer.querySelector('input[name="date"]') as HTMLInputElement).value;
+		const category = this.validateSelect(inputContainer, 'category');
+		const pid_item = this.validateSelect(inputContainer, 'pid');
+		const amount = this.validateInput(inputContainer, 'amount');
+		const description = this.validateInput(inputContainer, 'description');
+
+		if (![category, pid_item, amount, description].every(elem => elem)) return;
 
 		const inputData = { type, date, category, pid_item, amount, description };
-		await this.model.fetchItemCreated(inputData);
+		await this.submitContent(button, inputData);
 	}
 
-	handleInputInit(button) {
-		console.log('handleInputInit');
+	handleButtonInit() {
+		const submitButton = document.querySelector('.submit-button');
+		const deleteButton = document.querySelector('.delete-button');
+		const initButton = document.querySelector('.init-button');
+		initButton.classList.remove('hide');
+		deleteButton.classList.add('hide');
+		deleteButton.removeAttribute('data-id');
+		submitButton.classList.remove('edit-button');
+		// @ts-ignore
+		submitButton.innerText = '확인';
+		submitButton.removeAttribute('data-id');
 	}
 
-	handleItemDelete(button) {
-		console.log('handleItemDelete');
+	initType() {
+		const spendingButton = document.querySelector(
+			`input[name="type"][value="${ItemDTO.ItemType.SPENDING}"]`,
+		);
+		// @ts-ignore
+		spendingButton.checked = true;
+		this.toggleTypeButton(spendingButton);
+	}
+
+	initDate() {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1;
+		const date = today.getDate();
+		const todayToString = `${year}-${month > 10 ? month : `0${month}`}-${
+			date > 10 ? date : `0${date}`
+		}`;
+		const dateInput = document.querySelector('input[name="date"]');
+		// @ts-ignore
+		dateInput.value = todayToString;
+	}
+
+	initCategory() {
+		const categorySelect = document.querySelector('select[name="category"]');
+		categorySelect.classList.remove('invalid');
+		const options = categorySelect.querySelectorAll('option');
+		options[0].selected = true;
+	}
+
+	initPayment() {
+		const paymentSelect = document.querySelector('select[name="pid"]');
+		paymentSelect.classList.remove('invalid');
+		const options = paymentSelect.querySelectorAll('option');
+		options[0].selected = true;
+	}
+
+	initAmount() {
+		const amountInput = document.querySelector('input[name="amount"]');
+		amountInput.classList.remove('invalid');
+		// @ts-ignore
+		amountInput.value = '';
+	}
+
+	initDescription() {
+		const descriptionInput = document.querySelector('input[name="description"]');
+		descriptionInput.classList.remove('invalid');
+		// @ts-ignore
+		descriptionInput.value = '';
+	}
+
+	handleInputInit() {
+		this.initType();
+		this.initDate();
+		this.initCategory();
+		this.initPayment();
+		this.initAmount();
+		this.initDescription();
+	}
+
+	async handleItemDelete(button) {
+		const inputContainer = document.querySelector('.container-input');
+		const date = (inputContainer.querySelector('input[name="date"]') as HTMLInputElement).value;
+		const id = parseInt(button.dataset.id);
+		await this.model.fetchItemDelete({ id, date });
+		this.handleButtonInit();
+		this.handleInputInit();
 	}
 
 	handleFiltrationLedger() {
