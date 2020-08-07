@@ -1,7 +1,9 @@
 import { numberToString } from '../../util/common';
 import LineChart from './line';
 
-const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1', '#9F71C1'];
+// const colors = ['#6581BC', '#E56B77', '#F59745', '#F6BC35', '#94C942', '#9F71C1', '#9F71C1'];
+const colors = ['#94DAD5', '#2CB5AD', '#29ABB6', '#2A90B6', '#2975B6', '#3458A3'];
+// const colors = ['#7987CB', '#9575CC', '#4DB6AC', '#65B5F5', '#80DEEA', '#90A3AE'];
 
 class ChartsTab extends HTMLElement {
 	public name = 'charts';
@@ -22,13 +24,17 @@ class ChartsTab extends HTMLElement {
 		const category = this.querySelector('#category') as HTMLInputElement;
 		const categoryContainer = this.querySelector('.category-container') as HTMLElement;
 		const dailyContainer = this.querySelector('hkb-line') as HTMLElement;
+		const dailySpending = this.querySelector('.current-daily-spending') as HTMLElement;
+
 		if (category.checked) {
 			categoryContainer.classList.remove('display-none');
 			dailyContainer.classList.add('display-none');
+			dailySpending.classList.add('display-none');
 			this.animation.forEach(animate => animate.play());
 		} else {
 			categoryContainer.classList.add('display-none');
 			dailyContainer.classList.remove('display-none');
+			dailySpending.classList.remove('display-none');
 		}
 	}
 
@@ -45,7 +51,11 @@ class ChartsTab extends HTMLElement {
 
 	renderTotalSpending(data) {
 		const spending = this.querySelector('#currentMonthSpending') as HTMLElement;
+		const dailySpending = this.querySelector('#currentDailySpending') as HTMLElement;
 		spending.textContent = `${numberToString(data.monthlyData.spending)}원`;
+		dailySpending.textContent = `${numberToString(
+			Math.round(data.monthlyData.spending / new Date(data.year, data.month, 0).getDate()),
+		)}원`;
 	}
 
 	renderPieChart(data) {
@@ -102,6 +112,7 @@ class ChartsTab extends HTMLElement {
 		const y = Math.sin((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2;
 		textContainer.setAttribute('x', `${this.cx - x + 40}`);
 		textContainer.setAttribute('y', `${-this.cy - y + 40}`);
+		textContainer.setAttribute('fill', `rgba(255, 255, 255, 0.4)`);
 		textContainer.setAttribute('text-anchor', 'middle');
 		textContainer.style.transform = 'rotate(90deg)';
 		const txtSpan = document.createElementNS(this.svgns, 'tspan');
@@ -184,8 +195,13 @@ class ChartsTab extends HTMLElement {
 				<input type="radio" id="daily" name="drone" value="daily">
 				<label for="daily">일별 지출</label>
 			</div>
-			<div class="current-spending">
-				이번달 지출 금액: <span id="currentMonthSpending"></span>
+			<div>
+				<div class="current-spending">
+					이번달 지출 금액: <span id="currentMonthSpending"></span>
+				</div>
+				<div class="current-daily-spending">
+					이번달 일 평균: <span id="currentDailySpending"></span>
+				</div>
 			</div>
 		</div>
 		<div class="category-container">

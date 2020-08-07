@@ -94,7 +94,7 @@ class Ledger extends HTMLElement {
 		          <option value="미분류">미분류</option>
 		        </select>
 		      </div>
-		      <div class="group">
+		      <div class="group item-right">
 		        <span>결제수단</span>
 		        <select name="payment">
 		        </select>
@@ -105,7 +105,7 @@ class Ledger extends HTMLElement {
 						<span>금액</span>
 						<input type="number" step="1" min="0" name="amount" />원
 		      </div>
-		      <div class="group">
+		      <div class="group item-right">
 		        <span>내용</span>
 		        <input type="text" name="description"/>
 		      </div>

@@ -27,8 +27,11 @@ class Header extends HTMLElement {
 		this.innerHTML = `
       			<div class="flex-1"></div>
 			<div class="header">가계부</div>
-			<span class="flex-1 user-name">${this.username ? this.username : ''}</span>
-			${this.username ? '<span class="logout-button">logout</span>' : ''}
+			<div class="user-info flex-1">
+			<span class="user-name">${this.username ? this.username : ''}</span>
+			${this.username ? '<i class="material-icons logout-button">exit_to_app</span>' : ''}
+			</div>
+			
     `;
 	}
 }
