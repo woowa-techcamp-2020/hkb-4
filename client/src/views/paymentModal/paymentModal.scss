@@ -73,6 +73,23 @@ payment-modal {
 			.payment {
 				padding: 5px;
 				border-bottom: 1px solid #f5f6fa;
+				display: flex;
+				justify-content: space-between;
+				&__delete {
+					color: $red;
+					border: 1px solid $red;
+					border-radius: 5px;
+					font-size: 12px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					padding: 2px 4px;
+					transition: all 0.1s ease-in-out;
+					&:hover {
+						background-color: $red;
+						color: white;
+					}
+				}
 			}
 		}
 	}

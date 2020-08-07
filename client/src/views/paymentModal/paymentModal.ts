@@ -19,7 +19,11 @@ class PaymentModal extends HTMLElement {
 		const paymentsContainer = this.querySelector('.modal__payments');
 		let paymentsTemplate = '';
 		for (const [id, name] of Object.entries(payments)) {
-			paymentsTemplate += `<div class="payment" data-id=${id}>${name}</div>`;
+			paymentsTemplate += `
+				<div class="payment" data-id=${id}>
+					<span class="payment__name">${name}</span>
+					<div class="payment__delete">삭제</div>
+				</div>`;
 		}
 		paymentsContainer.innerHTML = paymentsTemplate;
 	}
