@@ -41,11 +41,14 @@ class HkbController {
 	openPaymentManager() {
 		const paymentManager = document.querySelector('payment-modal');
 		paymentManager.classList.remove('hide');
+		const paymentInput = paymentManager.querySelector('input[name="payment"]');
+		(paymentInput as HTMLInputElement).focus();
 	}
 
 	modalHandler(e) {
 		e.stopPropagation();
 		const closeButton = e.target.closest('.modal__close');
+		const paymentInput = e.target.closest('input[name="payment"]');
 		const addButton = e.target.closest('.button-add');
 		const deleteButton = e.target.closest('.payment__delete');
 		const isBackDropClicked = e.target.tagName === 'PAYMENT-MODAL';
@@ -55,6 +58,10 @@ class HkbController {
 			const newPayment = addButton.closest('.modal__add').querySelector('input[name="payment"]')
 				.value;
 			this.addPayment(newPayment);
+		} else if (paymentInput) {
+			if (e.key === 'Enter') {
+				this.enterOnInput((paymentInput as HTMLInputElement).value);
+			}
 		} else if (deleteButton) {
 			const deleteId = deleteButton.closest('.payment').dataset.id;
 			this.deletePayment(deleteId);
@@ -63,12 +70,26 @@ class HkbController {
 		}
 	}
 
+	enterOnInput(value) {
+		this.addPayment(value);
+	}
+
 	async deletePayment(id) {
 		await this.model.fetchPaymentDelete(id);
+		const paymentInput = document.querySelector('payment-modal input[name="payment"]');
+		paymentInput.classList.remove('invalid');
+		(paymentInput as HTMLInputElement).value = '';
 	}
 
 	async addPayment(paymentName) {
-		await this.model.fetchPaymentCreate({ name: paymentName });
+		const isAddable = await this.model.fetchPaymentCreate({ name: paymentName });
+		const paymentInput = document.querySelector('payment-modal input[name="payment"]');
+		if (!isAddable) {
+			paymentInput.classList.add('invalid');
+		} else {
+			paymentInput.classList.remove('invalid');
+			(paymentInput as HTMLInputElement).value = '';
+		}
 	}
 
 	closeModal() {

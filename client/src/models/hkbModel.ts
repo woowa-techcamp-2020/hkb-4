@@ -223,9 +223,11 @@ class HkbModel {
 	}
 
 	async fetchPaymentCreate(data: PaymentDTO.CREATE) {
+		if (Object.values(this.payments).includes(data.name)) return false;
 		const result = await PaymentApi.create(data);
 		this.payments[result.id] = result.name;
 		this.observer.notify('paymentUpdated', this.payments);
+		return true;
 	}
 
 	async fetchPaymentDelete(data: PaymentDTO.DELETE) {

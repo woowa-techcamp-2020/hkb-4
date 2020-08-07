@@ -13,6 +13,7 @@ class PaymentModal extends HTMLElement {
 
 	initEvent() {
 		this.addEventListener('click', this.controller.modalHandler.bind(this.controller));
+		this.addEventListener('keypress', this.controller.modalHandler.bind(this.controller));
 	}
 
 	updatePayments(payments) {
