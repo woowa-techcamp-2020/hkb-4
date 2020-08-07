@@ -31,6 +31,32 @@ class HkbController {
 		this.model.setYearMonth(newDate.getFullYear(), newDate.getMonth());
 	}
 
+	headerHandler(e) {
+		e.stopPropagation();
+		const paymentButton = e.target.closest('.payment-button');
+		if (paymentButton) {
+			this.openPaymentManager();
+		}
+	}
+
+	openPaymentManager() {
+		const paymentManager = document.querySelector('payment-modal');
+		paymentManager.classList.remove('hide');
+	}
+
+	modalHandler(e) {
+		e.stopPropagation();
+		const closeButton = e.target.closest('.modal__close');
+		if (closeButton) {
+			this.closeModal(closeButton);
+		}
+	}
+
+	closeModal(button) {
+		const modal = button.closest('payment-modal');
+		modal.classList.add('hide');
+	}
+
 	ledgerHandler(e) {
 		e.stopPropagation();
 		const item = e.target.closest('hkb-ledger-item');

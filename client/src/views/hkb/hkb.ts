@@ -4,6 +4,7 @@ import NavigationBar from '../navigation';
 import Ledger from '../ledger';
 import Calendar from '../calendar';
 import ChartsTab from '../charts';
+import PaymentModal from '../paymentModal';
 
 class Hkb extends HTMLElement {
 	private observer!: any;
@@ -12,6 +13,7 @@ class Hkb extends HTMLElement {
 	private ledgerTab = new Ledger();
 	private calendarTab = new Calendar();
 	private chartsTab = new ChartsTab();
+	private paymentModal = new PaymentModal();
 
 	constructor() {
 		super();
@@ -32,6 +34,7 @@ class Hkb extends HTMLElement {
 		tabContainer.appendChild(this.ledgerTab);
 		tabContainer.appendChild(this.calendarTab);
 		tabContainer.appendChild(this.chartsTab);
+		tabContainer.appendChild(this.paymentModal);
 	}
 
 	reset() {

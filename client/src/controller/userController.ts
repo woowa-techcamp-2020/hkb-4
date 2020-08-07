@@ -1,13 +1,14 @@
 import model from '../models';
 
 class UserController {
-	private model!: any;
+	private userModel!: any;
+	private hkbModel!: any;
 	constructor() {
-		this.model = model.UserModel;
+		this.userModel = model.UserModel;
 	}
 
 	initUser() {
-		this.model.checkUser();
+		this.userModel.checkUser();
 	}
 
 	loginPageHandler(e) {
@@ -39,7 +40,7 @@ class UserController {
 		inputs.forEach(input => {
 			userInputData[input.getAttribute('name')] = input.value;
 		});
-		const result = this.model.fetchLogin(userInputData);
+		const result = this.userModel.fetchLogin(userInputData);
 		if (!result.status) this.alarmLoginFail();
 	}
 
@@ -51,7 +52,7 @@ class UserController {
 	}
 
 	logoutHandler() {
-		this.model.fetchLogout();
+		this.userModel.fetchLogout();
 	}
 }
 
