@@ -102,7 +102,9 @@ class LineChart extends HTMLElement {
 		const axisStep = height / 5;
 		let yLabels = '';
 		for (let i = 1; i <= 5; i++) {
-			yLabels += `<text x="-70" y="${390 - axisStep * i}">${numberToString(yStep * i)}원</text>;`;
+			yLabels += `<text x="-70" y="${390 - axisStep * i}">${numberToString(
+				Math.round(yStep * i),
+			)}원</text>;`;
 		}
 		return yLabels;
 	}
