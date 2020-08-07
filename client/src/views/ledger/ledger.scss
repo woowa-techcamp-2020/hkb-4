@@ -11,16 +11,20 @@ hkb-ledger {
 			padding: 8px 0;
 			position: relative;
 			.init-button,
-			.delete-button {
+			.delete-button-zone {
 				position: absolute;
 				top: 10px;
 				right: 10px;
 				font-size: 14px;
 				color: $blue;
 				cursor: pointer;
+				display: flex;
 				&:hover {
 					filter: brightness(0.9);
 					font-weight: 600;
+				}
+				.cancel-button {
+					margin-left: 8px;
 				}
 			}
 			.invalid {

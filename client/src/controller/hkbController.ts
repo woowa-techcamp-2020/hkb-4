@@ -38,6 +38,7 @@ class HkbController {
 		const submitButton = e.target.closest('.submit-button');
 		const initButton = e.target.closest('.init-button');
 		const deleteButton = e.target.closest('.delete-button');
+		const cancelButton = e.target.closest('.cancel-button');
 		const filtrationContainer = e.target.closest('input[type="checkbox"]');
 		if (item) {
 			this.handleItemClick(item);
@@ -51,13 +52,21 @@ class HkbController {
 			this.handleItemDelete(deleteButton);
 		} else if (filtrationContainer) {
 			this.handleFiltrationLedger();
+		} else if (cancelButton) {
+			this.handleCancelbuttonClick();
 		}
+	}
+
+	handleCancelbuttonClick() {
+		this.handleButtonInit();
+		this.handleInputInit();
 	}
 
 	handleItemClick(item) {
 		const inputContainer = item.closest('hkb-ledger').querySelector('.container-input');
 		const submitButton = inputContainer.querySelector('.submit-button');
 		const deleteButton = inputContainer.querySelector('.delete-button');
+		const initButton = inputContainer.querySelector('.init-button');
 		submitButton.classList.add('edit-button');
 		submitButton.innerText = '수정';
 		submitButton.dataset.id = item.data.id;
@@ -66,7 +75,7 @@ class HkbController {
 		this.fillInput(item, inputContainer);
 	}
 
-	changhOption(type, item) {
+	changeOption(type, item) {
 		const optionsContainer = document.querySelector(`select[name="${type}"`);
 		const options = optionsContainer.querySelectorAll('option');
 		options.forEach(option => {
@@ -81,7 +90,7 @@ class HkbController {
 			data: { type, amount, description, date },
 		} = item;
 		inputContainer.querySelector('.init-button').classList.add('hide');
-		inputContainer.querySelector('.delete-button').classList.remove('hide');
+		inputContainer.querySelector('.delete-button-zone').classList.remove('hide');
 		const checkedRadioButton = inputContainer.querySelector(`input[value="${type}"]`);
 		checkedRadioButton.checked = true;
 		this.toggleTypeButton(checkedRadioButton);
@@ -90,8 +99,8 @@ class HkbController {
 			'input[name="description"]',
 		) as HTMLInputElement).value = description;
 		(inputContainer.querySelector('input[type="date"]') as HTMLInputElement).value = date;
-		this.changhOption('category', item);
-		this.changhOption('pid', item);
+		this.changeOption('category', item);
+		this.changeOption('pid', item);
 	}
 
 	toggleTypeButton(button) {
@@ -119,7 +128,7 @@ class HkbController {
 		];
 		const incomeCategory = ['월급', '용돈', '기타수입'];
 		const categorySelect = document.querySelector('select[name="category"]');
-		if (type === ItemDTO.ItemType.INCOME) {
+		if (parseInt(type) === ItemDTO.ItemType.INCOME) {
 			categorySelect.innerHTML = incomeCategory.reduce(
 				(prev, next) => prev + `<option value="${next}">${next}</option>`,
 				'<option value="" hidden selected disabled>선택하세요</option>',
@@ -185,11 +194,11 @@ class HkbController {
 
 	handleButtonInit() {
 		const submitButton = document.querySelector('.submit-button');
-		const deleteButton = document.querySelector('.delete-button');
+		const deleteButtonZone = document.querySelector('.delete-button-zone');
 		const initButton = document.querySelector('.init-button');
 		initButton.classList.remove('hide');
-		deleteButton.classList.add('hide');
-		deleteButton.removeAttribute('data-id');
+		deleteButtonZone.classList.add('hide');
+		deleteButtonZone.removeAttribute('data-id');
 		submitButton.classList.remove('edit-button');
 		// @ts-ignore
 		submitButton.innerText = '확인';
