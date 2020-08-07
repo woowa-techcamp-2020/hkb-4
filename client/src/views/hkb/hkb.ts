@@ -4,6 +4,7 @@ import NavigationBar from '../navigation';
 import Ledger from '../ledger';
 import Calendar from '../calendar';
 import ChartsTab from '../charts';
+import PaymentModal from '../paymentModal';
 
 class Hkb extends HTMLElement {
 	private observer!: any;
@@ -12,6 +13,7 @@ class Hkb extends HTMLElement {
 	private ledgerTab = new Ledger();
 	private calendarTab = new Calendar();
 	private chartsTab = new ChartsTab();
+	private paymentModal = new PaymentModal();
 
 	constructor() {
 		super();
@@ -22,6 +24,7 @@ class Hkb extends HTMLElement {
 	connectedCallback() {
 		this.observer.subscribe('tabChanged', this, this.changeTab.bind(this));
 		this.observer.subscribe('dataFetched', this, this.changeData.bind(this));
+		this.observer.subscribe('paymentUpdated', this, this.changePayment.bind(this));
 		this.hkbController.init();
 
 		this.appendChild(this.navigationBar);
@@ -32,6 +35,7 @@ class Hkb extends HTMLElement {
 		tabContainer.appendChild(this.ledgerTab);
 		tabContainer.appendChild(this.calendarTab);
 		tabContainer.appendChild(this.chartsTab);
+		tabContainer.appendChild(this.paymentModal);
 	}
 
 	reset() {
@@ -48,6 +52,7 @@ class Hkb extends HTMLElement {
 		this.ledgerTab.update(data);
 		this.calendarTab.update(data);
 		this.chartsTab.update(data);
+		this.paymentModal.updatePayments(data.payments);
 	}
 
 	changeTab(tabName: string) {
@@ -58,6 +63,11 @@ class Hkb extends HTMLElement {
 		this.ledgerTab.tabChanged(tabName);
 		this.calendarTab.tabChanged(tabName);
 		this.chartsTab.tabChanged(tabName);
+	}
+
+	changePayment(data) {
+		this.ledgerTab.updatePayments(data);
+		this.paymentModal.updatePayments(data);
 	}
 
 	checkElementClass(element: HTMLElement) {

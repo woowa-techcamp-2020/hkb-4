@@ -1,6 +1,5 @@
 import model from '../models';
 import { ItemDTO } from '../../../shared/dto';
-import { template } from '@babel/core';
 
 class HkbController {
 	private model!: any;
@@ -29,6 +28,73 @@ class HkbController {
 		const date = this.model.getDate();
 		const newDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
 		this.model.setYearMonth(newDate.getFullYear(), newDate.getMonth());
+	}
+
+	headerHandler(e) {
+		e.stopPropagation();
+		const paymentButton = e.target.closest('.payment-button');
+		if (paymentButton) {
+			this.openPaymentManager();
+		}
+	}
+
+	openPaymentManager() {
+		const paymentManager = document.querySelector('payment-modal');
+		paymentManager.classList.remove('hide');
+		const paymentInput = paymentManager.querySelector('input[name="payment"]');
+		(paymentInput as HTMLInputElement).focus();
+	}
+
+	modalHandler(e) {
+		e.stopPropagation();
+		const closeButton = e.target.closest('.modal__close');
+		const paymentInput = e.target.closest('input[name="payment"]');
+		const addButton = e.target.closest('.button-add');
+		const deleteButton = e.target.closest('.payment__delete');
+		const isBackDropClicked = e.target.tagName === 'PAYMENT-MODAL';
+		if (closeButton) {
+			this.closeModal();
+		} else if (addButton) {
+			const newPayment = addButton.closest('.modal__add').querySelector('input[name="payment"]')
+				.value;
+			this.addPayment(newPayment);
+		} else if (paymentInput) {
+			if (e.key === 'Enter') {
+				this.enterOnInput((paymentInput as HTMLInputElement).value);
+			}
+		} else if (deleteButton) {
+			const deleteId = deleteButton.closest('.payment').dataset.id;
+			this.deletePayment(deleteId);
+		} else if (isBackDropClicked) {
+			this.closeModal();
+		}
+	}
+
+	enterOnInput(value) {
+		this.addPayment(value);
+	}
+
+	async deletePayment(id) {
+		await this.model.fetchPaymentDelete(id);
+		const paymentInput = document.querySelector('payment-modal input[name="payment"]');
+		paymentInput.classList.remove('invalid');
+		(paymentInput as HTMLInputElement).value = '';
+	}
+
+	async addPayment(paymentName) {
+		const isAddable = await this.model.fetchPaymentCreate({ name: paymentName });
+		const paymentInput = document.querySelector('payment-modal input[name="payment"]');
+		if (!isAddable) {
+			paymentInput.classList.add('invalid');
+		} else {
+			paymentInput.classList.remove('invalid');
+			(paymentInput as HTMLInputElement).value = '';
+		}
+	}
+
+	closeModal() {
+		const modal = document.querySelector('payment-modal');
+		modal.classList.add('hide');
 	}
 
 	ledgerHandler(e) {

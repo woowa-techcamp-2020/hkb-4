@@ -10,6 +10,10 @@ class LoginPage extends HTMLElement {
 	connectedCallback() {
 		this.render();
 		this.addEventListener('click', this.userController.loginPageHandler.bind(this.userController));
+		this.addEventListener(
+			'keypress',
+			this.userController.loginPageHandler.bind(this.userController),
+		);
 	}
 
 	render() {
@@ -18,10 +22,10 @@ class LoginPage extends HTMLElement {
       <div class="login-container">
         <h2> Login </h2>
         <div class="input-wrapper">
-          <input type='text' placeholder='id' name="name"></input>
+          <input class="input-name" type='text' placeholder='id' name="name" autofocus></input>
         </div>
         <div class="input-wrapper">
-          <input type='password' placeholder='password' name="password"></input>
+          <input class="input-pw" type='password' placeholder='password' name="password"></input>
         </div>
         <div class="button-zone">
           <div class="signup-button">Sign Up</div>

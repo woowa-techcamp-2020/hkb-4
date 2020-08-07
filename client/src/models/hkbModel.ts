@@ -1,5 +1,5 @@
 import { ItemApi, PaymentApi } from '../api';
-import { ItemDTO } from '../../../shared/dto';
+import { ItemDTO, PaymentDTO } from '../../../shared/dto';
 import observer from '../models/observer';
 
 type tabType = 'ledger' | 'calendar' | 'charts';
@@ -220,6 +220,21 @@ class HkbModel {
 		this.tab = tab;
 		this.observer.notify('tabChanged', this.tab);
 		this.updateHistory();
+	}
+
+	async fetchPaymentCreate(data: PaymentDTO.CREATE) {
+		if (Object.values(this.payments).includes(data.name)) return false;
+		const result = await PaymentApi.create(data);
+		this.payments[result.id] = result.name;
+		this.observer.notify('paymentUpdated', this.payments);
+		return true;
+	}
+
+	async fetchPaymentDelete(data: PaymentDTO.DELETE) {
+		const result = await PaymentApi.delete(data);
+		const deletedId = result.id;
+		delete this.payments[deletedId];
+		this.observer.notify('paymentUpdated', this.payments);
 	}
 }
 
