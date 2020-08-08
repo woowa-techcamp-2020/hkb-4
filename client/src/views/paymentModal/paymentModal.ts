@@ -34,7 +34,7 @@ class PaymentModal extends HTMLElement {
 		this.innerHTML = `
       <div class="payment-modal modal">
         <div class="modal__header">
-					<span class="modal__title">결제수단 관리</span>
+					<i class="meterial-icons	modal__title">credit_card</i>
 					<span class="modal__close">X</span>
 				</div>
 				<div class="modal__add">

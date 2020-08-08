@@ -120,8 +120,10 @@ class ChartsTab extends HTMLElement {
 
 	renderPieLabel(degree: number, percentage: number, radius: number, label: string) {
 		const textContainer = document.createElementNS(this.svgns, 'text') as SVGTextElement;
-		const x = Math.cos((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2;
-		const y = Math.sin((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * radius * 2;
+		const x =
+			Math.cos((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * (radius * 1.1) * 2;
+		const y =
+			Math.sin((((percentage * 3.6) / 2 + degree + 90) * Math.PI) / 180) * (radius * 1.1) * 2;
 		textContainer.setAttribute('x', `${this.cx - x + 40}`);
 		textContainer.setAttribute('y', `${-this.cy - y + 40}`);
 		textContainer.setAttribute('fill', `rgba(255, 255, 255, 0.4)`);

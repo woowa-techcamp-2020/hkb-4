@@ -1,9 +1,15 @@
 @import '.././style/variable.scss';
+@import './font/nanumgothic.css';
+@import './font/quicksand.css';
 
 * {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box !important;
+}
+
+body {
+	font-family: 'Quicksand', 'Nanum Gothic', sans-serif;
 }
 
 #app {
