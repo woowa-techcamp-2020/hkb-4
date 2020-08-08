@@ -28,19 +28,18 @@ class Header extends HTMLElement {
 
 	render() {
 		this.innerHTML = `
-			<div class="flex-1"></div>
-			<div class="header">가계부</div>
-			<div class="user-info flex-1">
+			<div class="title">가계부</div>
 			${
 				this.username
 					? `
-				<span class="user-name"> ${this.username} 님, <em>부자</em>되세요</span>
-				<span class="payment-button">결제수단 관리</span>
-				<i class="material-icons logout-button">exit_to_app</span>
+				<div class="user-info">
+					<span class="user-name"> ${this.username} 님, <em>부자</em>되세요</span>
+					<span><i class="material-icons payment-button">payment</i></span>
+					<span><i class="material-icons logout-button">exit_to_app</i></span>
+				</div>
 				`
 					: ''
 			}
-			</div>
     `;
 	}
 }

@@ -17,15 +17,15 @@ hkb-ledger {
 				right: 10px;
 				font-size: 14px;
 				color: $blue;
-				cursor: pointer;
 				display: flex;
-				&:hover {
-					filter: brightness(0.9);
-					font-weight: 600;
-				}
 				.cancel-button {
 					margin-left: 8px;
 				}
+			}
+			.clickable:hover {
+				cursor: pointer;
+				filter: brightness(0.9);
+				font-weight: 600;
 			}
 			.invalid {
 				border: 1px solid $red !important;
@@ -62,6 +62,10 @@ hkb-ledger {
 			text-align: center;
 			&:hover {
 				cursor: pointer;
+				&:hover {
+					filter: brightness(0.9);
+					font-weight: 600;
+				}
 			}
 			&:not(:last-of-type) {
 				margin-right: 5px;

@@ -85,10 +85,10 @@ class Ledger extends HTMLElement {
 		const { INCOME, SPENDING } = ItemDTO.ItemType;
 		this.innerHTML = `
 		  <div class="container container-input">
-				<div class="init-button">내용 지우기</div>
+				<div class="clickable init-button">내용 지우기</div>
 				<div class="delete-button-zone hide">
-					<div class="delete-button">삭제</div>
-					<div class="cancel-button">취소</div>
+					<div class="clickable delete-button">삭제</div>
+					<div class="clickable cancel-button">취소</div>
 				</div>
 		    <div class="row">
 		      <div class="group">
