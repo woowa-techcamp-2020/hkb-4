@@ -1,5 +1,6 @@
 import model from '../models';
 import { ItemDTO } from '../../../shared/dto';
+import { numberToString } from '../util/common';
 
 class HkbController {
 	private model!: any;
@@ -142,7 +143,6 @@ class HkbController {
 		const inputContainer = item.closest('hkb-ledger').querySelector('.container-input');
 		const submitButton = inputContainer.querySelector('.submit-button');
 		const deleteButton = inputContainer.querySelector('.delete-button');
-		const initButton = inputContainer.querySelector('.init-button');
 		this.markSelectedItem(item);
 		submitButton.classList.add('edit-button');
 		submitButton.innerText = '수정';
@@ -229,9 +229,23 @@ class HkbController {
 		return selectedOption;
 	}
 
+	handleAmountInput(e) {
+		const inputValue = e.target.value;
+		if (parseInt(inputValue) === 0) {
+			e.target.value = '';
+			return;
+		}
+		const reg = /[^0-9]/g;
+		const inputOnlyNumber = inputValue.replace(reg, '');
+		e.target.value = numberToString(inputOnlyNumber);
+	}
+
 	validateInput(inputContainer, name) {
 		const input = inputContainer.querySelector(`input[name="${name}"]`);
-		const value = input.value;
+		let value = input.value;
+		if (name === 'amount') {
+			value = parseInt(value);
+		}
 		if (value) {
 			input.classList.remove('invalid');
 		} else {

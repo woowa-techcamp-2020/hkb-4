@@ -99,29 +99,8 @@ hkb-ledger {
 			&[type='radio'] {
 				display: none;
 			}
-			&[type='number'] {
-				width: 60%;
-				border: none;
-				padding: 6px;
-				border-radius: 8px;
-				margin-right: 6px;
-				box-shadow: $shadow;
-				background-color: white;
+			&[name='amount'] {
 				text-align: right;
-				&::-webkit-inner-spin-button,
-				&::-webkit-outer-spin-button {
-					-webkit-appearance: none;
-					margin: 0;
-				}
-				&:focus {
-					outline: none;
-				}
-				:hover {
-					cursor: text;
-				}
-				&:hover {
-					cursor: text;
-				}
 			}
 		}
 		select {

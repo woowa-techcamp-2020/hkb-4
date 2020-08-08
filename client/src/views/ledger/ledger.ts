@@ -15,10 +15,17 @@ class Ledger extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.addEventListener('click', e => this.hkbController.ledgerHandler(e));
 		this.render();
+		this.initEventListener();
 		const monthlyContainer = document.querySelector('.monthly-container') as HTMLElement;
 		monthlyContainer.appendChild(this.monthlyFilter);
+	}
+
+	initEventListener() {
+		this.addEventListener('click', e => this.hkbController.ledgerHandler(e));
+		(this.querySelector('input[name="amount"]') as HTMLInputElement).addEventListener('input', e =>
+			this.hkbController.handleAmountInput(e),
+		);
 	}
 
 	updatePayments(payments) {
@@ -128,7 +135,7 @@ class Ledger extends HTMLElement {
 		    <div class="row">
 		      <div class="group">
 						<span>금액</span>
-						<input type="number" step="1" min="0" name="amount" />원
+						<input type="text" name="amount" />원
 		      </div>
 		      <div class="group item-right">
 		        <span>내용</span>
