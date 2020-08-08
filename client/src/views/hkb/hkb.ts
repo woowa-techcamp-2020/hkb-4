@@ -4,6 +4,7 @@ import NavigationBar from '../navigation';
 import Ledger from '../ledger';
 import Calendar from '../calendar';
 import ChartsTab from '../charts';
+import PaymentModal from '../paymentModal';
 
 class Hkb extends HTMLElement {
 	private observer!: any;
@@ -12,6 +13,7 @@ class Hkb extends HTMLElement {
 	private ledgerTab = new Ledger();
 	private calendarTab = new Calendar();
 	private chartsTab = new ChartsTab();
+	private paymentModal = new PaymentModal();
 
 	constructor() {
 		super();
@@ -22,6 +24,7 @@ class Hkb extends HTMLElement {
 	connectedCallback() {
 		this.observer.subscribe('tabChanged', this, this.changeTab.bind(this));
 		this.observer.subscribe('dataFetched', this, this.changeData.bind(this));
+		this.observer.subscribe('paymentUpdated', this, this.changePayment.bind(this));
 		this.hkbController.init();
 
 		this.appendChild(this.navigationBar);
@@ -32,13 +35,7 @@ class Hkb extends HTMLElement {
 		tabContainer.appendChild(this.ledgerTab);
 		tabContainer.appendChild(this.calendarTab);
 		tabContainer.appendChild(this.chartsTab);
-		this.init();
-	}
-
-	init() {
-		// 나중에 없애야할 함수
-		this.calendarTab.classList.add('display-none');
-		this.chartsTab.classList.add('display-none');
+		tabContainer.appendChild(this.paymentModal);
 	}
 
 	reset() {
@@ -55,6 +52,7 @@ class Hkb extends HTMLElement {
 		this.ledgerTab.update(data);
 		this.calendarTab.update(data);
 		this.chartsTab.update(data);
+		this.paymentModal.updatePayments(data.payments);
 	}
 
 	changeTab(tabName: string) {
@@ -62,38 +60,19 @@ class Hkb extends HTMLElement {
 		const selected = document.querySelector('.selected-tab') as HTMLElement;
 		selected.style.left = `${tab.offsetLeft}px`;
 
-		if (tabName === this.ledgerTab.name) {
-			this.ledgerTab.classList.remove('display-none');
-			this.checkElementClass(this.calendarTab);
-			this.checkElementClass(this.chartsTab);
-		}
-		if (tabName === this.calendarTab.name) {
-			this.calendarTab.classList.remove('display-none');
-			this.checkElementClass(this.ledgerTab);
-			this.checkElementClass(this.chartsTab);
-		}
-		if (tabName === this.chartsTab.name) {
-			this.chartsTab.classList.remove('display-none');
-			this.checkElementClass(this.ledgerTab);
-			this.checkElementClass(this.calendarTab);
-		}
+		this.ledgerTab.tabChanged(tabName);
+		this.calendarTab.tabChanged(tabName);
+		this.chartsTab.tabChanged(tabName);
+	}
+
+	changePayment(data) {
+		this.ledgerTab.updatePayments(data);
+		this.paymentModal.updatePayments(data);
 	}
 
 	checkElementClass(element: HTMLElement) {
 		if (!element.classList.contains('display-none')) {
 			element.classList.add('display-none');
-		}
-	}
-
-	render(data: any) {
-		this.reset();
-		switch (data.page) {
-			case 'ledger':
-				this.appendChild(new Ledger());
-			case 'calender':
-				this.appendChild(new Calendar());
-			case 'charts':
-				this.appendChild(new ChartsTab());
 		}
 	}
 }

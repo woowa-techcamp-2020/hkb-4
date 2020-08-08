@@ -1,3 +1,5 @@
+@import '../../style//variable.scss';
+
 hkb-ledger {
 	display: block;
 	width: 100%;
@@ -6,26 +8,35 @@ hkb-ledger {
 		width: 100%;
 		margin: 10px auto;
 		&-input {
-			padding: 10px;
+			padding: 8px 0;
 			position: relative;
 			.init-button,
-			.delete-button {
+			.delete-button-zone {
 				position: absolute;
 				top: 10px;
 				right: 10px;
 				font-size: 14px;
-				color: dodgerblue;
+				color: $blue;
 				cursor: pointer;
+				display: flex;
 				&:hover {
 					filter: brightness(0.9);
 					font-weight: 600;
 				}
+				.cancel-button {
+					margin-left: 8px;
+				}
+			}
+			.invalid {
+				border: 1px solid $red !important;
+				box-shadow: none !important;
 			}
 		}
 		.row {
 			display: flex;
 			align-items: center;
-			margin-bottom: 8px;
+			justify-content: space-between;
+			margin: 12px 0;
 			&:last-child {
 				margin-bottom: 0;
 			}
@@ -34,26 +45,29 @@ hkb-ledger {
 				align-items: center;
 				flex: 1;
 				> span {
-					padding: 0 5px;
+					padding-right: 8px;
+				}
+				&.item-right {
+					justify-content: flex-end;
 				}
 			}
 		}
 		.button {
-			border: 1px solid dodgerblue;
+			border: 1px solid $blue;
 			background-color: white;
-			padding: 2px 5px;
+			padding: 4px 6px;
+			margin-right: 4px;
 			border-radius: 8px;
-			color: dodgerblue;
+			color: $blue;
 			text-align: center;
 			&:hover {
-				filter: brightness(0.9);
 				cursor: pointer;
 			}
 			&:not(:last-of-type) {
 				margin-right: 5px;
 			}
 			&--active {
-				background-color: dodgerblue;
+				background-color: $blue;
 				color: white;
 			}
 			&--large {
@@ -64,13 +78,19 @@ hkb-ledger {
 			&:hover {
 				cursor: pointer;
 			}
+			&[type='text']:hover {
+				cursor: text;
+			}
 			&[type='text'],
 			&[type='date'] {
 				outline: none;
-				background-color: transparent;
+				background-color: white;
+				box-shadow: $shadow;
 				border: none;
-				border-bottom: 1px solid black;
-				width: 75%;
+				padding: 6px;
+				border-radius: 8px;
+				width: 70%;
+				font-size: 14px;
 			}
 			&[type='radio'] {
 				display: none;
@@ -78,8 +98,11 @@ hkb-ledger {
 			&[type='number'] {
 				width: 60%;
 				border: none;
-				border-bottom: 1px solid black;
-				background-color: transparent;
+				padding: 6px;
+				border-radius: 8px;
+				margin-right: 6px;
+				box-shadow: $shadow;
+				background-color: white;
 				text-align: right;
 				&::-webkit-inner-spin-button,
 				&::-webkit-outer-spin-button {
@@ -89,13 +112,26 @@ hkb-ledger {
 				&:focus {
 					outline: none;
 				}
+				:hover {
+					cursor: text;
+				}
+				&:hover {
+					cursor: text;
+				}
 			}
 		}
 		select {
 			width: 50%;
 			min-width: auto;
+			padding: 6px;
+			border-radius: 8px;
+			border: none;
+			box-shadow: $shadow;
 			&:hover {
 				cursor: pointer;
+			}
+			option {
+				padding: 6px;
 			}
 		}
 		&-monthly {
@@ -106,6 +142,10 @@ hkb-ledger {
 		}
 		&-items {
 			margin: 0 auto;
+		}
+		.submit-button {
+			margin: 12px 0;
+			padding: 8px 0;
 		}
 	}
 }

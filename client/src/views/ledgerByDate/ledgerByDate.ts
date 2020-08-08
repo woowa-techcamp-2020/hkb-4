@@ -1,4 +1,5 @@
 import LedgerItem from '../ledgerItem';
+import { numberToString } from '../../util/common';
 
 class LedgerByDate extends HTMLElement {
 	private data!: any;
@@ -28,11 +29,11 @@ class LedgerByDate extends HTMLElement {
 		this.innerHTML = `
 			<div class="date__header">
 				<span class="date__date">${month}월 ${day}일</span>
-				<span class="date__income">+${dIncome}원</span>
-				<span class="date__spending">-${dSpending}원</span>
+				<span class="date__income">+${numberToString(dIncome)}원</span>
+				<span class="date__spending">-${numberToString(dSpending)}원</span>
 			</div>
 		`;
-		items.forEach(item => this.appendChild(new LedgerItem(item)));
+		items.reverse().forEach(item => this.appendChild(new LedgerItem(item)));
 	}
 }
 

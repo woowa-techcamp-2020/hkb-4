@@ -7,10 +7,9 @@ const Payment = {
 	create: async (payment: PaymentDTO.CREATE) => {
 		try {
 			const result = await db.query(`INSERT INTO payment SET ?`, payment);
-			console.log('payment create', result);
-			return payment;
+			const insertedId = result[0]['insertId'];
+			return { id: insertedId, ...payment };
 		} catch (err) {
-			console.log('err', err);
 			throw err;
 		}
 	},

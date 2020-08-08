@@ -22,7 +22,7 @@ class Ledger extends HTMLElement {
 	}
 
 	updatePayments(payments) {
-		const paymentSelection = this.querySelector('select[name="payment"]');
+		const paymentSelection = this.querySelector('select[name="pid"]');
 		let options = '<option value="" hidden disabled selected>선택하세요</option>';
 		for (const [id, name] of Object.entries(payments)) {
 			options += `<option value="${id}">${name}</option>`;
@@ -30,20 +30,41 @@ class Ledger extends HTMLElement {
 		paymentSelection.innerHTML = options;
 	}
 
+	setDate() {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = today.getMonth() + 1;
+		const date = today.getDate();
+		const todayString = `${year}-${month > 10 ? month : `0${month}`}-${
+			date > 10 ? date : `0${date}`
+		}`;
+		// @ts-ignore
+		document.querySelector('input[name="date"]').value = todayString;
+	}
 	update(data) {
 		this.updatePayments(data.payments);
 		this.monthlyFilter.update(data);
 		this.renderItemList(data);
+		this.setDate();
+		this.hkbController.handleFiltrationLedger();
+	}
+
+	tabChanged(tabName) {
+		if (tabName === this.name) {
+			this.classList.remove('display-none');
+		} else {
+			if (this.classList.contains('display-none')) return;
+			this.classList.add('display-none');
+		}
 	}
 
 	renderItemList(data) {
 		const { year, month, rawData, dailyData, monthlyData } = data;
-		console.log(year, month, rawData, dailyData, monthlyData);
 		const itemContainer = this.querySelector('.container-items');
 		itemContainer.innerHTML = '';
 		if (itemContainer) {
 			const lastDay = new Date(year, month, 0).getDate();
-			for (let i = 1; i <= lastDay; i++) {
+			for (let i = lastDay; i >= 1; i--) {
 				if (dailyData[i]) {
 					itemContainer.appendChild(
 						new LedgerByDate({
@@ -64,8 +85,11 @@ class Ledger extends HTMLElement {
 		const { INCOME, SPENDING } = ItemDTO.ItemType;
 		this.innerHTML = `
 		  <div class="container container-input">
-		    <div class="init-button">내용 지우기</div>
-		    <div class="delete-button hide">삭제</div>
+				<div class="init-button">내용 지우기</div>
+				<div class="delete-button-zone hide">
+					<div class="delete-button">삭제</div>
+					<div class="cancel-button">취소</div>
+				</div>
 		    <div class="row">
 		      <div class="group">
 		        <span>분류</span>
@@ -80,12 +104,13 @@ class Ledger extends HTMLElement {
 		    <div class="row">
 		      <div class="group">
 		        <span>날짜</span>
-		        <input type="date" name="date" value="2020-08-04"/>
+		        <input type="date" name="date" value=""/>
 		      </div>
 		      <div class="group">
 		        <span>카테고리</span>
-		        <select name="category">
-		          <option value="식비" selected>식비</option>
+						<select name="category">
+							<option value="" hidden selected disabled>선택하세요</option>
+		          <option value="식비">식비</option>
 		          <option value="생활">생활</option>
 		          <option value="쇼핑/뷰티">쇼핑/뷰티</option>
 		          <option value="교통">교통</option>
@@ -94,9 +119,9 @@ class Ledger extends HTMLElement {
 		          <option value="미분류">미분류</option>
 		        </select>
 		      </div>
-		      <div class="group">
+		      <div class="group item-right">
 		        <span>결제수단</span>
-		        <select name="payment">
+		        <select name="pid">
 		        </select>
 		      </div>
 		    </div>
@@ -105,13 +130,13 @@ class Ledger extends HTMLElement {
 						<span>금액</span>
 						<input type="number" step="1" min="0" name="amount" />원
 		      </div>
-		      <div class="group">
+		      <div class="group item-right">
 		        <span>내용</span>
 		        <input type="text" name="description"/>
 		      </div>
 		    </div>
 		    <div class="row">
-		      <div class="button button--large button--active submit-button">
+		      <div class="button button--large button--active submit-button disabled">
 		        확인
 		      </div>
 		    </div>

@@ -21,8 +21,13 @@ class UserModel {
 	}
 
 	async fetchLogin(userData) {
-		const user = await UserApi.login(userData);
-		this.setUser(user);
+		try {
+			const user = await UserApi.login(userData);
+			this.setUser(user);
+			return { status: true };
+		} catch (err) {
+			return { status: false };
+		}
 	}
 
 	async fetchLogout() {

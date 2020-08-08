@@ -31,6 +31,12 @@ charts-tab {
 				color: #1891ff;
 			}
 		}
+		.current-daily-spending {
+			margin-top: 2px;
+			font-size: 14px;
+			color: #777;
+			text-align: right;
+		}
 	}
 	.pie-chart-container {
 		width: 100%;
@@ -38,7 +44,7 @@ charts-tab {
 	}
 	.pie-chart {
 		width: 360px;
-		height: 360px;
+		height: 440px;
 		display: inline-block;
 		position: relative;
 		transform: rotate(-90deg);
@@ -49,10 +55,11 @@ charts-tab {
 		}
 		text {
 			animation: barLabel 0.4s linear;
-			fill: #333;
+			fill: #555;
 			font-weight: 500;
+			transform: rotate(90deg);
 			.per-span {
-				fill: #1891ff;
+				fill: #777;
 				margin-left: 4px;
 			}
 		}

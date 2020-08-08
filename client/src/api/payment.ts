@@ -3,7 +3,10 @@ import { PaymentDTO } from '../../../shared/dto';
 class PaymentApi {
 	static async create(body: PaymentDTO.CREATE) {
 		try {
-			const response = await fetch(`${url}/payment/create`, Options.POST(body));
+			const response = await fetch(`${url}/payment/create`, {
+				...Options.POST(body),
+				credentials: 'include',
+			});
 			const json = await response.json();
 			return json.result;
 		} catch (error) {
@@ -24,9 +27,9 @@ class PaymentApi {
 		}
 	}
 
-	static async delete(uid: PaymentDTO.DELETE) {
+	static async delete(id: PaymentDTO.DELETE) {
 		try {
-			const response = await fetch(`${url}/payment/delete/${uid}`, Options.PATCH({}));
+			const response = await fetch(`${url}/payment/delete/${id}`, Options.PATCH({ id }));
 			const json = await response.json();
 			return json.result;
 		} catch (error) {

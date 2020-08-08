@@ -37,9 +37,12 @@ class ItemApi {
 		}
 	}
 
-	static async delete(uid: ItemDTO.DELETE) {
+	static async delete(body: ItemDTO.DELETE) {
 		try {
-			const response = await fetch(`${url}/item/delete/${uid}`, Options.PATCH({}));
+			const response = await fetch(
+				`${url}/item/delete/${body.id}`,
+				Options.PATCH({ ...body, removed: 1 }),
+			);
 			const json = await response.json();
 			return json.result;
 		} catch (error) {
