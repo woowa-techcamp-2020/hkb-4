@@ -128,11 +128,22 @@ class HkbController {
 		this.handleInputInit();
 	}
 
+	markSelectedItem(selectedItem) {
+		const items = document.querySelectorAll('hkb-ledger-item');
+		items.forEach(item => {
+			if (item === selectedItem) {
+				item.classList.add('selected');
+			} else {
+				item.classList.remove('selected');
+			}
+		});
+	}
 	handleItemClick(item) {
 		const inputContainer = item.closest('hkb-ledger').querySelector('.container-input');
 		const submitButton = inputContainer.querySelector('.submit-button');
 		const deleteButton = inputContainer.querySelector('.delete-button');
 		const initButton = inputContainer.querySelector('.init-button');
+		this.markSelectedItem(item);
 		submitButton.classList.add('edit-button');
 		submitButton.innerText = '수정';
 		submitButton.dataset.id = item.data.id;
