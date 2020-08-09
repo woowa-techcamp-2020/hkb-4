@@ -1,3 +1,4 @@
+@import '.././style/variable.scss';
 @import './font/nanumgothic.css';
 @import './font/quicksand.css';
 
@@ -14,11 +15,16 @@ body {
 #app {
 	width: 100%;
 	min-height: 100vh;
-	background: #f5f6fa;
+	background: $background-color;
 	padding-bottom: 32px;
+	display: flex;
+	flex-direction: column;
 	#app-content {
-		width: 920px;
+		flex: 1;
+		width: $min-width;
 		margin: 0 auto;
+		display: flex;
+		justify-content: center;
 	}
 }
 

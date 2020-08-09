@@ -16,15 +16,15 @@ class MonthlyFilter extends HTMLElement {
 	render() {
 		this.innerHTML = `
     <div class="checkbox-group">
-      <input type="checkbox" class="income-input" content="income" checked />
-      <label>
+      <input id="checkbox-income" type="checkbox" class="income-input" content="income" checked />
+      <label for="checkbox-income">
         총 수입: 
         <span class="total-income"></span>
       </label>
     </div>
     <div class="checkbox-group" type="spending">
-      <input type="checkbox" class="spending-input" content="spending" checked/>
-      <label>
+      <input id="checkbox-spending" type="checkbox" class="spending-input" content="spending" checked/>
+      <label for="checkbox-spending">
         총 지출: 
         <span class="total-spending"></span>
       </label>
