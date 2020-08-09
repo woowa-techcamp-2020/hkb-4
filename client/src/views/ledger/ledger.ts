@@ -11,7 +11,7 @@ class Ledger extends HTMLElement {
 	constructor() {
 		super();
 		this.hkbController = controller.HkbController;
-		this.monthlyFilter = new MonthlyFilter();
+		this.monthlyFilter = new MonthlyFilter('ledger');
 	}
 
 	connectedCallback() {

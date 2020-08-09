@@ -1,6 +1,11 @@
 import { numberToString } from '../../util/common';
 class MonthlyFilter extends HTMLElement {
-	private controller;
+	private page!: string;
+	constructor(page) {
+		super();
+		this.page = page;
+	}
+
 	connectedCallback() {
 		this.render();
 	}
@@ -16,15 +21,15 @@ class MonthlyFilter extends HTMLElement {
 	render() {
 		this.innerHTML = `
     <div class="checkbox-group">
-      <input id="checkbox-income" type="checkbox" class="income-input" content="income" checked />
-      <label for="checkbox-income">
+      <input id="checkbox-income-${this.page}" type="checkbox" class="income-input" content="income" checked />
+      <label for="checkbox-income-${this.page}">
         총 수입: 
         <span class="total-income"></span>
       </label>
     </div>
     <div class="checkbox-group" type="spending">
-      <input id="checkbox-spending" type="checkbox" class="spending-input" content="spending" checked/>
-      <label for="checkbox-spending">
+      <input id="checkbox-spending-${this.page}" type="checkbox" class="spending-input" content="spending" checked/>
+      <label for="checkbox-spending-${this.page}">
         총 지출: 
         <span class="total-spending"></span>
       </label>
