@@ -240,11 +240,18 @@ class HkbController {
 		e.target.value = numberToString(inputOnlyNumber);
 	}
 
+	preventScript(str) {
+		return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	}
+
 	validateInput(inputContainer, name) {
 		const input = inputContainer.querySelector(`input[name="${name}"]`);
 		let value = input.value;
 		if (name === 'amount') {
 			value = parseInt(value);
+		}
+		if (name === 'description') {
+			value = this.preventScript(value);
 		}
 		if (value) {
 			input.classList.remove('invalid');
