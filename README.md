@@ -41,5 +41,12 @@ npm run build
 npm run start
 ```
 
+### 5. 로그인
+회원가입을 구현하기 전이기 때문에 아래의 계정으로 접속해서 사용해보세요.
+```
+id: eunjung
+pw: eunjung
+```
+
 ## FrontEnd Architecture
 - [observer & mvc pattern](https://github.com/woowa-techcamp-2020/hkb-4/wiki/observer-%ED%8C%A8%ED%84%B4-%EA%B4%80%EB%A0%A8-%EC%83%9D%EA%B0%81-%EC%A0%95%EB%A6%AC)
