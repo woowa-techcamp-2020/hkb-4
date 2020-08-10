@@ -33,7 +33,7 @@ class LedgerByDate extends HTMLElement {
 				<span class="date__spending">-${numberToString(dSpending)}원</span>
 			</div>
 		`;
-		items.reverse().forEach(item => this.appendChild(new LedgerItem(item)));
+		items.forEach(item => this.appendChild(new LedgerItem(item)));
 	}
 }
 

@@ -37,7 +37,9 @@ const ItemModel = {
 				FROM item i
 				JOIN payment p
 					ON i.pid_item = p.id
-				WHERE i.uid_item = '${uid}' and i.removed = '${0}' and date_format(i.date, '%Y-%m') = '${date}'`);
+				WHERE i.uid_item = '${uid}' and i.removed = '${0}' and date_format(i.date, '%Y-%m') = '${date}'
+				ORDER BY id DESC
+				`);
 			return itemData[0];
 		} catch (err) {
 			throw err;

@@ -177,7 +177,7 @@ class HkbModel {
 			if (!this.rawData[itemDay]) {
 				this.rawData[itemDay] = [];
 			}
-			this.rawData[itemDay].push(item);
+			this.rawData[itemDay].unshift(item);
 		} else if (action === 'edit') {
 			this.rawData[itemDay] = this.rawData[itemDay].map(prevItem => {
 				if (prevItem.id === item.id) {

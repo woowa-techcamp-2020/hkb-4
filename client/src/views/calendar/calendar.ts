@@ -6,7 +6,7 @@ class CalendarTab extends HTMLElement {
 
 	constructor() {
 		super();
-		this.monthlyFilter = new MonthlyFilter();
+		this.monthlyFilter = new MonthlyFilter('calender');
 	}
 
 	connectedCallback() {
